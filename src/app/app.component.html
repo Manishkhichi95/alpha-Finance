@@ -1,0 +1,692 @@
+<div>
+    <!-- <section class="nav-section">
+        <div class="w-layout-blockcontainer container nav w-container">
+            <div class="w-layout-hflex flex-block">
+                <div class="div-block"><img
+                        src="https://uploads-ssl.webflow.com/64e85948a9432f998915f612/64ec421e098c6e5a99918908_Logo.png"
+                        loading="lazy" width="48" height="48" alt="" /></div>
+                <div data-animation="default" data-collapse="medium" data-duration="400" data-easing="ease"
+                    data-easing2="ease" role="banner" class="navbar w-nav">
+                    <div class="container-2 w-container">
+                        <nav role="navigation" class="nav-menu w-nav-menu"><a
+                                href="https://alpha-finance-launch.webflow.io/#" class="nav-link w-nav-link">Market</a><a
+                                href="https://alpha-finance-launch.webflow.io/#" class="nav-link w-nav-link">Dashboard</a><a
+                                href="https://alpha-finance-launch.webflow.io/#" class="nav-link w-nav-link">Manage</a><a
+                                href="https://alpha-finance-launch.webflow.io/#" class="nav-link w-nav-link">Bridge</a><a
+                                href="https://alpha-finance-launch.webflow.io/#" class="nav-link w-nav-link">Buy</a>
+                            <div data-hover="false" data-delay="0" class="w-dropdown">
+                                <div class="nav-link w-dropdown-toggle">
+                                    <div class="w-icon-dropdown-toggle"></div>
+                                    <div>DAO</div>
+                                </div>
+                                <nav class="w-dropdown-list"><a href="https://alpha-finance-launch.webflow.io/#"
+                                        class="w-dropdown-link">Link 1</a><a
+                                        href="https://alpha-finance-launch.webflow.io/#" class="w-dropdown-link">Link
+                                        2</a><a href="https://alpha-finance-launch.webflow.io/#"
+                                        class="w-dropdown-link">Link 3</a></nav>
+                            </div>
+                            <div data-hover="false" data-delay="0" class="w-dropdown">
+                                <div class="nav-link w-dropdown-toggle">
+                                    <div class="w-icon-dropdown-toggle"></div>
+                                    <div>More</div>
+                                </div>
+                                <nav class="w-dropdown-list"><a href="https://alpha-finance-launch.webflow.io/#"
+                                        class="w-dropdown-link">Link 1</a><a
+                                        href="https://alpha-finance-launch.webflow.io/#" class="w-dropdown-link">Link
+                                        2</a><a href="https://alpha-finance-launch.webflow.io/#"
+                                        class="w-dropdown-link">Link 3</a></nav>
+                            </div>
+                        </nav>
+                        <div class="w-nav-button">
+                            <div class="w-icon-nav-menu"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="action-items">
+                    <div data-hover="false" data-delay="0" class="dropdown w-dropdown">
+                        <div class="dropdown w-dropdown-toggle">
+                            <div class="icon w-icon-dropdown-toggle"></div>
+                            <div class="text-block">Ethereum</div>
+                        </div>
+                        <nav class="w-dropdown-list"><a href="https://alpha-finance-launch.webflow.io/#"
+                                class="w-dropdown-link">Arbitrum</a><a href="https://alpha-finance-launch.webflow.io/#"
+                                class="w-dropdown-link">Etherium</a><a href="https://alpha-finance-launch.webflow.io/#"
+                                class="w-dropdown-link">Polygon</a></nav>
+                    </div>
+    
+                    <div *ngIf="connected==false">
+                        <a (click)="openMetaMask()" class="nav-cta w-button">Connect
+                            Wallet</a>
+                    </div>
+                    <p *ngIf="connected" style="color:white;margin-top: 12px;" [appTruncateText]="10">{{walletAddress}}</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="hero-section">
+        <div class="w-layout-blockcontainer container w-container">
+            <h1 class="hero-heading" *ngIf="!connected">Please connect your wallet</h1>
+            <h1 class="hero-heading" *ngIf="connected">Wallet Address</h1>
+            <a *ngIf="!connected" (click)="openMetaMask()" class="nav-cta w-button">Connect
+                Wallet</a>
+            <p *ngIf="connected" style="color:white;font-size: 45px;" [appTruncateText]="10">{{walletAddress}}</p>
+        </div>
+    </section>
+    <section class="section_2">
+        <div class="w-layout-blockcontainer container_2 w-container">
+            <div class="w-layout-hflex flex-block">
+                <div class="switch">
+                    <div class="toggle-text live">Live</div>
+                    <div data-w-id="e8f49c8e-bbed-8a60-fa92-2d84134c0e23" class="toggle-text finished">Finished</div>
+                    <div class="tgl-button"></div>
+                </div>
+                <div>
+                    <form action="/search" class="w-form"><input type="search" class="search-input w-input" autofocus="true"
+                            maxlength="256" name="query" placeholder="Search Farms" id="search" required="" /><input
+                            type="submit" value="Search" class="search-button w-button" /></form>
+                </div>
+            </div>
+            <div class="card-items">
+                <div id="w-node-a618fc7c-1007-a2f1-156d-8cd624bd66ca-8915f620" class="card">
+                    <div id="w-node-a7e6f744-c0b6-a26b-7c66-48fa2d9eeaa3-8915f620" class="w-layout-hflex flex-block">
+                        <div class="card-coin-icon"><img
+                                src="https://uploads-ssl.webflow.com/64e85948a9432f998915f612/64ec5a5a4172089051a50c4b_card-coin-icon.png"
+                                loading="lazy" alt="" /></div>
+                        <div class="card-coin-name">
+                            <h3 class="card-name">BUSD-BNB</h3>
+                            <div class="card-type-value">
+                                <div class="card-type">
+                                    <div class="state"></div>
+                                    <div class="text">Core</div>
+                                </div>
+                                <div class="card-value">
+                                    <div class="text vl">25x</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-layout-hflex flex-block">
+                        <div class="item-text head">Apr</div>
+                        <div class="item-text value">31.12%</div>
+                    </div>
+                    <div class="w-layout-hflex flex-block">
+                        <div class="item-text head">Earns</div>
+                        <div class="item-text value">DEXO + Fees</div>
+                    </div>
+                    <div class="w-layout-hflex flex-block">
+                        <div class="item-text sm">DEXO EARNED</div>
+                    </div>
+                    <div class="w-layout-hflex flex-block">
+                        <div class="item-text earn">000000</div>
+                        <div class="second-button">
+                            <div class="second-btn-text">Harvest</div>
+                        </div>
+                    </div>
+                    <div class="card-cta">
+                        <h4 class="item-text sm">BUSD-DEXO STAKED</h4><a (click)="openMetaMask()"
+                            class="card-button w-button">Connect
+                            Wallet</a>
+                    </div>
+                    <div class="details-button">
+                        <h5 class="details">Details</h5>
+                    </div>
+                </div>
+                <div id="w-node-_1c9bf0a9-ce77-fd5f-0b9b-8db65c5da207-8915f620" class="card">
+                    <div id="w-node-_1c9bf0a9-ce77-fd5f-0b9b-8db65c5da208-8915f620" class="w-layout-hflex flex-block">
+                        <div class="card-coin-icon"><img
+                                src="https://uploads-ssl.webflow.com/64e85948a9432f998915f612/64ec5a5a4172089051a50c4b_card-coin-icon.png"
+                                loading="lazy" alt="" /></div>
+                        <div class="card-coin-name">
+                            <h3 class="card-name">BUSD-BNB</h3>
+                            <div class="card-type-value">
+                                <div class="card-type">
+                                    <div class="state"></div>
+                                    <div class="text">Core</div>
+                                </div>
+                                <div class="card-value">
+                                    <div class="text vl">25x</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-layout-hflex flex-block">
+                        <div class="item-text head">Apr</div>
+                        <div class="item-text value">31.12%</div>
+                    </div>
+                    <div class="w-layout-hflex flex-block">
+                        <div class="item-text head">Earns</div>
+                        <div class="item-text value">DEXO + Fees</div>
+                    </div>
+                    <div class="w-layout-hflex flex-block">
+                        <div class="item-text sm">DEXO EARNED</div>
+                    </div>
+                    <div class="w-layout-hflex flex-block">
+                        <div class="item-text earn">000000</div>
+                        <div class="second-button">
+                            <div class="second-btn-text">Harvest</div>
+                        </div>
+                    </div>
+                    <div class="card-cta">
+                        <h4 class="item-text sm">BUSD-DEXO STAKED</h4><a (click)="openMetaMask()"
+                            class="card-button w-button">Connect
+                            Wallet</a>
+                    </div>
+                    <div class="details-button">
+                        <h5 class="details">Details</h5>
+                    </div>
+                </div>
+                <div id="w-node-ec345d0c-a2b0-4483-a439-9ca9daa04b4d-8915f620" class="card">
+                    <div id="w-node-ec345d0c-a2b0-4483-a439-9ca9daa04b4e-8915f620" class="w-layout-hflex flex-block">
+                        <div class="card-coin-icon"><img
+                                src="https://uploads-ssl.webflow.com/64e85948a9432f998915f612/64ec5a5a4172089051a50c4b_card-coin-icon.png"
+                                loading="lazy" alt="" /></div>
+                        <div class="card-coin-name">
+                            <h3 class="card-name">BUSD-BNB</h3>
+                            <div class="card-type-value">
+                                <div class="card-type">
+                                    <div class="state"></div>
+                                    <div class="text">Core</div>
+                                </div>
+                                <div class="card-value">
+                                    <div class="text vl">25x</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-layout-hflex flex-block">
+                        <div class="item-text head">Apr</div>
+                        <div class="item-text value">31.12%</div>
+                    </div>
+                    <div class="w-layout-hflex flex-block">
+                        <div class="item-text head">Earns</div>
+                        <div class="item-text value">DEXO + Fees</div>
+                    </div>
+                    <div class="w-layout-hflex flex-block">
+                        <div class="item-text sm">DEXO EARNED</div>
+                    </div>
+                    <div class="w-layout-hflex flex-block">
+                        <div class="item-text earn">000000</div>
+                        <div class="second-button">
+                            <div class="second-btn-text">Harvest</div>
+                        </div>
+                    </div>
+                    <div class="card-cta">
+                        <h4 class="item-text sm">BUSD-DEXO STAKED</h4><a (click)="openMetaMask()"
+                            class="card-button w-button">Connect
+                            Wallet</a>
+                    </div>
+                    <div class="details-button">
+                        <h5 class="details">Details</h5>
+                    </div>
+                </div>
+                <div id="w-node-_062fe087-c22d-6503-4b25-7bfd2564aa57-8915f620" class="card">
+                    <div id="w-node-_062fe087-c22d-6503-4b25-7bfd2564aa58-8915f620" class="w-layout-hflex flex-block">
+                        <div class="card-coin-icon"><img
+                                src="https://uploads-ssl.webflow.com/64e85948a9432f998915f612/64ec5a5a4172089051a50c4b_card-coin-icon.png"
+                                loading="lazy" alt="" /></div>
+                        <div class="card-coin-name">
+                            <h3 class="card-name">BUSD-BNB</h3>
+                            <div class="card-type-value">
+                                <div class="card-type">
+                                    <div class="state"></div>
+                                    <div class="text">Core</div>
+                                </div>
+                                <div class="card-value">
+                                    <div class="text vl">25x</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-layout-hflex flex-block">
+                        <div class="item-text head">Apr</div>
+                        <div class="item-text value">31.12%</div>
+                    </div>
+                    <div class="w-layout-hflex flex-block">
+                        <div class="item-text head">Earns</div>
+                        <div class="item-text value">DEXO + Fees</div>
+                    </div>
+                    <div class="w-layout-hflex flex-block">
+                        <div class="item-text sm">DEXO EARNED</div>
+                    </div>
+                    <div class="w-layout-hflex flex-block">
+                        <div class="item-text earn">000000</div>
+                        <div class="second-button">
+                            <div class="second-btn-text">Harvest</div>
+                        </div>
+                    </div>
+                    <div class="card-cta">
+                        <h4 class="item-text sm">BUSD-DEXO STAKED</h4><a (click)="openMetaMask()"
+                            class="card-button w-button">Connect
+                            Wallet</a>
+                    </div>
+                    <div class="details-button">
+                        <h5 class="details">Details</h5>
+                    </div>
+                </div>
+                <div id="w-node-_3db372e1-dfd7-94aa-158e-868c28d363d5-8915f620" class="card">
+                    <div id="w-node-_3db372e1-dfd7-94aa-158e-868c28d363d6-8915f620" class="w-layout-hflex flex-block">
+                        <div class="card-coin-icon"><img
+                                src="https://uploads-ssl.webflow.com/64e85948a9432f998915f612/64ec5a5a4172089051a50c4b_card-coin-icon.png"
+                                loading="lazy" alt="" /></div>
+                        <div class="card-coin-name">
+                            <h3 class="card-name">BUSD-BNB</h3>
+                            <div class="card-type-value">
+                                <div class="card-type">
+                                    <div class="state"></div>
+                                    <div class="text">Core</div>
+                                </div>
+                                <div class="card-value">
+                                    <div class="text vl">25x</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-layout-hflex flex-block">
+                        <div class="item-text head">Apr</div>
+                        <div class="item-text value">31.12%</div>
+                    </div>
+                    <div class="w-layout-hflex flex-block">
+                        <div class="item-text head">Earns</div>
+                        <div class="item-text value">DEXO + Fees</div>
+                    </div>
+                    <div class="w-layout-hflex flex-block">
+                        <div class="item-text sm">DEXO EARNED</div>
+                    </div>
+                    <div class="w-layout-hflex flex-block">
+                        <div class="item-text earn">000000</div>
+                        <div class="second-button">
+                            <div class="second-btn-text">Harvest</div>
+                        </div>
+                    </div>
+                    <div class="card-cta">
+                        <h4 class="item-text sm">BUSD-DEXO STAKED</h4><a (click)="openMetaMask()"
+                            class="card-button w-button">Connect
+                            Wallet</a>
+                    </div>
+                    <div class="details-button">
+                        <h5 class="details">Details</h5>
+                    </div>
+                </div>
+                <div id="w-node-d9d217fa-1c65-f453-6fac-4ce6b2536b23-8915f620" class="card">
+                    <div id="w-node-d9d217fa-1c65-f453-6fac-4ce6b2536b24-8915f620" class="w-layout-hflex flex-block">
+                        <div class="card-coin-icon"><img
+                                src="https://uploads-ssl.webflow.com/64e85948a9432f998915f612/64ec5a5a4172089051a50c4b_card-coin-icon.png"
+                                loading="lazy" alt="" /></div>
+                        <div class="card-coin-name">
+                            <h3 class="card-name">BUSD-BNB</h3>
+                            <div class="card-type-value">
+                                <div class="card-type">
+                                    <div class="state"></div>
+                                    <div class="text">Core</div>
+                                </div>
+                                <div class="card-value">
+                                    <div class="text vl">25x</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-layout-hflex flex-block">
+                        <div class="item-text head">Apr</div>
+                        <div class="item-text value">31.12%</div>
+                    </div>
+                    <div class="w-layout-hflex flex-block">
+                        <div class="item-text head">Earns</div>
+                        <div class="item-text value">DEXO + Fees</div>
+                    </div>
+                    <div class="w-layout-hflex flex-block">
+                        <div class="item-text sm">DEXO EARNED</div>
+                    </div>
+                    <div class="w-layout-hflex flex-block">
+                        <div class="item-text earn">000000</div>
+                        <div class="second-button">
+                            <div class="second-btn-text">Harvest</div>
+                        </div>
+                    </div>
+                    <div class="card-cta">
+                        <h4 class="item-text sm">BUSD-DEXO STAKED</h4><a (click)="openMetaMask()"
+                            class="card-button w-button">Connect
+                            Wallet</a>
+                    </div>
+                    <div class="details-button">
+                        <h5 class="details">Details</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section> -->
+    <section class="header">
+        <div class="container">
+            <nav class="navbar">
+                <!--            logo-->
+                <a href="#" class="logo"><img src="assets\alphalogo.png"></a>
+                <div class="logo"></div>
+                <ul class="nav-links">
+                    <li><a href="">Market</a></li>
+                    <li><a href="">Dashboard</a></li>
+                    <li><a href="">Manage</a></li>
+                    <li><a href="">Bridge</a></li>
+                    <li><a href="">Buy</a></li>
+                    <li><a href="">DAO</a></li>
+                    <li><a href="">More</a></li>
+                </ul>
+                <div class="cta">
+                    <!--                button-->
+                    <div class="exchange"><a href="#">Etherium</a>
+
+                    </div>
+                    <div class="connect"><a (click)="openWalletModal()">Connect Wallet</a>
+
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </section>
+    <section class="hero">
+        <!--        hero section-->
+        <div class="container">
+            <div class="title">
+                <h1>Please connect your wallet</h1>
+                <div class="connect"><a (click)="openWalletModal()">Connect Wallet</a></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="chain-exchain">
+        <div class="container">
+            <div class="chainbx">
+                <p>Etherium</p>
+                <i class="ri-arrow-down-s-line"></i>
+            </div>
+        </div>
+    </section>
+    <section class="stats">
+        <!--        stats section-->
+        <div class="container">
+            <div class="statsbx">
+                <div class="heading">
+                    <h3>Stats Overview</h3>
+                </div>
+                <table>
+                    <tr>
+                        <th>Total market size</th>
+                        <th>Total dLP vaule locked</th>
+                        <th>Alpha price</th>
+                        <th>Free paids to lockers <span><i class="ri-information-line"></i></span></th>
+                        <th>Maximum lock ARP <span><i class="ri-information-line"></i></span></th>
+                        <th>Other chains</th>
+                    </tr>
+                    <tr>
+                        <td>$376.52M</td>
+                        <td>$0</td>
+                        <td>$0.25</td>
+                        <td>$12.95M</td>
+                        <td><span><i class="ri-information-line"></i></span>0%</td>
+                        <td><span><i class="ri-information-line"></i></span>0%</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </section>
+    <section class="assets">
+        <div class="container">
+            <div class="heading">
+                <h3>Etherium Assets</h3>
+            </div>
+            <div class="grid-container">
+                <div class="grid-items">
+                    <div class="head">
+                        <div class="c-icon"><img src="assets/coin_icon.png" alt="Coin-icon"></div>
+                        <h4>USTD</h4>
+                    </div>
+                    <div class="otheritm">
+                        <div class="items-left">
+                            <div class="itm-name">Deposit</div>
+                            <div class="itm-value">$101.42M</div>
+                        </div>
+                        <div class="items-right">
+                            <div class="itm-name">Borrow</div>
+                            <div class="itm-value">$67.47M</div>
+                        </div>
+                    </div>
+                    <div class="otheritm">
+                        <div class="items-left">
+                            <div class="itm-name">Deposit APY</div>
+                            <div class="itm-value">$101.42M</div>
+                        </div>
+                        <div class="items-right">
+                            <div class="itm-name">Borrow APY</div>
+                            <div class="itm-value">$67.47M</div>
+                        </div>
+                    </div>
+                    <div class="apr-value">
+                        <div class="deposit-apr">4.01% APR</div>
+                        <div class="borrow-apr">13.77% APR</div>
+                    </div>
+                    
+                    <div class="loop">
+                        <div class="loop-name">Loop APR</div>
+                        <div class="loop-value">56.67%</div>
+                    </div>
+
+                    <div class="assets-cta"><a (click)="openWalletModal()">Connect Wallet</a></div>
+
+                    <div class="details">
+                        <a href="Assets Details.html">Details</a>
+                    </div>
+                    
+                </div>
+                <div class="grid-items">
+                    <div class="head">
+                        <div class="c-icon"><img src="assets/coin_icon.png" alt="Coin-icon"></div>
+                        <h4>USTD</h4>
+                    </div>
+                    <div class="otheritm">
+                        <div class="items-left">
+                            <div class="itm-name">Deposit</div>
+                            <div class="itm-value">$101.42M</div>
+                        </div>
+                        <div class="items-right">
+                            <div class="itm-name">Borrow</div>
+                            <div class="itm-value">$67.47M</div>
+                        </div>
+                    </div>
+                    <div class="otheritm">
+                        <div class="items-left">
+                            <div class="itm-name">Deposit APY</div>
+                            <div class="itm-value">$101.42M</div>
+                        </div>
+                        <div class="items-right">
+                            <div class="itm-name">Borrow APY</div>
+                            <div class="itm-value">$67.47M</div>
+                        </div>
+                    </div>
+                    <div class="apr-value">
+                        <div class="deposit-apr">4.01% APR</div>
+                        <div class="borrow-apr">13.77% APR</div>
+                    </div>
+                    
+                    <div class="loop">
+                        <div class="loop-name">Loop APR</div>
+                        <div class="loop-value">56.67%</div>
+                    </div>
+
+                    <div class="assets-cta"><a (click)="openWalletModal()">Connect Wallet</a></div>
+
+                    <div class="details">
+                        <a href="Assets Details.html">Details</a>
+                    </div>
+                    
+                </div>
+                <div class="grid-items">
+                    <div class="head">
+                        <div class="c-icon"><img src="assets/coin_icon.png" alt="Coin-icon"></div>
+                        <h4>USTD</h4>
+                    </div>
+                    <div class="otheritm">
+                        <div class="items-left">
+                            <div class="itm-name">Deposit</div>
+                            <div class="itm-value">$101.42M</div>
+                        </div>
+                        <div class="items-right">
+                            <div class="itm-name">Borrow</div>
+                            <div class="itm-value">$67.47M</div>
+                        </div>
+                    </div>
+                    <div class="otheritm">
+                        <div class="items-left">
+                            <div class="itm-name">Deposit APY</div>
+                            <div class="itm-value">$101.42M</div>
+                        </div>
+                        <div class="items-right">
+                            <div class="itm-name">Borrow APY</div>
+                            <div class="itm-value">$67.47M</div>
+                        </div>
+                    </div>
+                    <div class="apr-value">
+                        <div class="deposit-apr">4.01% APR</div>
+                        <div class="borrow-apr">13.77% APR</div>
+                    </div>
+                    
+                    <div class="loop">
+                        <div class="loop-name">Loop APR</div>
+                        <div class="loop-value">56.67%</div>
+                    </div>
+
+                    <div class="assets-cta"><a (click)="openWalletModal()">Connect Wallet</a></div>
+
+                    <div class="details">
+                        <a href="Assets Details.html">Details</a>
+                    </div>
+                    
+                </div>
+                <div class="grid-items">
+                    <div class="head">
+                        <div class="c-icon"><img src="assets/coin_icon.png" alt="Coin-icon"></div>
+                        <h4>USTD</h4>
+                    </div>
+                    <div class="otheritm">
+                        <div class="items-left">
+                            <div class="itm-name">Deposit</div>
+                            <div class="itm-value">$101.42M</div>
+                        </div>
+                        <div class="items-right">
+                            <div class="itm-name">Borrow</div>
+                            <div class="itm-value">$67.47M</div>
+                        </div>
+                    </div>
+                    <div class="otheritm">
+                        <div class="items-left">
+                            <div class="itm-name">Deposit APY</div>
+                            <div class="itm-value">$101.42M</div>
+                        </div>
+                        <div class="items-right">
+                            <div class="itm-name">Borrow APY</div>
+                            <div class="itm-value">$67.47M</div>
+                        </div>
+                    </div>
+                    <div class="apr-value">
+                        <div class="deposit-apr">4.01% APR</div>
+                        <div class="borrow-apr">13.77% APR</div>
+                    </div>
+                    
+                    <div class="loop">
+                        <div class="loop-name">Loop APR</div>
+                        <div class="loop-value">56.67%</div>
+                    </div>
+
+                    <div class="assets-cta"><a (click)="openWalletModal()">Connect Wallet</a></div>
+
+                    <div class="details">
+                        <a href="Assets Details.html">Details</a>
+                    </div>
+                    
+                </div>
+                <div class="grid-items">
+                    <div class="head">
+                        <div class="c-icon"><img src="assets/coin_icon.png" alt="Coin-icon"></div>
+                        <h4>USTD</h4>
+                    </div>
+                    <div class="otheritm">
+                        <div class="items-left">
+                            <div class="itm-name">Deposit</div>
+                            <div class="itm-value">$101.42M</div>
+                        </div>
+                        <div class="items-right">
+                            <div class="itm-name">Borrow</div>
+                            <div class="itm-value">$67.47M</div>
+                        </div>
+                    </div>
+                    <div class="otheritm">
+                        <div class="items-left">
+                            <div class="itm-name">Deposit APY</div>
+                            <div class="itm-value">$101.42M</div>
+                        </div>
+                        <div class="items-right">
+                            <div class="itm-name">Borrow APY</div>
+                            <div class="itm-value">$67.47M</div>
+                        </div>
+                    </div>
+                    <div class="apr-value">
+                        <div class="deposit-apr">4.01% APR</div>
+                        <div class="borrow-apr">13.77% APR</div>
+                    </div>
+                    
+                    <div class="loop">
+                        <div class="loop-name">Loop APR</div>
+                        <div class="loop-value">56.67%</div>
+                    </div>
+
+                    <div class="assets-cta"><a (click)="openWalletModal()">Connect Wallet</a></div>
+
+                    <div class="details">
+                        <a href="Assets Details.html#">Details</a>
+                    </div>
+                    
+                </div>
+                <div class="grid-items">
+                    <div class="head">
+                        <div class="c-icon"><img src="assets/coin_icon.png" alt="Coin-icon"></div>
+                        <h4>USTD</h4>
+                    </div>
+                    <div class="otheritm">
+                        <div class="items-left">
+                            <div class="itm-name">Deposit</div>
+                            <div class="itm-value">$101.42M</div>
+                        </div>
+                        <div class="items-right">
+                            <div class="itm-name">Borrow</div>
+                            <div class="itm-value">$67.47M</div>
+                        </div>
+                    </div>
+                    <div class="otheritm">
+                        <div class="items-left">
+                            <div class="itm-name">Deposit APY</div>
+                            <div class="itm-value">$101.42M</div>
+                        </div>
+                        <div class="items-right">
+                            <div class="itm-name">Borrow APY</div>
+                            <div class="itm-value">$67.47M</div>
+                        </div>
+                    </div>
+                    <div class="apr-value">
+                        <div class="deposit-apr">4.01% APR</div>
+                        <div class="borrow-apr">13.77% APR</div>
+                    </div>
+                    
+                    <div class="loop">
+                        <div class="loop-name">Loop APR</div>
+                        <div class="loop-value">56.67%</div>
+                    </div>
+
+                    <div class="assets-cta"><a (click)="openWalletModal()">Connect Wallet</a></div>
+
+                    <div class="details">
+                        <a href="Assets Details.html">Details</a>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </section>
+    <router-outlet></router-outlet>
+</div>
