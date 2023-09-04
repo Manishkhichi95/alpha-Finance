@@ -6,12 +6,16 @@ import { TruncateTextDirective } from './directives/truncate-text.directive';
 import { WallletOverlayComponent } from './modules/wallet-overlay/walllet-overlay/walllet-overlay.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatDialogModule } from '@angular/material/dialog';
+import { DashboardComponent } from './modules/dashboard/dashboard/dashboard.component';
+import { ManageComponent } from './modules/manage/manage/manage.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TruncateTextDirective,
-    WallletOverlayComponent
+    WallletOverlayComponent,
+    DashboardComponent,
+    ManageComponent
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,4 @@
-import {MatDialog} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit } from '@angular/core';
 import { WallletOverlayComponent } from './modules/wallet-overlay/walllet-overlay/walllet-overlay.component';
 declare let window: any;
@@ -99,12 +99,9 @@ export class AppComponent implements OnInit {
     console.error(errorMessage);
   }
 
-  openWalletModal(){
-      const dialogRef = this.dialog.open(WallletOverlayComponent, { 
-      });
-      dialogRef.afterClosed().subscribe((result: any) => {
-        console.log('The dialog was closed');
-      })
-    
+  openWalletModal() {
+    const dialogRef = this.dialog.open(WallletOverlayComponent,{
+      panelClass: 'dailog-class'
+    });
   }
-  }
+}

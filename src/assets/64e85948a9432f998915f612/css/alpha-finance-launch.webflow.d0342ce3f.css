@@ -821,7 +821,115 @@ background: linear-gradient(90deg, rgba(42,46,70,1) 0%, rgba(14,19,47,1) 100%);
   
   
     /* wallet overlay css */
-  
+    .overlay{
+        background: rgb(0,0,71);
+    background: linear-gradient(180deg, rgba(0,0,71,1) 0%, rgba(0,0,44,1) 100%);
+        font-family: 'Lato', sans-serif;
+        width: 768px;
+        margin: auto;
+        margin-top: 100px;
+        padding: 2em;
+        border-radius: 1em;
+    }
+    
+    .overlay .head{
+        display:flex;
+        justify-content: space-between;
+    }
+    
+    .overlay .head .close{
+        color: white;
+        font-size: 1.5em;
+    
+    }
+    
+    .overlay .head h2{
+        font-size: 1.25em;
+        font-weight: 700;
+        color: white;
+    }
+    
+    .overlay .content{
+        margin: auto;
+        text-align: center;
+        margin-top: 2em;
+    }
+    
+    .overlay .content h3 {
+        font-size: 1.0em;
+        font-weight: 700;
+        color: white;
+    }
+    
+    .overlay .content .dropdown{
+        background-color: #cadeff;
+        display: inline-block;
+        display: flex;
+        margin: auto;
+        box-sizing: border-box;
+        padding: .5em;
+        width: fit-content;
+        gap: 4em;
+        margin-top: 1em;
+        border: solid #8792AE 1px;
+        border-radius: .5em;
+    }
+    
+    .overlay .content .dropdown p {
+        font-size: .9em;
+        font-weight: 700;
+    }
+    
+    .overlay .content .wallet-option {
+    
+        display: inline-flex;
+        margin: auto;
+        gap: 1em;
+        margin-top: 1em;
+    
+    }
+    
+    .overlay .content .wallet-option .wlt-type{
+        box-sizing: border-box;
+        padding: .75em;
+        border: solid #8792AE 1px;
+        border-radius:.5em ;
+    }
+    
+    
+    .overlay .content .wallet-option .wlt-type .icon{
+        width: 48px;
+        height: 48px;
+        margin: auto;
+    }
+    .overlay .content .wallet-option .wlt-type .icon img{
+        object-fit: fill;
+        width: 100%;
+        height: auto;
+        
+    }
+    
+    
+    .overlay .content .wallet-option .wlt-type h4{
+        font-size: 1em;
+        font-weight: 700;
+        color: #ffffff;
+    }
+    
+    .overlay .content .wallet-option .wlt-type p{
+        font-size: .8em;
+        font-weight: 400;
+        margin-top: .25em;
+        color: #8792AE;
+    }
+    
+    .overlay .content .faq p{
+        margin-top: 1em;
+        font-size: 1em;
+        font-weight: 400;
+        color: #5c5c86;
+    } 
+
 /* CSS Reset */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
@@ -841,4 +949,3 @@ table, caption, tbody, tfoot, thead, tr, th, td {
 }
 
 /* More reset styles can be added here */
-  
