@@ -1,7 +1,7 @@
  <div class="overlay">
         <div class="head">
             <h2>Connect Wallet</h2>
-            <div class="close"><i class="ri-close-line"></i></div>
+            <div class="close" (click)="closeModel()"><i class="ri-close-line"></i></div>
         </div>
         <div class="content">
             <h3>Select preffered network</h3>
@@ -10,13 +10,13 @@
                 <div class="expand"><i class="ri-arrow-down-s-line"></i></div>
             </div>
             <div class="wallet-option">
-                <div class="wlt-type">
-                    <div class="icon"><img src="/images/WalletConnect-Logo.png" alt=""></div>
+                <div class="wlt-type" (click)="openWallet()">
+                    <div class="icon"><img src="/assets/WalletConnect-Logo.png" alt=""></div>
                     <h4>Browser Wallet</h4>
                     <p>(Metamask, OKX, Trustwallet)</p>
                 </div>
-                <div class="wlt-type">
-                    <div class="icon"><img src="/images/WalletConnect-Logo.png" alt=""></div>
+                <div class="wlt-type" (click)="openWallet()">
+                    <div class="icon"><img src="/assets/WalletConnect-Logo.png" alt=""></div>
                     <h4>Wallet Connect</h4>
                     <p>(Metamask, OKX, Trustwallet)</p>
                 </div>

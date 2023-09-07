@@ -1,0 +1,101 @@
+<!-- <Section class="details-page">
+    <ul class="tabs">
+        <li><a href="#tab1">Deposit</a></li>
+        <li><a href="#tab2">Borrow</a></li>
+        <li><a href="#tab3">Loop</a></li>
+    </ul>
+
+    <div id="tab1" class="tab-content">
+        <div class="note">
+            <p>
+                Please enter the amount you would like to deposit
+            </p>
+        </div>
+        <form action="">
+            <div class="label">
+                <label for="amount">Available USDC.e:</label>
+                <label for="available-amount">0 USDC.e</label>
+            </div>
+            <input type="text" id="amount" name="amount" placeholder="Amount">
+            <input class="connect-btn" type="submit" value="Connect">
+        </form>
+    </div>
+    <div id="tab2" class="tab-content">
+        <div class="note">
+            <p>
+                Please enter the amount you would like to borrow
+            </p>
+        </div>
+        <form action="">
+            <div class="label">
+                <label for="amount">Available to borrow:</label>
+                <label for="available-amount">0 USDC.e</label>
+            </div>
+            <input type="text" id="amount" name="amount" placeholder="Amount">
+            <input class="connect-btn" type="submit" value="Connect">
+        </form>
+    </div>
+    <div id="tab3" class="tab-content">
+        <div class="note">
+            <p>
+                Please enter the amount you would like to deposit
+            </p>
+        </div>
+        <form action="">
+            <div class="label">
+                <label for="amount">Available USDC.e:</label>
+                <label for="available-amount">0 USDC.e</label>
+            </div>
+            <input type="text" id="amount" name="amount" placeholder="Amount">
+            <input class="connect-btn" type="submit" value="Connect">
+        </form>
+    </div> 
+</Section> -->
+<section class="details-page">
+  <ul class="tabs">
+    <li><a (click)="openTab('tab1')">Deposit</a></li>
+    <li><a (click)="openTab('tab2')">Borrow</a></li>
+    <li><a (click)="openTab('tab3')">Loop</a></li>
+  </ul>
+  <div *ngIf="currentTab === 'tab1'" id="tab1">
+    <div class="note">
+      <p>Please enter the amount you would like to deposit</p>
+    </div>
+    <form>
+      <div class="label">
+        <label for="amount">Available USDC.e:</label>
+        <label>0 USDC.e</label>
+      </div>
+      <input type="number" id="amount" placeholder="Amount"  name="amount" [(ngModel)]="depositValue">
+      <button class="connect-btn" (click)="depositAmount()">Connect</button>
+    </form>
+  </div>
+
+  <div *ngIf="currentTab == 'tab2'" id="tab2">
+    <div class="note">
+      <p>Please enter the amount you would like to borrow</p>
+    </div>
+    <form>
+      <div class="label">
+        <label>Available to borrow:</label>
+        <label>0 USDC.e</label>
+      </div>
+      <input type="text" id="amount" placeholder="Amount" name="amount" [(ngModel)]="borrowValue">
+      <button class="connect-btn"(click)="borrowAmount()">Connect</button>
+    </form>
+  </div>
+
+  <div *ngIf="currentTab == 'tab3'" id="tab3">
+    <div class="note">
+      <p>Please enter the amount you would like to deposit</p>
+    </div>
+    <form >
+      <div class="label">
+        <label>Available USDC.e:</label>
+        <label>0 USDC.e</label>
+      </div>
+      <input type="text" id="amount" placeholder="Amount"name="amount" [(ngModel)]="depositValue">
+      <button class="connect-btn" (click)="depositAmount()">Connect</button>
+    </form>
+  </div>
+</section>
