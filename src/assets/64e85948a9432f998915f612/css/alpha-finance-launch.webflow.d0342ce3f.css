@@ -98,7 +98,7 @@ background: linear-gradient(90deg, rgba(42,46,70,1) 0%, rgba(14,19,47,1) 100%);
 
 
 .hero {
-    background-image: url(/images/hero.png);
+    background-image: url(/assets/hero.png);
     min-height: 13.25em;
     background-size: cover;
     background-repeat: no-repeat;
@@ -510,7 +510,7 @@ background: linear-gradient(90deg, rgba(42,46,70,1) 0%, rgba(14,19,47,1) 100%);
   
   
   .hero {
-      background-image: url(/images/hero.png);
+      background-image: url(/assets/hero.png);
       min-height: 13.25em;
       background-size: cover;
       background-repeat: no-repeat;
