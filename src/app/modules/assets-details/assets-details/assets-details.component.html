@@ -2,7 +2,9 @@
   <ul class="tabs">
     <li><a (click)="openTab('tab1')">Deposit</a></li>
     <li><a (click)="openTab('tab2')">Borrow</a></li>
-    <li><a (click)="openTab('tab3')">Loop</a></li>
+    <li><a (click)="openTab('tab3')">Supply</a></li>
+    <li><a (click)="openTab('tab4')">Loop</a></li>
+
   </ul>
   <div *ngIf="currentTab === 'tab1'" id="tab1">
     <div class="note">
@@ -33,6 +35,20 @@
   </div>
 
   <div *ngIf="currentTab == 'tab3'" id="tab3">
+    <div class="note">
+      <p>Please enter the amount you would like to supply</p>
+    </div>
+    <form>
+      <div class="label">
+        <label>Available to supply:</label>
+        <label>0 USDC.e</label>
+      </div>
+      <input type="text" id="amount" placeholder="Amount" name="amount" [(ngModel)]="borrowValue">
+      <button class="connect-btn"(click)="supplyAmount()">Connect</button>
+    </form>
+  </div>
+
+  <div *ngIf="currentTab == 'tab4'" id="tab4">
     <div class="note">
       <p>Please enter the amount you would like to deposit</p>
     </div>

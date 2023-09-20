@@ -19,8 +19,8 @@
                     <div class="exchange"><a href="#">Etherium</a>
 
                     </div>
-                    <div class="connect"><a (click)="openWalletModal()">Connect Wallet</a>
-
+                    <div class="connect" *ngIf="!connected"><a (click)="openWalletModal()">Connect Wallet</a>
+                        <h2 *ngIf="connected" ></h2>
                     </div>
                 </div>
             </nav>
@@ -30,8 +30,9 @@
         <!--        hero section-->
         <div class="container">
             <div class="title">
-                <h1>Please connect your wallet</h1>
-                <div class="connect"><a (click)="openWalletModal()">Connect Wallet</a></div>
+                <h1 *ngIf="connected" [TruncateText]="walletAddress" [startLength]="5" [endLength]="18"></h1>
+                <h1 *ngIf="!connected">Please connect your wallet</h1>
+                <div class="connect" *ngIf="!connected"><a (click)="openWalletModal()">Connect Wallet</a></div>
             </div>
         </div>
     </section>
@@ -69,61 +70,6 @@
                         <td><span><i class="ri-information-line"></i></span>0%</td>
                     </tr>
                 </table>
-            </div>
-        </div>
-    </section>
-    <section class="assets">
-        <div class="container">
-            <div class="heading">
-                <h3>Etherium Assets</h3>
-            </div>
-            <div class="grid-container">
-                <div class="grid-items" *ngFor="let items of ContractData">
-                    <div class="head">
-                        <div class="c-icon"><img src="assets/coin_icon.png" alt="Coin-icon"></div>
-                        <h4>{{items.name}}</h4>
-                    </div>
-                    <div class="otheritm">
-                        <div class="items-left">
-                            <div class="itm-name">Deposit</div>
-                            <div class="itm-value">{{items.details.totalAToken}}</div>
-                        </div>
-                        <div class="items-right">
-                            <div class="itm-name">Borrow</div>
-                            <div class="itm-value">{{items.details.totalBorrows}}</div>
-                        </div>
-                    </div>
-                    <div class="otheritm">
-                        <div class="items-left">
-                            <div class="itm-name">Deposit APY</div>
-                            <div class="itm-value">{{items.details.depositAPY}}</div>
-                        </div>
-                        <div class="items-right">
-                            <div class="itm-name">Borrow APY</div>
-                            <div class="itm-value">{{items.details.variableBorrowAPY}}</div>
-                        </div>
-                    </div>
-                    <div class="apr-value">
-                        <div class="deposit-apr">4.01% APR</div>
-                        <div class="borrow-apr">13.77% APR</div>
-                    </div>
-                    
-                    <div class="loop">
-                        <div class="loop-name">Loop APR</div>
-                        <div class="loop-value">56.67%</div>
-                    </div>
-
-                    <div class="assets-cta"><a (click)="openWalletModal()">Connect Wallet</a></div>
-
-                    <div class="details">
-                        <a (click)="openAssetsModel(items.address)">Details</a>
-                    </div>
-                    
-                </div>
-             
-               
-             
-              
             </div>
         </div>
     </section>

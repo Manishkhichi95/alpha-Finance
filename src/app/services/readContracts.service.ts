@@ -28,70 +28,76 @@ export class readContractsService {
   accounts: any;
   PoolAddressesProvider_AaveAddress: any;
   PoolDataProvider_AaveAddress: any;
-
-  constructor(private http: HttpClient,private Web3Service: Web3Service) {
+  depositAPY: any;
+  variableBorrowAPY: any;
+  stableBorrowAPY: any;
+  totalAToken: any;
+  totalBorrows: any;
+  balance: any;
+  tokenContractsABI: any;
+  selectedReserve: any;
+  selectedReserveContract: any;
+  poolDataProvider: any;
+  poolDataProviderContract: any;
+  constructor(private http: HttpClient, private Web3Service: Web3Service) {
     this.web3 = this.Web3Service.getWeb3();
     this.http.get('assets/json/ABIs&Addresses.json').subscribe((data: any) => {
+      this.tokenContractsABI = data.tokenContractsABI;
       this.PoolAddressesProvider_AaveAddress = data.PoolAddressesProvider_AaveAddress;
+      this.PoolDataProvider_AaveContractABI = data.PoolDataProvider_AaveContractABI;
       this.PoolDataProvider_AaveAddress = data.PoolDataProvider_AaveAddress;
       this.PoolDataProvider_AaveContractABI = data.PoolDataProvider_AaveContractABI;
       this.ReserveDataABI = data.ReserveDataABI;
       this.UiPoolDataProviderV3Address = data.UiPoolDataProviderV3Address;
       this.UiPoolDataProviderV3ABI = data.UiPoolDataProviderV3ABI;
+      this.poolDataProviderContract = new this.web3.eth.Contract(this.PoolDataProvider_AaveContractABI, this.PoolDataProvider_AaveAddress);
     });
   }
 
   async getReserveData() {
-    try {
-      this.accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
-      const UiPoolDataProviderV3Contract = new this.web3.eth.Contract(this.UiPoolDataProviderV3ABI, this.UiPoolDataProviderV3Address);
-      const getReservesList = await UiPoolDataProviderV3Contract.methods.getReservesList(this.PoolAddressesProvider_AaveAddress).call();
-      this.getReservesList = getReservesList;
-
-      const reservePromises = this.getReservesList.map(async (element: any) => {
-        const PoolDataProvider_AaveContract = new this.web3.eth.Contract(this.PoolDataProvider_AaveContractABI, this.PoolDataProvider_AaveAddress);
-        const details = await PoolDataProvider_AaveContract.methods.getReserveData(element).call();
-        const Reserve = new this.web3.eth.Contract(this.ReserveDataABI, element);
-        const [symbol, name, decimals, owner, totalSupply, allowance, balanceOf] = await Promise.all([
-          Reserve.methods.symbol().call(),
-          Reserve.methods.name().call(),
-          Reserve.methods.decimals().call(),
-          Reserve.methods.owner().call(),
-          Reserve.methods.totalSupply().call(),
-          Reserve.methods.allowance(this.accounts[0], this.accounts[0]).call(),
-          Reserve.methods.balanceOf(this.accounts[0]).call()
-        ]);
-
-        const Borrows = Number(details.totalStableDebt + details.totalVariableDebt);
-        details.totalBorrows = (Borrows / Math.pow(10, 18)).toFixed(2);
-        details.totalAToken = (Number(details.totalAToken) / Math.pow(10, 18)).toFixed(2);
-        details.depositAPR = Number(details.liquidityRate) / this.RAY;
-        details.variableBorrowAPR = Number(details.variableBorrowRate) / this.RAY;
-        details.stableBorrowAPR = Number(details.variableBorrowRate) / this.RAY;
-        details.depositAPY = ((Math.pow((1 + (details.depositAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2);
-        details.variableBorrowAPY = ((Math.pow((1 + (details.variableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2);
-
-        details.stableBorrowAPY = ((Math.pow((1 + (details.stableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2);
-
-        return {
-          address: element,
-          name,
-          symbol,
-          decimals,
-          owner,
-          totalSupply,
-          allowance,
-          balanceOf,
-          details
-        };
-      });
-
-      this.reserveData = await Promise.all(reservePromises);
-      console.log('reserveData', this.reserveData);
-      return this.reserveData;
-    } catch (error) {
-      console.error('Error fetching reserveData:', error);
-      throw error;
+    if (localStorage.getItem('walletAddress') != undefined) {
+      try {
+        this.accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+        const UiPoolDataProviderV3Contract = new this.web3.eth.Contract(this.UiPoolDataProviderV3ABI, this.UiPoolDataProviderV3Address);
+        const getReservesListData = await UiPoolDataProviderV3Contract.methods.getReservesData(this.PoolAddressesProvider_AaveAddress).call();
+        this.reserveData = await Promise.all(getReservesListData[0].map(async (element: any) => {
+          const tokenContracts = new this.web3.eth.Contract(this.tokenContractsABI, element.underlyingAsset);
+          this.balance = await tokenContracts.methods.balanceOf(this.accounts[0]).call();
+          this.depositAPR = Number(element.liquidityRate) / this.RAY;
+          this.variableBorrowAPR = Number(element.variableBorrowRate) / this.RAY;
+          this.stableBorrowAPR = Number(element.variableBorrowRate) / this.RAY;
+          this.depositAPY = ((Math.pow((1 + (this.depositAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2);
+          this.variableBorrowAPY = ((Math.pow((1 + (this.variableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2);
+          this.stableBorrowAPY = ((Math.pow((1 + (this.stableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2);
+          this.totalAToken = ((Number(element.totalPrincipalStableDebt) + Number(element.availableLiquidity)) / Math.pow(10, 18)).toFixed(2)
+          this.totalBorrows = ((Number(element.totalPrincipalStableDebt) + Number(element.totalScaledVariableDebt)) / Math.pow(10, 18)).toFixed(2)
+          return {
+            details: element,
+            address: element.underlyingAsset,
+            name: element.name,
+            balance: this.balance,
+            depositAPR: this.depositAPR,
+            variableBorrowAPR: this.variableBorrowAPR,
+            stableBorrowAPR: this.stableBorrowAPR,
+            depositAPY: this.depositAPY,
+            variableBorrowAPY: this.variableBorrowAPY,
+            stableBorrowAPY: this.stableBorrowAPY,
+            totalAToken: this.totalAToken,
+            totalBorrows: this.totalBorrows,
+          };
+        }));
+        console.log('reserveData', this.reserveData);
+        console.log('getReservesListData', getReservesListData)
+        return this.reserveData;
+      } catch (error) {
+        console.error('Error fetching reserveData:', error);
+        throw error;
+      }
     }
+  }
+
+  getSelectedReserve(selectedReserve: any) {
+    this.selectedReserve = selectedReserve;
+    this.selectedReserveContract = new this.web3.eth.Contract(this.tokenContractsABI, selectedReserve.address);
   }
 }

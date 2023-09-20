@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 declare let window: any;
 @Component({
@@ -6,7 +6,7 @@ declare let window: any;
   templateUrl: './walllet-overlay.component.html',
   styleUrls: ['./walllet-overlay.component.css']
 })
-export class WallletOverlayComponent {
+export class WallletOverlayComponent implements OnInit {
   title = 'alpha-finance-launch';
   connected = false;
   selectedAddress: string | undefined;
@@ -14,7 +14,7 @@ export class WallletOverlayComponent {
   walletAddress: string | null = localStorage.getItem('walletAddress');
   reqAccounts: string[] | undefined;
 
-  constructor( private dialogRef:MatDialogRef<WallletOverlayComponent>) { }
+  constructor(private dialogRef: MatDialogRef<WallletOverlayComponent>) { }
 
   ngOnInit() {
     this.checkConnectionStatus();
@@ -99,7 +99,7 @@ export class WallletOverlayComponent {
     console.error(errorMessage);
   }
 
-  closeModel(){
+  closeModel() {
     this.dialogRef.close()
   }
 }

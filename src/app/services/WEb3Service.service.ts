@@ -8,6 +8,7 @@ declare let window: any;
 })
 export class Web3Service {
   web3: Web3 | any;
+  connected:string|any;
 
   constructor() {
     this.web3 = new Web3(new Web3.providers.HttpProvider('https://goerli-rollup.arbitrum.io/rpc'));
@@ -18,7 +19,12 @@ export class Web3Service {
     }
   }
 
-  getWeb3(){
+  getConnected() { 
+    this.connected=localStorage.getItem('connected')
+    return this.connected;
+  }
+
+  getWeb3() {
     return this.web3;
   }
 }
