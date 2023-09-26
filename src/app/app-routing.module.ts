@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-
+import { GraphQLModule } from '../GraphQl/graphql.module';
 const routes: Routes = [
   {
     path: '',

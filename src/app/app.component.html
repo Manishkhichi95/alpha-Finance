@@ -2,7 +2,7 @@
     <section class="header">
         <div class="container">
             <nav class="navbar">
-                <!--            logo-->
+                <!--logo-->
                 <a href="#" class="logo"><img src="assets\alphalogo.png"></a>
                 <div class="logo"></div>
                 <ul class="nav-links">
@@ -15,19 +15,18 @@
                     <li><a href="">More</a></li>
                 </ul>
                 <div class="cta">
-                    <!--                button-->
+                    <!--button-->
                     <div class="exchange"><a href="#">Etherium</a>
-
                     </div>
                     <div class="connect" *ngIf="!connected"><a (click)="openWalletModal()">Connect Wallet</a>
-                        <h2 *ngIf="connected" ></h2>
+                        <h2 *ngIf="connected"></h2>
                     </div>
                 </div>
             </nav>
         </div>
     </section>
     <section class="hero">
-        <!--        hero section-->
+        <!--hero section-->
         <div class="container">
             <div class="title">
                 <h1 *ngIf="connected" [TruncateText]="walletAddress" [startLength]="5" [endLength]="18"></h1>
@@ -46,7 +45,6 @@
         </div>
     </section>
     <section class="stats">
-        <!--        stats section-->
         <div class="container">
             <div class="statsbx">
                 <div class="heading">

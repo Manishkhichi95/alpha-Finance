@@ -1,5 +1,5 @@
 import { MatDialog } from '@angular/material/dialog';
-import { Component, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { WallletOverlayComponent } from './modules/wallet-overlay/walllet-overlay/walllet-overlay.component';
 import { AssetsDetailsComponent } from './modules/assets-details/assets-details/assets-details.component';
 import { readContractsService } from './services/readContracts.service';
@@ -66,10 +66,6 @@ export class AppComponent implements OnInit {
           localStorage.setItem('connected', this.connected.toString());
           this.selectedAddress = undefined;
         });
-      // this.walletAddress=changedAccounts[0];
-      // localStorage.setItem('walletAddress',this.walletAddress)
-      // console.log(this.walletAddress)
-      // console.log('changedAccounts')
     });
     console.log('onInit', this.connected)
   }

@@ -3,135 +3,147 @@
         <div class="heading">
             <h3>Reserve Status and Configuration</h3>
         </div>
-        <div class="grid-container">
-            <div class="head">
-            </div>
-            <div class="grid-container" style="width:100%">
-                <div class="grid-items">
+        <div class="head">
+        </div>
+        <div class="grid-container" style="width:100%;">
+            <div class="grid-items">
+                <div style='background-color: aliceblue;'>
                     <div class="otheritm">
                         <div class="items-right">
-                            <div class="itm-name">totalSupply</div>
-                            <div class="itm-value">{{totalSupply}}</div>
+                            <div class="grid-container">
+                                <div class="itm-name">totalSupply</div>
+                                <div>{{totalSupply}}</div>
+                                <div class="chart-container">
+                                    <canvas id="spplyChart">{{ spplyChart }}</canvas>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="otheritm">
                         <div class="items-right">
                             <div class="itm-name">supplyAPR</div>
-                            <div class="itm-value">{{supplyAPR}}</div>
+                            <div>{{supplyAPR}}</div>
                         </div>
                     </div>
                     <div class="otheritm">
                         <div class="items-right">
                             <div class="itm-name">totalAtoken</div>
-                            <div class="itm-value">{{totalAtoken}}</div>
+                            <div>{{totalAtoken}}</div>
                         </div>
                     </div>
                     <div class="otheritm">
                         <div class="items-right">
                             <div class="itm-name">SupplyCap</div>
-                            <div class="itm-value">{{SupplyCap}}</div>
+                            <div>{{SupplyCap}}</div>
                         </div>
                     </div>
                     <div class="otheritm">
                         <div class="items-left">
                             <div class="itm-name">totalBorrows</div>
-                            <div class="itm-value">{{totalBorrows}}</div>
+                            <div>{{totalBorrows}}</div>
+                            <div class="chart-container">
+                                <canvas id="borrowChart">{{ brrwChart }}</canvas>
+                            </div>
                         </div>
                     </div>
                     <div class="otheritm">
                         <div class="items-right">
                             <div class="itm-name">APY</div>
-                            <div class="itm-value">{{APY}}</div>
+                            <div>{{APY}}</div>
                         </div>
                     </div>
                     <div class="otheritm">
                         <div class="items-left">
                             <div class="itm-name">liquidationPenalty</div>
-                            <div class="itm-value">{{liquidationPenalty}}</div>
+                            <div>{{liquidationPenalty}}</div>
                         </div>
                     </div>
                     <div class="otheritm">
                         <div class="items-right">
                             <div class="itm-name">borrowAPR</div>
-                            <div class="itm-value">{{borrowAPR}}</div>
+                            <div>{{borrowAPR}}</div>
                         </div>
                     </div>
                     <div class="otheritm">
                         <div class="items-left">
                             <div class="itm-name">variableAPY</div>
-                            <div class="itm-value">{{variableAPY}}</div>
+                            <div>{{variableAPY}}</div>
                         </div>
                     </div>
                     <div class="otheritm">
                         <div class="items-right">
                             <div class="itm-name">stableAPY</div>
-                            <div class="itm-value">{{stableAPY}}</div>
+                            <div>{{stableAPY}}</div>
                         </div>
                     </div>
                     <div class="otheritm">
                         <div class="items-left">
                             <div class="itm-name">utilisationRate</div>
-                            <div class="itm-value">{{utilisationRate}}</div>
+                            <div>{{utilisationRate}}</div>
                         </div>
                     </div>
                     <div class="otheritm">
                         <div class="items-right">
                             <div class="itm-name">LiquidationThreshold</div>
-                            <div class="itm-value">{{LiquidationThreshold}}</div>
+                            <div>{{LiquidationThreshold}}</div>
                         </div>
                     </div>
                     <div class="otheritm">
                         <div class="items-left">
                             <div class="itm-name">availableLiquidity</div>
-                            <div class="itm-value">{{availableLiquidity}}</div>
+                            <div>{{availableLiquidity}}</div>
                         </div>
                     </div>
                     <div class="otheritm">
                         <div class="items-right">
                             <div class="itm-name">maxLTV</div>
-                            <div class="itm-value">{{maxLTV}}</div>
+                            <div>{{maxLTV}}</div>
                         </div>
                     </div>
                     <div class="otheritm">
                         <div class="items-right">
                             <div class="itm-name">BorrowCap</div>
-                            <div class="itm-value">{{BorrowCap}}</div>
+                            <div>{{BorrowCap}}</div>
                         </div>
                     </div>
                     <div class="otheritm">
                         <div class="items-right">
                             <div class="itm-name">totalBorrows</div>
-                            <div class="itm-value">{{totalBorrows}}</div>
+                            <div>{{totalBorrows}}</div>
                         </div>
                     </div>
                     <div class="otheritm">
                         <div class="items-right">
                             <div class="itm-name">variableBorrowAPY</div>
-                            <div class="itm-value">{{variableBorrowAPY}}</div>
+                            <div>{{variableBorrowAPY}}</div>
                         </div>
                     </div>
                     <div class="otheritm">
                         <div class="items-right">
                             <div class="itm-name">stableBorrowAPY</div>
-                            <div class="itm-value">{{stableBorrowAPY}}</div>
+                            <div>{{stableBorrowAPY}}</div>
                         </div>
                     </div>
                     <div class="otheritm">
                         <div class="items-right">
                             <div class="itm-name">variableBorrowAPR</div>
-                            <div class="itm-value">{{variableBorrowAPR}}</div>
+                            <div>{{variableBorrowAPR}}</div>
                         </div>
                     </div>
                     <div class="otheritm">
                         <div class="items-right">
                             <div class="itm-name">stableBorrowAPR</div>
-                            <div class="itm-value">{{stableBorrowAPR}}</div>
+                            <div>{{stableBorrowAPR}}</div>
                         </div>
                     </div>
                     <div class="otheritm">
                         <div class="items-right">
                             <div class="itm-name">utilizationRate</div>
-                            <div class="itm-value">{{utilizationRate}}</div>
+                            <div>{{utilizationRate}}</div>
+                            <div class="chart-container">
+                                <canvas id="intrstrateChart">{{ intrstrateChart }}</canvas>
+                                
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
+import Chart from 'chart.js/auto';
+import { Apollo } from 'apollo-angular';
+import { GET_POSTS } from '../../../../GraphQl/graphql.operations';
 import { readContractsService } from 'src/app/services/readContracts.service';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-reserve-overview',
   templateUrl: './reserve-overview.component.html',
@@ -18,6 +22,7 @@ export class ReserveOverviewComponent {
   selectedReserveContract: any;
   availableLiquidity: any;
   variableAPY: any;
+  RAY = Math.pow(10, 27);
   stableAPY: any;
   poolDataProviderContract: any;
   ReserveConfigurationData: any;
@@ -28,16 +33,217 @@ export class ReserveOverviewComponent {
   BorrowCap: any;
   variableBorrowAPY: any;
   stableBorrowAPY: any;
-  variableBorrowAPR: any;
+  variableBorrowAPR: any = [];
   stableBorrowAPR: any;
-  utilizationRate: any;
-  constructor(private readContractsService: readContractsService) {
+  utilizationRateArr: any = [];
+  variableBorrowAPRArr: any = [];
+  BorrowAPRdateArr: any = [];
+  data: any;
+  posts: any;
+  ReserveData: any = [];
+  PoolAddressesProvider_AaveAddress: any;
+  depositAPR: any;
+  supplyAPRarr: any = [];
+  utilizationRate: String = '';
+  constructor(private readContractsService: readContractsService, private apollo: Apollo, private https: HttpClient) {
     this.selectedReserve = this.readContractsService.selectedReserve;
+    this.PoolAddressesProvider_AaveAddress = this.readContractsService.PoolAddressesProvider_AaveAddress
     this.selectedReserveContract = this.readContractsService.selectedReserveContract;
-    console.log(this.selectedReserve)
+    console.log(this.selectedReserve);
+
+    this.apollo
+      .watchQuery({ query: GET_POSTS })
+      .valueChanges.subscribe((data: any) => {
+        data.data.reserveParamsHistoryItems.forEach((element: any) => {
+          if (element.reserve.underlyingAsset === this.selectedReserve.address.toLowerCase()) {
+            this.ReserveData.push({ element });
+          }
+        });
+        debugger;
+        this.ReserveData.forEach((ele: any) => {
+          ele.variableBorrowAPR = (Number(ele.element.variableBorrowRate) / this.RAY) * 100;
+          debugger
+          ele.supplyAPR = (Number(ele.element.liquidityRate) / this.RAY) * 100;
+          const date = new Date(ele.element.timestamp * 1000);
+          const months = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"];
+          ele.timestamp = months[date.getMonth()] + date.getDate();
+          this.BorrowAPRdateArr.push(ele.timestamp);
+          this.variableBorrowAPRArr.push(ele.variableBorrowAPR);
+          this.supplyAPRarr.push(ele.supplyAPR);
+          this.utilizationRateArr.push(ele.element.utilizationRate)
+        })
+      });
     this.getReserveConfiguration();
   }
 
+  brrwChart: any;
+  borrowChart() {
+    this.brrwChart = new Chart("borrowChart", {
+      type: 'line',
+      data: {
+        labels: this.BorrowAPRdateArr,
+        datasets: [
+          {
+            label: "variableBorrowAPR",
+            data: this.variableBorrowAPRArr,
+            borderColor: 'rgb(54, 162, 235)',
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderWidth: 2,
+            pointBackgroundColor: 'rgb(54, 162, 235)',
+          }
+        ]
+      },
+      options: {
+        aspectRatio: 1,
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: {
+              color: 'rgba(0, 0, 0, 0.1)',
+            }
+          },
+          x: {
+            grid: {
+              color: 'rgba(0, 0, 0, 0.1)',
+            }
+          }
+        },
+        plugins: {
+          tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            bodyFont: {
+              size: 14,
+            },
+            titleFont: {
+              size: 16,
+              weight: 'bold',
+            }
+          },
+          legend: {
+            labels: {
+              font: {
+                size: 14,
+              }
+            }
+          }
+          ,
+        }
+      }
+    });
+  }
+
+  spplyChart: any;
+  supplyChart() {
+    this.spplyChart = new Chart("spplyChart", {
+      type: 'line',
+      data: {
+        labels: this.BorrowAPRdateArr,
+        datasets: [
+          {
+            label: "supplyAPR",
+            data: this.supplyAPRarr,
+            borderColor: 'rgb(54, 162, 235)',
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderWidth: 2,
+            pointBackgroundColor: 'rgb(54, 162, 235)',
+          }
+        ]
+      },
+      options: {
+        aspectRatio: 1,
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: {
+              color: 'rgba(0, 0, 0, 0.1)',
+            }
+          },
+          x: {
+            grid: {
+              color: 'rgba(0, 0, 0, 0.1)',
+            }
+          }
+        },
+        plugins: {
+          tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            bodyFont: {
+              size: 14,
+            },
+            titleFont: {
+              size: 16,
+              weight: 'bold',
+            }
+          },
+          legend: {
+            labels: {
+              font: {
+                size: 14,
+              }
+            }
+          }
+          ,
+        }
+      }
+    });
+  }
+
+  intrstrateChart: any;
+  interestRateChart() {
+    this.spplyChart = new Chart("intrstrateChart", {
+      type: 'line',
+      data: {
+        labels: this.variableBorrowAPRArr,
+        datasets: [
+          {
+            label: "UtilizationRate",
+            data: this.utilizationRateArr,
+            borderColor: 'rgb(54, 162, 235)',
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderWidth: 2,
+            pointBackgroundColor: 'rgb(54, 162, 235)',
+          }
+        ]
+      },
+      options: {
+        aspectRatio: 1,
+        scales: {
+          y: {
+            beginAtZero: true,
+            grid: {
+              color: 'rgba(0, 0, 0, 0.1)',
+            }
+          },
+          x: {
+            grid: {
+              color: 'rgba(0, 0, 0, 0.1)',
+            }
+          }
+        },
+        plugins: {
+          tooltip: {
+            backgroundColor: 'rgba(0, 0, 0, 0.7)',
+            bodyFont: {
+              size: 14,
+            },
+            titleFont: {
+              size: 16,
+              weight: 'bold',
+            }
+          },
+          legend: {
+            labels: {
+              font: {
+                size: 14,
+              }
+            }
+          }
+          ,
+        }
+      }
+    });
+  }
   async getReserveConfiguration() {
     this.supplyAPR = ((Number(this.selectedReserve.depositAPR) * Math.pow(10, 2)) * 100000).toFixed(2);
     this.SupplyCap = Number(this.selectedReserve.details['supplyCap']) / 1000000;
@@ -60,8 +266,10 @@ export class ReserveOverviewComponent {
     this.totalBorrows = this.selectedReserve.totalBorrows;
     this.variableBorrowAPY = this.selectedReserve.variableBorrowAPY;
     this.stableBorrowAPY = this.selectedReserve.stableBorrowAPY;
-    this.variableBorrowAPR = this.selectedReserve.variableBorrowAPR,
-    this.stableBorrowAPR = this.selectedReserve.stableBorrowAPR;
     this.utilizationRate = ((this.totalBorrows * 100) / this.totalSupply).toFixed(2);
+    console.log(this.ReserveData)
+    this.borrowChart();
+    this.supplyChart();
+    this.interestRateChart();
   }
 }
