@@ -244,6 +244,7 @@ export class ReserveOverviewComponent {
       }
     });
   }
+  
   async getReserveConfiguration() {
     this.supplyAPR = ((Number(this.selectedReserve.depositAPR) * Math.pow(10, 2)) * 100000).toFixed(2);
     this.SupplyCap = Number(this.selectedReserve.details['supplyCap']) / 1000000;

@@ -39,8 +39,11 @@ export class readContractsService {
   selectedReserveContract: any;
   poolDataProvider: any;
   poolDataProviderContract: any;
+  myContractAddress: any;
+  myContractABI: any;
   constructor(private http: HttpClient, private Web3Service: Web3Service) {
     this.web3 = this.Web3Service.getWeb3();
+
     this.http.get('assets/json/ABIs&Addresses.json').subscribe((data: any) => {
       this.tokenContractsABI = data.tokenContractsABI;
       this.PoolAddressesProvider_AaveAddress = data.PoolAddressesProvider_AaveAddress;
