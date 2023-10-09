@@ -50,7 +50,6 @@ export class ReserveOverviewComponent {
     this.PoolAddressesProvider_AaveAddress = this.readContractsService.PoolAddressesProvider_AaveAddress
     this.selectedReserveContract = this.readContractsService.selectedReserveContract;
     console.log(this.selectedReserve);
-
     this.apollo
       .watchQuery({ query: GET_POSTS })
       .valueChanges.subscribe((data: any) => {
@@ -59,10 +58,8 @@ export class ReserveOverviewComponent {
             this.ReserveData.push({ element });
           }
         });
-        debugger;
         this.ReserveData.forEach((ele: any) => {
           ele.variableBorrowAPR = (Number(ele.element.variableBorrowRate) / this.RAY) * 100;
-          debugger
           ele.supplyAPR = (Number(ele.element.liquidityRate) / this.RAY) * 100;
           const date = new Date(ele.element.timestamp * 1000);
           const months = ["January", "February", "March", "April", "May", "June",
