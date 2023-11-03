@@ -1,1 +1,182 @@
-<p>manage works!</p>
+<app-head-banner></app-head-banner>
+  <section class="manage_sect">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+          <div class="card_bdy">
+            <div class="card_list">
+              <div class="crd_bx">
+                <h3>Your locked dLP</h3>
+                <p> <span></span><span>0</span></p>
+                <h4><span>Auto relock:</span><span><a href="#">Enabled</a></span></h4>
+              </div>
+
+              <div class="crd_bx">
+                <h3>dLP locked (global)</h3>
+                <p> <span></span><span>36.15M</span></p>
+                <h4><span>Auto relock:</span></h4>
+              </div>
+
+              <div class="crd_bx">
+                <h3>Daily platform fees (global)</h3>
+                <p> <span></span><span>$37.33M USD</span></p>
+                <h4><span>(Average over the past 7 days)</span></h4>
+              </div>
+
+              <div class="crd_bx">
+                <h3>Your share</h3>
+                <p> <span></span><span>0%</span></p>
+                <h4><span>Average multiplier:</span><span>0.00x</span></h4>
+              </div>
+              <div class="crd_bx">
+                <h3>Total annual platform fees</h3>
+                <p> <span></span><span>$0</span></p>
+              </div>
+            </div>
+
+
+          </div>
+        </div>
+        <div class="col-lg-8  col-md-12 col-sm-12">
+          <div class="over_sect">
+            <div class="card_bdy">
+              <h3 class="heading_title">dLP overview</h3>
+              <p>Lock dLP and receive platform fees</p>
+              <h5>dLP token balance: 0</h5>
+              <div class="amt_frm">
+                <div class="frn_grp">
+                  <input type="text" name="" id="" class="form-control" placeholder="Amount">
+                  <span class="icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path
+                        d="M9.80105 7.23762L5.77425 14.1325H16.0151L17 15.8272H2.73242L9.80105 3.37012L15.8557 13.8283H9.97487L11.8724 10.5692L9.80105 7.23762Z"
+                        fill="url(#paint0_radial_1316_3286)" />
+                      <defs>
+                        <radialGradient id="paint0_radial_1316_3286" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+                          gradientTransform="translate(12.456 8.08949) rotate(139.329) scale(12.8201 14.6835)">
+                          <stop stop-color="white" />
+                          <stop offset="0.0001" stop-color="#2CECF2" />
+                          <stop offset="1" stop-color="#1EA2F4" />
+                        </radialGradient>
+                      </defs>
+                    </svg>
+                  </span>
+                  <span class="max_txt">MAX</span>
+                </div>
+                <button class="btn">Lock</button>
+              </div>
+              <h3 class="heading_title">Default lock length</h3>
+              <h4 class="mb-3">
+                Longer lock durations increase your share of platform fees, resulting in a higher APR.
+              </h4>
+              <h4>Changes made to default duration will trigger a signature request with your web3 wallet.</h4>
+              <div class="plan_switch">
+                <div class="custom-control custom-radio">
+                  <input type="radio" class="custom-control-input" id="12months" name="months" required="" checked="">
+                  <label class="custom-control-label" for="12months"> 12 months</label>
+                </div>
+                <div class="custom-control custom-radio">
+                  <input type="radio" class="custom-control-input" id="6months" name="months">
+                  <label class="custom-control-label" for="6months"> 6 months</label>
+                </div>
+                <div class="custom-control custom-radio">
+                  <input type="radio" class="custom-control-input" id="3months" name="months">
+                  <label class="custom-control-label" for="3months">3 months</label>
+                </div>
+                <div class="custom-control custom-radio">
+                  <input type="radio" class="custom-control-input" id="1months" name="months">
+                  <label class="custom-control-label" for="1months"> 1 months</label>
+                </div>
+              </div>
+              <div class="list_plan">
+                <p>46.64% APR</p>
+                <p>18.65% APR</p>
+                <p>7.46% APR</p>
+                <p>1.86% APR</p>
+              </div>
+              <hr>
+              <h3 class="heading_title">Auto relock: <a href="#">Enabled</a></h3>
+              <div class="relock_switch">
+                <p>Automatically relock expired dLP for your default lock length of <b>1 month</b></p>
+                <label class="switch">
+                  <input type="checkbox"> <span class="slider "></span>
+                </label>
+              </div>
+              <hr>
+              <h3 class="heading_title">Redeemable locks</h3>
+              <p>Relock your dLP to continue receiving platform fees</p>
+              <div class="platf_sect">
+                <div class="user_avtar">
+                  <div class="icon"><img src="assets/images/ic2.png" alt=""></div>
+                  <div class="cont_bx">
+                    <h3>0</h3>
+                  </div>
+              </div>
+              <div class="btn_grp">
+                <button class="btn">Withdraw</button>
+                <button class="btn">
+                  Relock 
+                  <span>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
+                  <mask id="mask0_1316_3331" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="21">
+                    <rect y="0.5" width="20" height="20" fill="#D9D9D9"/>
+                  </mask>
+                  <g mask="url(#mask0_1316_3331)">
+                    <path d="M5.25642 18.4169C4.84082 18.4169 4.48585 18.2697 4.19152 17.9754C3.89717 17.6811 3.75 17.3261 3.75 16.9105V9.09003C3.75 8.67444 3.89717 8.31947 4.19152 8.02514C4.48585 7.73079 4.84082 7.58362 5.25642 7.58362H6.25V5.91695C6.25 4.87637 6.61485 3.99123 7.34454 3.26153C8.07425 2.53184 8.9594 2.16699 9.99998 2.16699C11.0406 2.16699 11.9257 2.53184 12.6554 3.26153C13.3851 3.99123 13.75 4.87637 13.75 5.91695V7.58362H14.7435C15.1591 7.58362 15.5141 7.73079 15.8084 8.02514C16.1028 8.31947 16.25 8.67444 16.25 9.09003V16.9105C16.25 17.3261 16.1028 17.6811 15.8084 17.9754C15.5141 18.2697 15.1591 18.4169 14.7435 18.4169H5.25642ZM5.25642 17.1669H14.7435C14.8183 17.1669 14.8798 17.1429 14.9279 17.0948C14.9759 17.0467 15 16.9853 15 16.9105V9.09003C15 9.01524 14.9759 8.9538 14.9279 8.90572C14.8798 8.85764 14.8183 8.8336 14.7435 8.8336H5.25642C5.18162 8.8336 5.12019 8.85764 5.0721 8.90572C5.02402 8.9538 4.99998 9.01524 4.99998 9.09003V16.9105C4.99998 16.9853 5.02402 17.0467 5.0721 17.0948C5.12019 17.1429 5.18162 17.1669 5.25642 17.1669ZM9.99998 14.4586C10.4049 14.4586 10.7492 14.3168 11.0328 14.0331C11.3165 13.7495 11.4583 13.4052 11.4583 13.0003C11.4583 12.5953 11.3165 12.2511 11.0328 11.9674C10.7492 11.6838 10.4049 11.542 9.99998 11.542C9.59506 11.542 9.25078 11.6838 8.96715 11.9674C8.68349 12.2511 8.54167 12.5953 8.54167 13.0003C8.54167 13.4052 8.68349 13.7495 8.96715 14.0331C9.25078 14.3168 9.59506 14.4586 9.99998 14.4586ZM7.49998 7.58362H12.5V5.91695C12.5 5.22251 12.2569 4.63223 11.7708 4.14612C11.2847 3.66001 10.6944 3.41695 9.99998 3.41695C9.30553 3.41695 8.71526 3.66001 8.22915 4.14612C7.74303 4.63223 7.49998 5.22251 7.49998 5.91695V7.58362Z" fill="white"/>
+                  </g>
+                </svg></span>
+              </button>
+
+              </div>
+
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+        <div class="col-lg-4  col-md-12 col-sm-12">
+          <div class="over_sect table-sect">
+            <div class="table_body">
+                <div class="head_bx">
+                  <h3>Activity log</h3>
+                </div>
+                <div class="table_scoll">
+                  <table class="table">
+                    <thead>
+                      <tr>
+                        <th>Timestamp</th>
+                        <th>Event</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                               
+                            </td>
+                        </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+          </div>
+       <div class="Prot_sect">
+        <div class="card_bdy">
+          <h3 class="heading_title">Protocol Stats</h3>
+          <h6><span>Reward Reserve:</span><span>Event</span></h6>
+          <h6><span>Reward Rate:</span><span>4.05</span></h6>
+          <h6><span>Bounty Reserve:</span><span>17,245</span></h6>
+          <h6><span>Starfleet Treasury:</span><span>12,090</span></h6>
+          <h6><span>Chain Time:</span><span>9/11/2023, 5:22:05 PM</span></h6>
+          <h6><span>Block:</span><span>1300957577</span></h6>
+          <h6><span>Price:</span><span>0.2</span></h6>
+          <h6><span>dLP Price:</span><span>1,013</span></h6>
+        </div>
+       </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>

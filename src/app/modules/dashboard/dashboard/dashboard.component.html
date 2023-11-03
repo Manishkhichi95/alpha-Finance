@@ -1,1 +1,738 @@
-<p>dashboard works!</p>
+<app-head-banner></app-head-banner>
+ <section *ngIf="connected=='true'" class="dash_sect">
+    <div class="container">
+        <div class="card_connect_list">
+            <div class="card_bx table-sect">
+                <div class="table_body">
+                    <div class="head_bx">
+                      <h3>Deposits</h3>
+                    </div>
+                    <div class="table_scoll">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>Assets</th>
+                            <th>Current Balance</th>
+                            <th>APY</th>
+                            <th>Collateral</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="user_avtar">
+                                        <div class="icon"><img src="assets/images/ic2.png" alt=""></div>
+                                        <div class="cont_bx">
+                                          <h3>USDC</h3>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="dt_table">
+                                        <h3>1,000.00</h3>
+                                        <p>$1,000.00</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="dt_table">
+                                        <h3> <0.01% </h3>
+                                    </div>
+                                   
+                                </td>
+                                <td>
+                                    <div class="dt_table">
+                                        <h3> 
+                                            <label class="switch">
+                                                <input type="checkbox"> <span class="slider "></span>
+                                             </label>
+                                        </h3>
+                                        <p>
+                                            Isolated
+                                        </p>
+                                    </div>
+                                   
+                                </td>
+                                <td>
+                                    <div class="dt_table">
+                                        <div class="btn_grp">
+                                            <button class="btn">Supply</button>
+                                            <button class="btn">Withdraw</button>
+                                        </div>
+                                    </div>
+
+                                </td>
+                            </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+            </div>
+            <div class="card_bx table-sect">
+                <div class="table_body">
+                    <div class="head_bx">
+                      <h3>Borrows</h3>
+                    </div>
+                    <div class="table_scoll">
+                      <table class="table">
+                        <thead>
+                          <tr>
+                            <th>Assets</th>
+                            <th>Current Balance</th>
+                            <th>APY</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="4">
+                                    <div class="data_notfound">
+                                        <p>No items found</p>
+                                       </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+            </div>
+
+        </div>
+
+    </div>
+    <section class="dash_connect_sect">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="table-sect">
+                        <div class="table_body">
+                            <div class="head_bx">
+                              <h3>Assets to supply</h3>
+                            </div>
+                            <div class="table_scoll">
+                              <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th>Assets</th>
+                                    <th>Available</th>
+                                    <th>APY</th>
+                                    <th>Can be collateral</th>
+                                    <th></th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="user_avtar">
+                                                <div class="icon"><img src="assets/images/ic1.png" alt=""></div>
+                                                <div class="cont_bx">
+                                                  <h3>wstETH</h3>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>0%</h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>0.12%</h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+                                                        <mask id="mask0_656_2622" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="25">
+                                                          <rect x="0.5" y="0.5" width="24" height="24" fill="#D9D9D9"/>
+                                                        </mask>
+                                                        <g mask="url(#mask0_656_2622)">
+                                                          <path d="M10.0504 18.1534L4.71582 12.8188L5.78505 11.7496L10.0504 16.015L19.2158 6.84961L20.285 7.91881L10.0504 18.1534Z" fill="#07E702"/>
+                                                        </g>
+                                                    </svg>
+                                                </h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                               <div class="btn_grp">
+                                                <button class="btn">Supply</button>
+                                                <button class="btn">Details</button>
+                                               </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="user_avtar">
+                                                <div class="icon"><img src="assets/images/ic2.png" alt=""></div>
+                                                <div class="cont_bx">
+                                                  <h3>wstETH</h3>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>0%</h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>0.12%</h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+                                                        <mask id="mask0_656_2622" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="25">
+                                                          <rect x="0.5" y="0.5" width="24" height="24" fill="#D9D9D9"/>
+                                                        </mask>
+                                                        <g mask="url(#mask0_656_2622)">
+                                                          <path d="M10.0504 18.1534L4.71582 12.8188L5.78505 11.7496L10.0504 16.015L19.2158 6.84961L20.285 7.91881L10.0504 18.1534Z" fill="#07E702"/>
+                                                        </g>
+                                                    </svg>
+                                                </h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                               <div class="btn_grp">
+                                                <button class="btn">Supply</button>
+                                                <button class="btn">Details</button>
+                                               </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="user_avtar">
+                                                <div class="icon"><img src="assets/images/ic3.png" alt=""></div>
+                                                <div class="cont_bx">
+                                                  <h3>wstETH</h3>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>0%</h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>0.12%</h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+                                                        <mask id="mask0_656_2622" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="25">
+                                                          <rect x="0.5" y="0.5" width="24" height="24" fill="#D9D9D9"/>
+                                                        </mask>
+                                                        <g mask="url(#mask0_656_2622)">
+                                                          <path d="M10.0504 18.1534L4.71582 12.8188L5.78505 11.7496L10.0504 16.015L19.2158 6.84961L20.285 7.91881L10.0504 18.1534Z" fill="#07E702"/>
+                                                        </g>
+                                                    </svg>
+                                                </h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                               <div class="btn_grp">
+                                                <button class="btn">Supply</button>
+                                                <button class="btn">Details</button>
+                                               </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="user_avtar">
+                                                <div class="icon"><img src="assets/images/ic4.png" alt=""></div>
+                                                <div class="cont_bx">
+                                                  <h3>wstETH</h3>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>0%</h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>0.12%</h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+                                                        <mask id="mask0_656_2622" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="25">
+                                                          <rect x="0.5" y="0.5" width="24" height="24" fill="#D9D9D9"/>
+                                                        </mask>
+                                                        <g mask="url(#mask0_656_2622)">
+                                                          <path d="M10.0504 18.1534L4.71582 12.8188L5.78505 11.7496L10.0504 16.015L19.2158 6.84961L20.285 7.91881L10.0504 18.1534Z" fill="#07E702"/>
+                                                        </g>
+                                                    </svg>
+                                                </h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                               <div class="btn_grp">
+                                                <button class="btn">Supply</button>
+                                                <button class="btn">Details</button>
+                                               </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="user_avtar">
+                                                <div class="icon"><img src="assets/images/ic5.png" alt=""></div>
+                                                <div class="cont_bx">
+                                                  <h3>wstETH</h3>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>0%</h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>0.12%</h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+                                                        <mask id="mask0_656_2622" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="25">
+                                                          <rect x="0.5" y="0.5" width="24" height="24" fill="#D9D9D9"/>
+                                                        </mask>
+                                                        <g mask="url(#mask0_656_2622)">
+                                                          <path d="M10.0504 18.1534L4.71582 12.8188L5.78505 11.7496L10.0504 16.015L19.2158 6.84961L20.285 7.91881L10.0504 18.1534Z" fill="#07E702"/>
+                                                        </g>
+                                                    </svg>
+                                                </h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                               <div class="btn_grp">
+                                                <button class="btn">Supply</button>
+                                                <button class="btn">Details</button>
+                                               </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="user_avtar">
+                                                <div class="icon"><img src="assets/images/ic6.png" alt=""></div>
+                                                <div class="cont_bx">
+                                                  <h3>wstETH</h3>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>0%</h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>0.12%</h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+                                                        <mask id="mask0_656_2622" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="25">
+                                                          <rect x="0.5" y="0.5" width="24" height="24" fill="#D9D9D9"/>
+                                                        </mask>
+                                                        <g mask="url(#mask0_656_2622)">
+                                                          <path d="M10.0504 18.1534L4.71582 12.8188L5.78505 11.7496L10.0504 16.015L19.2158 6.84961L20.285 7.91881L10.0504 18.1534Z" fill="#07E702"/>
+                                                        </g>
+                                                    </svg>
+                                                </h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                               <div class="btn_grp">
+                                                <button class="btn">Supply</button>
+                                                <button class="btn">Details</button>
+                                               </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="table-sect">
+                        <div class="table_body">
+                            <div class="head_bx">
+                              <h3>Assets to borrow</h3>
+                            </div>
+                            <div class="table_scoll">
+                              <table class="table">
+                                <thead>
+                                  <tr>
+                                    <th>Assets</th>
+                                    <th>Available</th>
+                                    <th>APY</th>
+                                    <th>Can be collateral</th>
+                                    <th></th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <div class="user_avtar">
+                                                <div class="icon"><img src="assets/images/ic1.png" alt=""></div>
+                                                <div class="cont_bx">
+                                                  <h3>wstETH</h3>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>0%</h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>0.12%</h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+                                                        <mask id="mask0_656_2622" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="25">
+                                                          <rect x="0.5" y="0.5" width="24" height="24" fill="#D9D9D9"/>
+                                                        </mask>
+                                                        <g mask="url(#mask0_656_2622)">
+                                                          <path d="M10.0504 18.1534L4.71582 12.8188L5.78505 11.7496L10.0504 16.015L19.2158 6.84961L20.285 7.91881L10.0504 18.1534Z" fill="#07E702"/>
+                                                        </g>
+                                                    </svg>
+                                                </h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                               <div class="btn_grp">
+                                                <button class="btn">Supply</button>
+                                                <button class="btn">Details</button>
+                                               </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="user_avtar">
+                                                <div class="icon"><img src="assets/images/ic2.png" alt=""></div>
+                                                <div class="cont_bx">
+                                                  <h3>wstETH</h3>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>0%</h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>0.12%</h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+                                                        <mask id="mask0_656_2622" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="25">
+                                                          <rect x="0.5" y="0.5" width="24" height="24" fill="#D9D9D9"/>
+                                                        </mask>
+                                                        <g mask="url(#mask0_656_2622)">
+                                                          <path d="M10.0504 18.1534L4.71582 12.8188L5.78505 11.7496L10.0504 16.015L19.2158 6.84961L20.285 7.91881L10.0504 18.1534Z" fill="#07E702"/>
+                                                        </g>
+                                                    </svg>
+                                                </h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                               <div class="btn_grp">
+                                                <button class="btn">Supply</button>
+                                                <button class="btn">Details</button>
+                                               </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="user_avtar">
+                                                <div class="icon"><img src="assets/images/ic3.png" alt=""></div>
+                                                <div class="cont_bx">
+                                                  <h3>wstETH</h3>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>0%</h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>0.12%</h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+                                                        <mask id="mask0_656_2622" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="25">
+                                                          <rect x="0.5" y="0.5" width="24" height="24" fill="#D9D9D9"/>
+                                                        </mask>
+                                                        <g mask="url(#mask0_656_2622)">
+                                                          <path d="M10.0504 18.1534L4.71582 12.8188L5.78505 11.7496L10.0504 16.015L19.2158 6.84961L20.285 7.91881L10.0504 18.1534Z" fill="#07E702"/>
+                                                        </g>
+                                                    </svg>
+                                                </h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                               <div class="btn_grp">
+                                                <button class="btn">Supply</button>
+                                                <button class="btn">Details</button>
+                                               </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="user_avtar">
+                                                <div class="icon"><img src="assets/images/ic4.png" alt=""></div>
+                                                <div class="cont_bx">
+                                                  <h3>wstETH</h3>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>0%</h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>0.12%</h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+                                                        <mask id="mask0_656_2622" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="25">
+                                                          <rect x="0.5" y="0.5" width="24" height="24" fill="#D9D9D9"/>
+                                                        </mask>
+                                                        <g mask="url(#mask0_656_2622)">
+                                                          <path d="M10.0504 18.1534L4.71582 12.8188L5.78505 11.7496L10.0504 16.015L19.2158 6.84961L20.285 7.91881L10.0504 18.1534Z" fill="#07E702"/>
+                                                        </g>
+                                                    </svg>
+                                                </h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                               <div class="btn_grp">
+                                                <button class="btn">Supply</button>
+                                                <button class="btn">Details</button>
+                                               </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="user_avtar">
+                                                <div class="icon"><img src="assets/images/ic5.png" alt=""></div>
+                                                <div class="cont_bx">
+                                                  <h3>wstETH</h3>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>0%</h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>0.12%</h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+                                                        <mask id="mask0_656_2622" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="25">
+                                                          <rect x="0.5" y="0.5" width="24" height="24" fill="#D9D9D9"/>
+                                                        </mask>
+                                                        <g mask="url(#mask0_656_2622)">
+                                                          <path d="M10.0504 18.1534L4.71582 12.8188L5.78505 11.7496L10.0504 16.015L19.2158 6.84961L20.285 7.91881L10.0504 18.1534Z" fill="#07E702"/>
+                                                        </g>
+                                                    </svg>
+                                                </h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                               <div class="btn_grp">
+                                                <button class="btn">Supply</button>
+                                                <button class="btn">Details</button>
+                                               </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <div class="user_avtar">
+                                                <div class="icon"><img src="assets/images/ic6.png" alt=""></div>
+                                                <div class="cont_bx">
+                                                  <h3>wstETH</h3>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>0%</h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>0.12%</h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                                <h3>
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
+                                                        <mask id="mask0_656_2622" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="25" height="25">
+                                                          <rect x="0.5" y="0.5" width="24" height="24" fill="#D9D9D9"/>
+                                                        </mask>
+                                                        <g mask="url(#mask0_656_2622)">
+                                                          <path d="M10.0504 18.1534L4.71582 12.8188L5.78505 11.7496L10.0504 16.015L19.2158 6.84961L20.285 7.91881L10.0504 18.1534Z" fill="#07E702"/>
+                                                        </g>
+                                                    </svg>
+                                                </h3>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="dt_table">
+                                               <div class="btn_grp">
+                                                <button class="btn">Supply</button>
+                                                <button class="btn">Details</button>
+                                               </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+    
+            </div>
+    
+        </div>
+    </section>
+</section>
+
+<div *ngIf="connected=='false'">
+    <section class="head_banner">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-12">
+              <h3>Please connect your wallet</h3>
+              <button class="btn">Connect Wallet</button>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="dash_sect">
+        <div class="container">
+            <div class="card_connect_list">
+                <div class="card_bx table-sect">
+                    <div class="table_body">
+                        <div class="head_bx">
+                          <h3>Deposits</h3>
+                        </div>
+                        <div class="table_scoll">
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th>Assets</th>
+                                <th>Current Balance</th>
+                                <th>APY</th>
+                                <th>Collateral</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="btn_grp">
+                                            <button class="btn_connt">Connect Wallet</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                </div>
+                <div class="card_bx table-sect">
+                    <div class="table_body">
+                        <div class="head_bx">
+                          <h3>Borrows</h3>
+                        </div>
+                        <div class="table_scoll">
+                          <table class="table">
+                            <thead>
+                              <tr>
+                                <th>Assets</th>
+                                <th>Current Balance</th>
+                                <th>APY</th>
+                                <th></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan="4">
+                                        <div class="btn_grp">
+                                            <button class="btn_connt">Connect Wallet</button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

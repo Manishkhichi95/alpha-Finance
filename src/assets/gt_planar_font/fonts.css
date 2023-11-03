@@ -1,0 +1,420 @@
+@font-face {
+    font-family: 'GT Planar Trial';
+    src: url('GTPlanarTrial-Bd.woff2') format('woff2'),
+        url('GTPlanarTrial-Bd.woff') format('woff'),
+        url('GTPlanarTrial-Bd.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial';
+    src: url('GTPlanarTrial-Bl.woff2') format('woff2'),
+        url('GTPlanarTrial-Bl.woff') format('woff'),
+        url('GTPlanarTrial-Bl.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial It 15 Bl';
+    src: url('GTPlanarTrial-It15Bl.woff2') format('woff2'),
+        url('GTPlanarTrial-It15Bl.woff') format('woff'),
+        url('GTPlanarTrial-It15Bl.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial It 15 Lt';
+    src: url('GTPlanarTrial-It15Lt.woff2') format('woff2'),
+        url('GTPlanarTrial-It15Lt.woff') format('woff'),
+        url('GTPlanarTrial-It15Lt.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial It 15 Bd';
+    src: url('GTPlanarTrial-It15Bd.woff2') format('woff2'),
+        url('GTPlanarTrial-It15Bd.woff') format('woff'),
+        url('GTPlanarTrial-It15Bd.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial It 15 Md';
+    src: url('GTPlanarTrial-It15Md.woff2') format('woff2'),
+        url('GTPlanarTrial-It15Md.woff') format('woff'),
+        url('GTPlanarTrial-It15Md.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial It 15 Rg';
+    src: url('GTPlanarTrial-It15Rg.woff2') format('woff2'),
+        url('GTPlanarTrial-It15Rg.woff') format('woff'),
+        url('GTPlanarTrial-It15Rg.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial It 30 Bl';
+    src: url('GTPlanarTrial-It30Bl.woff2') format('woff2'),
+        url('GTPlanarTrial-It30Bl.woff') format('woff'),
+        url('GTPlanarTrial-It30Bl.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial It 15 Th';
+    src: url('GTPlanarTrial-It15Th.woff2') format('woff2'),
+        url('GTPlanarTrial-It15Th.woff') format('woff'),
+        url('GTPlanarTrial-It15Th.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial It 30 Md';
+    src: url('GTPlanarTrial-It30Md.woff2') format('woff2'),
+        url('GTPlanarTrial-It30Md.woff') format('woff'),
+        url('GTPlanarTrial-It30Md.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial It 30 Lt';
+    src: url('GTPlanarTrial-It30Lt.woff2') format('woff2'),
+        url('GTPlanarTrial-It30Lt.woff') format('woff'),
+        url('GTPlanarTrial-It30Lt.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial It 30 Bd';
+    src: url('GTPlanarTrial-It30Bd.woff2') format('woff2'),
+        url('GTPlanarTrial-It30Bd.woff') format('woff'),
+        url('GTPlanarTrial-It30Bd.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial It 30 Rg';
+    src: url('GTPlanarTrial-It30Rg.woff2') format('woff2'),
+        url('GTPlanarTrial-It30Rg.woff') format('woff'),
+        url('GTPlanarTrial-It30Rg.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial It 30 Th';
+    src: url('GTPlanarTrial-It30Th.woff2') format('woff2'),
+        url('GTPlanarTrial-It30Th.woff') format('woff'),
+        url('GTPlanarTrial-It30Th.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial It 45 Bd';
+    src: url('GTPlanarTrial-It45Bd.woff2') format('woff2'),
+        url('GTPlanarTrial-It45Bd.woff') format('woff'),
+        url('GTPlanarTrial-It45Bd.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial It 45 Bl';
+    src: url('GTPlanarTrial-It45Bl.woff2') format('woff2'),
+        url('GTPlanarTrial-It45Bl.woff') format('woff'),
+        url('GTPlanarTrial-It45Bl.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial It 45 Md';
+    src: url('GTPlanarTrial-It45Md.woff2') format('woff2'),
+        url('GTPlanarTrial-It45Md.woff') format('woff'),
+        url('GTPlanarTrial-It45Md.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial It 45 Lt';
+    src: url('GTPlanarTrial-It45Lt.woff2') format('woff2'),
+        url('GTPlanarTrial-It45Lt.woff') format('woff'),
+        url('GTPlanarTrial-It45Lt.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial It 45 Rg';
+    src: url('GTPlanarTrial-It45Rg.woff2') format('woff2'),
+        url('GTPlanarTrial-It45Rg.woff') format('woff'),
+        url('GTPlanarTrial-It45Rg.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial It 45 Th';
+    src: url('GTPlanarTrial-It45Th.woff2') format('woff2'),
+        url('GTPlanarTrial-It45Th.woff') format('woff'),
+        url('GTPlanarTrial-It45Th.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial Rg';
+    src: url('GTPlanarTrial-Rg.woff2') format('woff2'),
+        url('GTPlanarTrial-Rg.woff') format('woff'),
+        url('GTPlanarTrial-Rg.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial Lt';
+    src: url('GTPlanarTrial-Lt.woff2') format('woff2'),
+        url('GTPlanarTrial-Lt.woff') format('woff'),
+        url('GTPlanarTrial-Lt.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial Md';
+    src: url('GTPlanarTrial-Md.woff2') format('woff2'),
+        url('GTPlanarTrial-Md.woff') format('woff'),
+        url('GTPlanarTrial-Md.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial Retalic 15 Bl';
+    src: url('GTPlanarTrial-Retalic15Bl.woff2') format('woff2'),
+        url('GTPlanarTrial-Retalic15Bl.woff') format('woff'),
+        url('GTPlanarTrial-Retalic15Bl.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial Retalic 15 Rg';
+    src: url('GTPlanarTrial-Retalic15Rg.woff2') format('woff2'),
+        url('GTPlanarTrial-Retalic15Rg.woff') format('woff'),
+        url('GTPlanarTrial-Retalic15Rg.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial Retalic 15 Bd';
+    src: url('GTPlanarTrial-Retalic15Bd.woff2') format('woff2'),
+        url('GTPlanarTrial-Retalic15Bd.woff') format('woff'),
+        url('GTPlanarTrial-Retalic15Bd.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial Retalic 15 Lt';
+    src: url('GTPlanarTrial-Retalic15Lt.woff2') format('woff2'),
+        url('GTPlanarTrial-Retalic15Lt.woff') format('woff'),
+        url('GTPlanarTrial-Retalic15Lt.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial Retalic 15 Md';
+    src: url('GTPlanarTrial-Retalic15Md.woff2') format('woff2'),
+        url('GTPlanarTrial-Retalic15Md.woff') format('woff'),
+        url('GTPlanarTrial-Retalic15Md.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial Retalic 15 Th';
+    src: url('GTPlanarTrial-Retalic15Th.woff2') format('woff2'),
+        url('GTPlanarTrial-Retalic15Th.woff') format('woff'),
+        url('GTPlanarTrial-Retalic15Th.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial Retalic 30 Lt';
+    src: url('GTPlanarTrial-Retalic30Lt.woff2') format('woff2'),
+        url('GTPlanarTrial-Retalic30Lt.woff') format('woff'),
+        url('GTPlanarTrial-Retalic30Lt.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial Retalic 30 Bl';
+    src: url('GTPlanarTrial-Retalic30Bl.woff2') format('woff2'),
+        url('GTPlanarTrial-Retalic30Bl.woff') format('woff'),
+        url('GTPlanarTrial-Retalic30Bl.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial Retalic 30 Bd';
+    src: url('GTPlanarTrial-Retalic30Bd.woff2') format('woff2'),
+        url('GTPlanarTrial-Retalic30Bd.woff') format('woff'),
+        url('GTPlanarTrial-Retalic30Bd.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial Retalic 30 Th';
+    src: url('GTPlanarTrial-Retalic30Th.woff2') format('woff2'),
+        url('GTPlanarTrial-Retalic30Th.woff') format('woff'),
+        url('GTPlanarTrial-Retalic30Th.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial Retalic 30 Rg';
+    src: url('GTPlanarTrial-Retalic30Rg.woff2') format('woff2'),
+        url('GTPlanarTrial-Retalic30Rg.woff') format('woff'),
+        url('GTPlanarTrial-Retalic30Rg.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial Retalic 45 Bl';
+    src: url('GTPlanarTrial-Retalic45Bl.woff2') format('woff2'),
+        url('GTPlanarTrial-Retalic45Bl.woff') format('woff'),
+        url('GTPlanarTrial-Retalic45Bl.ttf') format('truetype');
+    font-weight: 900;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial Retalic 30 Md';
+    src: url('GTPlanarTrial-Retalic30Md.woff2') format('woff2'),
+        url('GTPlanarTrial-Retalic30Md.woff') format('woff'),
+        url('GTPlanarTrial-Retalic30Md.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial Retalic 45 Md';
+    src: url('GTPlanarTrial-Retalic45Md.woff2') format('woff2'),
+        url('GTPlanarTrial-Retalic45Md.woff') format('woff'),
+        url('GTPlanarTrial-Retalic45Md.ttf') format('truetype');
+    font-weight: 500;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial Retalic 45 Bd';
+    src: url('GTPlanarTrial-Retalic45Bd.woff2') format('woff2'),
+        url('GTPlanarTrial-Retalic45Bd.woff') format('woff'),
+        url('GTPlanarTrial-Retalic45Bd.ttf') format('truetype');
+    font-weight: bold;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial Retalic 45 Lt';
+    src: url('GTPlanarTrial-Retalic45Lt.woff2') format('woff2'),
+        url('GTPlanarTrial-Retalic45Lt.woff') format('woff'),
+        url('GTPlanarTrial-Retalic45Lt.ttf') format('truetype');
+    font-weight: 300;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial Retalic 45 Rg';
+    src: url('GTPlanarTrial-Retalic45Rg.woff2') format('woff2'),
+        url('GTPlanarTrial-Retalic45Rg.woff') format('woff'),
+        url('GTPlanarTrial-Retalic45Rg.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial Retalic 45 Th';
+    src: url('GTPlanarTrial-Retalic45Th.woff2') format('woff2'),
+        url('GTPlanarTrial-Retalic45Th.woff') format('woff'),
+        url('GTPlanarTrial-Retalic45Th.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'GT Planar Trial Th';
+    src: url('GTPlanarTrial-Th.woff2') format('woff2'),
+        url('GTPlanarTrial-Th.woff') format('woff'),
+        url('GTPlanarTrial-Th.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+

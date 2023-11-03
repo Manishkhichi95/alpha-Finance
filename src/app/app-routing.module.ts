@@ -1,14 +1,31 @@
 import { NgModule } from '@angular/core';
+import { AuthGuard } from './auth.guard';
 import { RouterModule, Routes } from '@angular/router';
-import { GraphQLModule } from '../GraphQl/graphql.module';
 const routes: Routes = [
   {
     path: '',
+    redirectTo: 'market',
+    pathMatch: 'full'
+  },
+  {
+    path: 'market',
     loadChildren: () => import('./modules/main/main.module').then(m => m.MainModule)
   },
   {
-    path: 'reserve-overview',
-    loadChildren: () => import('./modules/reserve-overview/reserve-overview.module').then(m => m.ReserveOverviewModule)
+    path: 'dashboard-wallet-connected',
+    loadChildren: () => import('./modules/dashboard/dashboard.module').then(m => m.DashboardModule)
+  },
+  {
+    path: 'manage-wallet-connected',
+    loadChildren: () => import('./modules/manage/manage.module').then(m => m.ManageModule)
+  },
+  {
+    path: 'bridge',
+    loadChildren: () => import('./modules/bridge/bridge.module').then(m => m.BridgeModule)
+  },
+  {
+    path: 'details', canActivate: [AuthGuard],
+    loadChildren: () => import('./modules/assets-detail/assets-detail.module').then(m => m.AssetsDetailModule)
   }
 ];
 

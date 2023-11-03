@@ -1,10 +1,7 @@
-import { MatDialog } from '@angular/material/dialog';
 import { Component, OnInit } from '@angular/core';
-import { WallletOverlayComponent } from '../../wallet-overlay/walllet-overlay/walllet-overlay.component';
-import { AssetsDetailsComponent } from '../../assets-details/assets-details/assets-details.component';
+import { Router } from '@angular/router';
 import { readContractsService } from 'src/app/services/readContracts.service';
 import { Web3Service } from 'src/app/services/WEb3Service.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'main-root',
@@ -16,33 +13,63 @@ export class MainComponent implements OnInit {
   ContractData: any = [];
   walletAddress: any;
   connected: any;
-  balance: any;
-  constructor(private router: Router, public dialog: MatDialog, private readContractsService: readContractsService, private web3Service: Web3Service) {
+  error: boolean = false;
+  totalDepositArr: any = [];
+  CurrentchainId: any = localStorage.getItem('chainId');
+  networkName: string | null = localStorage.getItem('networkName');
+  icons: string[] = ['assets/images/ic1.png', 'assets/images/ic3.png', 'assets/images/ic2.png', 'assets/images/ic4.png', 'assets/images/ic5.png', 'assets/images/ic6.png', 'assets/images/ic7.png']
+  deposits: Number = 0;
+  totalBorrowsArr: any = [];
+  borrows: Number = 0;
+  totalAvailable: any = 0;
+  showDetails: boolean = false;
+
+  constructor(private readContractsService: readContractsService, private web3Service: Web3Service, private router: Router) {
+    localStorage.setItem('showAssetDetails', JSON.stringify(this.showDetails));
     this.walletAddress = localStorage.getItem('walletAddress');
-    this.readContractsService.getReserveData().then((data: any) => {
+    this.CurrentchainId == '0xa4b1' ? this.networkName = 'Arbitrum' : this.CurrentchainId == '0x89' ? this.networkName = 'Polygon Mainnet' : this.networkName = 'Polygon Testnet';
+    this.networkName == 'Arbitrum' ? this.readContractsService.getReserveData().then((data: any) => {
+      this.ContractData = [];
       this.ContractData = data;
-    });
+    }) : ''
   }
 
   ngOnInit() {
-    this.connected = this.web3Service.getConnected();
+    this.readContractsService.getReserveData().then((data: any) => {
+      this.ContractData = data;
+      this.readContractsService.setData(this.ContractData);
+      this.ContractData.forEach((element: any) => {
+        this.totalDepositArr.push(element.deposit);
+        this.totalBorrowsArr.push(element.totalBorrows);
+      });
+      const sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+      this.deposits = sumOfDeposits.toFixed(2);
+      localStorage.setItem('deposits',JSON.stringify(this.deposits))
+      const sumOfBorrows = this.totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+      this.borrows = sumOfBorrows.toFixed(2);
+      localStorage.setItem('borrows',JSON.stringify(this.borrows))
+
+      this.totalAvailable = (Number(this.deposits) - Number(this.borrows)).toFixed(2);
+      localStorage.setItem('totalAvailable',JSON.stringify(this.totalAvailable))
+
+    });
   }
 
-  openWalletModal() {
-    const dialogRef = this.dialog.open(WallletOverlayComponent);
-  }
+  setCurrentchainId(chainId: string) {
+    this.CurrentchainId = chainId;
+    chainId == '0xa4b1' ? this.networkName = 'Arbitrum' : chainId == '0x89' ? this.networkName = 'Polygon Mainnet' : this.networkName = 'Polygon Testnet';
+    this.networkName == 'Arbitrum' ? this.readContractsService.getReserveData().then((data: any) => {
+      this.ContractData = [];
+      this.ContractData = data;
+    }) : ''
+  };
 
-  openAssetsModel(address: any) {
-    const data = {
-      "address": address,
-      "connected": this.connected
-    }
-    const dialogRef = this.dialog.open(AssetsDetailsComponent,
-      { data: data });
-  }
-
-  gotoReserveOverview(item: any) {
-    this.readContractsService.getSelectedReserve(item);
-    this.router.navigate(['reserve-overview']);
+  goToAsset(selectedAsset: any, img: string) {
+    this.showDetails = true;
+    localStorage.setItem('showAssetDetails', JSON.stringify(this.showDetails));
+    console.log(selectedAsset, img);
+    selectedAsset.icon = img;
+    this.readContractsService.getSelectedReserve(selectedAsset);
+    this.router.navigateByUrl('/details');
   }
 }

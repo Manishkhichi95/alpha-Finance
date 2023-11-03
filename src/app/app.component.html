@@ -1,75 +1,97 @@
-<div>
-    <section class="header">
-        <div class="container">
-            <nav class="navbar">
-                <!--logo-->
-                <a href="#" class="logo"><img src="assets\alphalogo.png"></a>
-                <div class="logo"></div>
-                <ul class="nav-links">
-                    <li><a href="">Market</a></li>
-                    <li><a href="">Dashboard</a></li>
-                    <li><a href="">Manage</a></li>
-                    <li><a href="">Bridge</a></li>
-                    <li><a href="">Buy</a></li>
-                    <li><a href="">DAO</a></li>
-                    <li><a href="">More</a></li>
-                </ul>
-                <div class="cta">
-                    <!--button-->
-                    <div class="exchange"><a href="#">Etherium</a>
-                    </div>
-                    <div class="connect" *ngIf="!connected"><a (click)="openWalletModal()">Connect Wallet</a>
-                        <h2 *ngIf="connected"></h2>
-                    </div>
-                </div>
-            </nav>
-        </div>
-    </section>
-    <section class="hero">
-        <!--hero section-->
-        <div class="container">
-            <div class="title">
-                <h1 *ngIf="connected" [TruncateText]="walletAddress" [startLength]="5" [endLength]="18"></h1>
-                <h1 *ngIf="!connected">Please connect your wallet</h1>
-                <div class="connect" *ngIf="!connected"><a (click)="openWalletModal()">Connect Wallet</a></div>
-            </div>
-        </div>
-    </section>
-
-    <section class="chain-exchain">
-        <div class="container">
-            <div class="chainbx">
-                <p>Etherium</p>
-                <i class="ri-arrow-down-s-line"></i>
-            </div>
-        </div>
-    </section>
-    <section class="stats">
-        <div class="container">
-            <div class="statsbx">
-                <div class="heading">
-                    <h3>Stats Overview</h3>
-                </div>
-                <table>
-                    <tr>
-                        <th>Total market size</th>
-                        <th>Total dLP vaule locked</th>
-                        <th>Alpha price</th>
-                        <th>Free paids to lockers <span><i class="ri-information-line"></i></span></th>
-                        <th>Maximum lock ARP <span><i class="ri-information-line"></i></span></th>
-                        <th>Other chains</th>
-                    </tr>
-                    <tr>
-                        <td>$376.52M</td>
-                        <td>$0</td>
-                        <td>$0.25</td>
-                        <td>$12.95M</td>
-                        <td><span><i class="ri-information-line"></i></span>0%</td>
-                        <td><span><i class="ri-information-line"></i></span>0%</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    </section>
-    <router-outlet></router-outlet>
-</div>
+<header>
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+      <a class="navbar-brand" href="#">
+        <svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 52 52" fill="none">
+          <path
+            d="M25.7029 17.6859L15.6181 34.9537H41.2656L43.7324 39.1981H8L25.7029 8L40.8665 34.1919H26.1383L30.8905 26.0296L25.7029 17.6859Z"
+            fill="url(#paint0_radial_639_1041)" />
+          <defs>
+            <radialGradient id="paint0_radial_639_1041" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse"
+              gradientTransform="translate(32.352 19.8194) rotate(139.329) scale(32.1072 36.7739)">
+              <stop stop-color="white" />
+              <stop offset="0.0001" stop-color="#2CECF2" />
+              <stop offset="1" stop-color="#1EA2F4" />
+            </radialGradient>
+          </defs>
+        </svg>
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+        aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavDropdown">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="/market" >Market</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="/dashboard-wallet-connected">Dashboard</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="/manage-wallet-connected">Manage</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLinkActive="active" routerLink="/bridge">Bridge</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Buy</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              DAO
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+            </ul>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              More
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+            </ul>
+          </li>
+        </ul>
+        <div class="btn_grp"> 
+          <div class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+              data-bs-toggle="dropdown" aria-expanded="false">
+              <span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="23" viewBox="0 0 15 23" fill="none">
+                  <g clip-path="url(#clip0_639_880)">
+                    <path
+                      d="M7.89062 -0.00976562L7.73633 0.51466V15.7323L7.89062 15.8863L14.9545 11.7109L7.89062 -0.00976562Z"
+                      fill="#525252" />
+                    <path d="M7.891 -0.00976562L0.827148 11.7109L7.891 15.8864V8.50017V-0.00976562Z" fill="white" />
+                    <path d="M7.89163 17.2241L7.80469 17.3301V22.7509L7.89163 23.0049L14.9597 13.0508L7.89163 17.2241Z"
+                      fill="#4D4D4D" />
+                    <path d="M7.891 23.0049V17.2241L0.827148 13.0508L7.891 23.0049Z" fill="white" />
+                    <path d="M7.89062 15.8861L14.9544 11.7107L7.89062 8.5V15.8861Z" fill="#8D8D8D" />
+                    <path d="M0.827148 11.7107L7.89089 15.8861V8.5L0.827148 11.7107Z" fill="#D5D5D5" />
+                  </g>
+                  <defs>
+                    <clipPath id="clip0_639_880">
+                      <rect width="14.1319" height="23.0195" fill="white" transform="translate(0.827148 -0.00976562)" />
+                    </clipPath>
+                  </defs>
+                </svg>
+              </span>
+              <span> Ethereum</span>
+            </a> 
+             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+              <li><a class="dropdown-item" href="#">Action</a></li>
+            </ul>
+          </div> 
+           <button *ngIf="connected" class="btn btn_cpy"><span><img src="assets/images/ic.png" alt=""></span><span
+              [TruncateText]="walletAddress" [startLength]="4" [endLength]="4"></span></button>
+          <button class="btn" *ngIf="!connected" (click)="connectWallet()">Connect Wallet</button>
+        </div> 
+       </div> 
+   </div> 
+  </nav>
+</header>
+<router-outlet></router-outlet>

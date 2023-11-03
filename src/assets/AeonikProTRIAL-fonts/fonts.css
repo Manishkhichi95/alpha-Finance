@@ -1,0 +1,65 @@
+@font-face {
+    font-family: 'Aeonik Pro TRIAL';
+    src: url('AeonikProTRIAL-Bold.eot');
+    src: url('AeonikProTRIAL-Bold.eot?#iefix') format('embedded-opentype'),
+        url('AeonikProTRIAL-Bold.woff2') format('woff2'),
+        url('AeonikProTRIAL-Bold.woff') format('woff'),
+        url('AeonikProTRIAL-Bold.ttf') format('truetype'),
+        url('AeonikProTRIAL-Bold.svg#AeonikProTRIAL-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Aeonik Pro TRIAL';
+    src: url('AeonikProTRIAL-Bold_1.eot');
+    src: url('AeonikProTRIAL-Bold_1.eot?#iefix') format('embedded-opentype'),
+        url('AeonikProTRIAL-Bold_1.woff2') format('woff2'),
+        url('AeonikProTRIAL-Bold_1.woff') format('woff'),
+        url('AeonikProTRIAL-Bold_1.ttf') format('truetype'),
+        url('AeonikProTRIAL-Bold_1.svg#AeonikProTRIAL-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Aeonik Pro TRIAL';
+    src: url('AeonikProTRIAL-Bold_2.eot');
+    src: url('AeonikProTRIAL-Bold_2.eot?#iefix') format('embedded-opentype'),
+        url('AeonikProTRIAL-Bold_2.woff2') format('woff2'),
+        url('AeonikProTRIAL-Bold_2.woff') format('woff'),
+        url('AeonikProTRIAL-Bold_2.ttf') format('truetype'),
+        url('AeonikProTRIAL-Bold_2.svg#AeonikProTRIAL-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Aeonik Pro TRIAL';
+    src: url('AeonikProTRIAL-Bold_3.eot');
+    src: url('AeonikProTRIAL-Bold_3.eot?#iefix') format('embedded-opentype'),
+        url('AeonikProTRIAL-Bold_3.woff2') format('woff2'),
+        url('AeonikProTRIAL-Bold_3.woff') format('woff'),
+        url('AeonikProTRIAL-Bold_3.ttf') format('truetype'),
+        url('AeonikProTRIAL-Bold_3.svg#AeonikProTRIAL-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Aeonik Pro TRIAL';
+    src: url('AeonikProTRIAL-Bold_4.eot');
+    src: url('AeonikProTRIAL-Bold_4.eot?#iefix') format('embedded-opentype'),
+        url('AeonikProTRIAL-Bold_4.woff2') format('woff2'),
+        url('AeonikProTRIAL-Bold_4.woff') format('woff'),
+        url('AeonikProTRIAL-Bold_4.ttf') format('truetype'),
+        url('AeonikProTRIAL-Bold_4.svg#AeonikProTRIAL-Bold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+}
+
