@@ -16,17 +16,23 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
     this.networkName = localStorage.getItem('networkName');
     this.networkName == null ? this.networkName = "Arbitrum" : "";
   }
-
+  
+  
   ngOnInit(): void {
+    this.readContractsService.getTotalDeposits().then((deposits) => {
+      // Use the 'deposits' value here or perform further operations
+     this.deposits= deposits;
+    });
     const borrows: any = localStorage.getItem('borrows');
-    const deposits: any = localStorage.getItem('deposits');
+    // const deposits: any = localStorage.getItem('deposits');
     const totalAvailable: any = localStorage.getItem('totalAvailable');
     this.borrows = JSON.parse(borrows);
-    this.deposits = JSON.parse(deposits);
+    // this.deposits = JSON.parse(deposits);
     this.totalAvailable = JSON.parse(totalAvailable);
   }
-
+  
   ngAfterViewInit(): void {
+    console.log(this.readContractsService.getTotalDeposits())
     this.readContractsService.dropDown();
   }
 

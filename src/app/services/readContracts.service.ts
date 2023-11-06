@@ -55,6 +55,10 @@ export class readContractsService {
   stableDebtTokenABI: any;
   variableDebtTokenABI: any;
   UiPoolDataProviderV2V3: any;
+  totalAvailable: string | undefined;
+  borrows: any;
+  totalDepositArr: any = [];
+  totalBorrowsArr: any = [];
 
   constructor(private http: HttpClient, private Web3Service: Web3Service) {
     this.web3 = this.Web3Service.getWeb3();
@@ -161,7 +165,6 @@ export class readContractsService {
           liquidationThreshold = 80;
         }
 
-
         let maxLTV: number = 0;
         if (name == "Tether USD" || name == "USD Coin (Arb1)" || name == "Wrapped Ether") {
           maxLTV = 80;
@@ -182,7 +185,7 @@ export class readContractsService {
           details: element,
           decimals: decimals,
           liquidationThreshold: liquidationThreshold,
-          maxLTV:maxLTV,
+          maxLTV: maxLTV,
           depositAPR: depositAPR,
           stableBorrowAPR: stableBorrowAPR,
           address: element.underlyingAsset,
@@ -201,7 +204,6 @@ export class readContractsService {
           totalBorrows: totalBorrowsValue,
         };
       });
-
       this.reserveData = await Promise.all(reserveDataPromises);
       return this.reserveData;
     } catch (error) {
@@ -242,6 +244,45 @@ export class readContractsService {
 
   getData() {
     return this.data;
+  }
+
+  // getTotalDeposits(){
+  //   let sumOfDeposits :any;
+  //   this.getReserveData().then((data: any) => {
+  //     this.reserveData = data;
+  //     this.reserveData.forEach((element: any) => {
+  //       this.totalDepositArr.push(element.deposit);
+  //       this.totalBorrowsArr.push(element.totalBorrows);
+  //     });
+      
+  //     sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+  //     this.deposits = sumOfDeposits.toFixed(2);
+  //     // localStorage.setItem('deposits',JSON.stringify(this.deposits))
+  //     // const sumOfBorrows = this.totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+  //     // this.borrows = sumOfBorrows.toFixed(2);
+
+  //     // localStorage.setItem('borrows',JSON.stringify(this.borrows))
+
+  //     // this.totalAvailable = (Number(this.deposits) - Number(this.borrows)).toFixed(2);
+
+  //     // localStorage.setItem('totalAvailable',JSON.stringify(this.totalAvailable))
+
+  //     console.log('asdf', this.deposits,this.totalDepositArr)
+  //     return this.deposits;
+  //   });
+  // }
+
+  async getTotalDeposits() {
+    let deposits:number = 0 ;
+    this.reserveData.forEach((element: any) => {
+      this.totalDepositArr.push(element.deposit);
+      this.totalBorrowsArr.push(element.totalBorrows);
+    });
+    let sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+    deposits = sumOfDeposits.toFixed(2);
+    this.totalDepositArr = [];
+    console.log('Calculated deposits:', deposits);
+    return deposits;
   }
 
   // setConnected(connected: boolean) {
@@ -316,68 +357,5 @@ export class readContractsService {
 
 
 
-  }
-
-
-  asset() {
-    const selectedAll = document.querySelectorAll(".wrapper-dropdown");
-
-    selectedAll.forEach((selected: any) => {
-      const optionsContainer: any = selected.children[2];
-      const optionsList: any = selected.querySelectorAll("div.wrapper-dropdown li");
-
-      selected.addEventListener("click", () => {
-        let arrow = selected.children[1];
-
-        if (selected.classList.contains("active")) {
-          handleDropdown(selected, arrow, false);
-        } else {
-          let currentActive = document.querySelector(".wrapper-dropdown.active");
-
-          if (currentActive) {
-            let anotherArrow = currentActive.children[1];
-            handleDropdown(currentActive, anotherArrow, false);
-          }
-
-          handleDropdown(selected, arrow, true);
-        }
-      });
-
-      // update the display of the dropdown
-      for (let o of optionsList) {
-        o.addEventListener("click", () => {
-          selected.querySelector(".selected-display").innerHTML = o.innerHTML;
-        });
-      }
-    });
-
-    // check if anything else ofther than the dropdown is clicked
-    window.addEventListener("click", function (e: any) {
-      if (e.target.closest(".wrapper-dropdown") === null) {
-        closeAllDropdowns();
-      }
-    });
-
-    // close all the dropdowns
-    function closeAllDropdowns() {
-      const selectedAll = document.querySelectorAll(".wrapper-dropdown");
-      selectedAll.forEach((selected) => {
-        const optionsContainer = selected.children[2];
-        let arrow = selected.children[1];
-
-        handleDropdown(selected, arrow, false);
-      });
-    }
-
-    // open all the dropdowns
-    function handleDropdown(dropdown: Element, arrow: Element, open: boolean) {
-      if (open) {
-        arrow.classList.add("rotated");
-        dropdown.classList.add("active");
-      } else {
-        arrow.classList.remove("rotated");
-        dropdown.classList.remove("active");
-      }
-    }
   }
 }

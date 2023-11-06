@@ -3,7 +3,7 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Web3Service } from 'src/app/services/WEb3Service.service';
 import { readContractsService } from 'src/app/services/readContracts.service';
 import { Router } from '@angular/router';
-
+import Chart from 'chart.js/auto';
 @Component({
   selector: 'app-asset-detail',
   templateUrl: './asset-detail.component.html',
@@ -23,8 +23,23 @@ export class AssetDetailComponent implements OnInit, AfterViewInit {
   utilizationRate: any;
   OraclePrice: any;
   aaveOracleAddress: any;
-
-  constructor( private router: Router, private readContractsService: readContractsService, private Web3Service: Web3Service, private http: HttpClient) {
+  lineChartLegend = true;
+  lineChartType = 'line';
+  
+  lineChartData: Array<any> = [
+    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
+  ];
+  lineChartLabels: Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+  lineChartOptions: any = {
+    responsive: true,
+  };
+  lineChartColors: Array<any> = [
+    {
+      backgroundColor: 'rgba(105, 0, 132, .2)',
+      borderColor: 'rgba(105, 0, 132, .7)',
+    },
+  ];
+  constructor(private router: Router, private readContractsService: readContractsService, private Web3Service: Web3Service, private http: HttpClient) {
     this.web3 = this.Web3Service.getWeb3();
     localStorage.setItem('showAssetDetails', JSON.stringify(this.showDetails));
     this.reserve = this.readContractsService.selectedReserve;
@@ -88,7 +103,7 @@ export class AssetDetailComponent implements OnInit, AfterViewInit {
     })
   }
 
-  goToMarket(){
+  goToMarket() {
     this.router.navigateByUrl('/market');
   }
 }

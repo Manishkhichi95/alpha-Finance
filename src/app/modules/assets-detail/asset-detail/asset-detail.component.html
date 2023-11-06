@@ -222,18 +222,18 @@
             <div class="list_borrow">
               <div class="card_bx">
                 <h3>Total Borrowed</h3>  
-                <p>{{reserve.totalBorrows}}</p>
+                <p>${{reserve.totalBorrows}}M</p>
                 <h4>$ 10.01K</h4>
               </div>
               <div class="card_bx">
                 <h3>APY, variable</h3>
-                <p>{{reserve.variableBorrowAPY}}</p>
+                <p>{{reserve.variableBorrowAPY}}%</p>
                 <h4>
                   <0.01 %</h4>
               </div>
               <div class="card_bx">
                 <h3>APY, stable</h3>
-                <p>{{reserve.stableBorrowAPY}}</p>
+                <p>{{reserve.stableBorrowAPY}}%</p>
               </div>
 
             </div>
@@ -273,10 +273,10 @@
                     </svg>
                   </span>
                 </h3>
-                <p>97.00%</p>
+                <p>{{reserve['details'].eModeLtv}}.00%</p>
               </div>
               <div class="card_bx">
-                <h3>Liquidation threshold <span>
+                <h3>Liquidation threshold <span>                  
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
                       <mask id="mask0_674_1840" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
                         width="20" height="21">
@@ -290,7 +290,7 @@
                     </svg>
                   </span>
                 </h3>
-                <p>98.50%</p>
+                <p>{{reserve['details'].eModeLiquidationThreshold}}.00%</p>
               </div>
               <div class="card_bx">
                 <h3>Liquidation penalty <span>
@@ -307,7 +307,7 @@
                     </svg>
                   </span>
                 </h3>
-                <p>1.00%</p>
+                <p>{{reserve['details'].eModeLiquidationBonus}}.00%</p>
               </div>
 
             </div>
@@ -320,7 +320,7 @@
           <div class="card_bdy_inner">
             <div class="grap_sect">
               <div class="head_bx">
-                <h3><span>Utilization Rate</span><span>{{utilizationRate}}</span></h3>
+                <h3><span>Utilization Rate</span><span>{{utilizationRate}}%</span></h3>
                 <button class="btn">Interest rate strategy</button>
               </div>
               <ul>
@@ -328,6 +328,15 @@
                 <li>Borrow APR, stable</li>
                 <li>Utilization Rate</li>
               </ul>
+             <!-- <div style="display: block">
+  <canvas baseChart
+          [datasets]="lineChartData"
+          [labels]="lineChartLabels"
+          [options]="lineChartOptions"
+          [legend]="lineChartLegend"
+          chartType="line">
+  </canvas>
+</div> -->
               <div class="grap_view">
                 <img src="assets/images/grap.png" alt="">
               </div>

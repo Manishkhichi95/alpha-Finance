@@ -44,13 +44,16 @@ export class MainComponent implements OnInit {
       });
       const sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
       this.deposits = sumOfDeposits.toFixed(2);
-      localStorage.setItem('deposits',JSON.stringify(this.deposits))
+
+      // // localStorage.setItem('deposits',JSON.stringify(this.deposits))
       const sumOfBorrows = this.totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
       this.borrows = sumOfBorrows.toFixed(2);
-      localStorage.setItem('borrows',JSON.stringify(this.borrows))
+
+      // // localStorage.setItem('borrows',JSON.stringify(this.borrows))
 
       this.totalAvailable = (Number(this.deposits) - Number(this.borrows)).toFixed(2);
-      localStorage.setItem('totalAvailable',JSON.stringify(this.totalAvailable))
+      
+      // localStorage.setItem('totalAvailable',JSON.stringify(this.totalAvailable))
 
     });
   }
