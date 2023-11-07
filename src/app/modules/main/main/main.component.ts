@@ -12,7 +12,7 @@ export class MainComponent implements OnInit {
   title = 'alpha-finance-launch';
   ContractData: any = [];
   walletAddress: any;
-  connected: any;
+  connected: boolean = false;
   error: boolean = false;
   totalDepositArr: any = [];
   CurrentchainId: any = localStorage.getItem('chainId');
@@ -27,44 +27,28 @@ export class MainComponent implements OnInit {
   constructor(private readContractsService: readContractsService, private web3Service: Web3Service, private router: Router) {
     localStorage.setItem('showAssetDetails', JSON.stringify(this.showDetails));
     this.walletAddress = localStorage.getItem('walletAddress');
+    console.log(this.CurrentchainId)
     this.CurrentchainId == '0xa4b1' ? this.networkName = 'Arbitrum' : this.CurrentchainId == '0x89' ? this.networkName = 'Polygon Mainnet' : this.networkName = 'Polygon Testnet';
-    this.networkName == 'Arbitrum' ? this.readContractsService.getReserveData().then((data: any) => {
-      this.ContractData = [];
-      this.ContractData = data;
-    }) : ''
   }
 
   ngOnInit() {
-    this.readContractsService.getReserveData().then((data: any) => {
-      this.ContractData = data;
-      this.readContractsService.setData(this.ContractData);
-      this.ContractData.forEach((element: any) => {
-        this.totalDepositArr.push(element.deposit);
-        this.totalBorrowsArr.push(element.totalBorrows);
-      });
-      const sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-      this.deposits = sumOfDeposits.toFixed(2);
-
-      // // localStorage.setItem('deposits',JSON.stringify(this.deposits))
-      const sumOfBorrows = this.totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-      this.borrows = sumOfBorrows.toFixed(2);
-
-      // // localStorage.setItem('borrows',JSON.stringify(this.borrows))
-
-      this.totalAvailable = (Number(this.deposits) - Number(this.borrows)).toFixed(2);
-      
-      // localStorage.setItem('totalAvailable',JSON.stringify(this.totalAvailable))
-
-    });
+    this.web3Service.connected.subscribe((connected: boolean) => {
+      this.connected = connected;
+    })
+    this.networkName == 'Arbitrum' &&  this.CurrentchainId == '0xa4b1'?( this.readContractsService.getReserveData().then((data: any) => {
+      this.ContractData = data,
+      this.readContractsService.setData(this.ContractData)
+  })):this.ContractData=[];
   }
 
   setCurrentchainId(chainId: string) {
+    localStorage.setItem('networkName', chainId);
     this.CurrentchainId = chainId;
     chainId == '0xa4b1' ? this.networkName = 'Arbitrum' : chainId == '0x89' ? this.networkName = 'Polygon Mainnet' : this.networkName = 'Polygon Testnet';
     this.networkName == 'Arbitrum' ? this.readContractsService.getReserveData().then((data: any) => {
       this.ContractData = [];
       this.ContractData = data;
-    }) : ''
+    }) : this.ContractData=[];
   };
 
   goToAsset(selectedAsset: any, img: string) {

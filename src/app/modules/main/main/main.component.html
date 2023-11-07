@@ -18,7 +18,7 @@
                             <th>Borrowed APY, stable</th>
                         </tr>
                     </thead>
-                    <tbody *ngIf="ContractData.length>=0 && networkName=='Arbitrum'">
+                    <tbody *ngIf="ContractData.length>=0 && networkName=='Arbitrum' && connected">
                         <tr *ngFor="let items of ContractData, let i = index">
                             
                             <td>
@@ -66,10 +66,11 @@
                             </td>
                         </tr>
                     </tbody>
-                    <div *ngIf="networkName!='Arbitrum'" style="color:white;padding-left:10px;font:x-large;">No Data Available as of now.Please try Connecting to Different Network.</div>
+                    <div *ngIf="!connected" style="color:white;padding-left:10px;font:x-large;">Please Connect to the Wallet.</div>
+                    <div *ngIf="networkName!='Arbitrum'" style="color:white;padding-left:10px;font:x-large;width:489px;">No Data Available as of now.Please try Connecting to Different Network.</div>
                 </table>
             </div>
-            <mat-spinner style="margin-left:47%;color:warn;" *ngIf="ContractData.length<=0 && networkName=='Arbitrum'"></mat-spinner>
+            <mat-spinner style="margin-left:47%;color:warn;" *ngIf="ContractData.length<=0 && networkName=='Arbitrum' && connected"></mat-spinner>
         </div>
     </div>
 </section>

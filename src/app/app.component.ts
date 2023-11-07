@@ -30,11 +30,10 @@ export class AppComponent implements OnInit {
       this.selectedAddress = undefined;
       return;
     }
-
     const walletAddress = this.walletAddress?.toLowerCase();
     if (!walletAddress) {
       this.connected = false;
-      localStorage.setItem('connected', this.connected.toString());
+      this.web3Service.getConnection(this.connected);
       this.selectedAddress = undefined;
       return;
     }
@@ -47,16 +46,16 @@ export class AppComponent implements OnInit {
           this.selectedAddress = connectedAddress;
           this.updateWalletDetails();
           this.connected = true;
-          localStorage.setItem('connected', this.connected.toString());
+          this.web3Service.getConnection(this.connected);
         } else {
           this.connected = false;
-          localStorage.setItem('connected', this.connected.toString());
+          this.web3Service.getConnection(this.connected);
           this.selectedAddress = undefined;
         }
       })
       .catch(() => {
         this.connected = false;
-        localStorage.setItem('connected', this.connected.toString());
+        this.web3Service.getConnection(this.connected);
         this.selectedAddress = undefined;
       });
   }

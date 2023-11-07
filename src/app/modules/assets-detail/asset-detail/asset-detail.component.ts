@@ -49,7 +49,9 @@ export class AssetDetailComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.initializeData();
-    this.ContractData = this.readContractsService.getData();
+    this.readContractsService.data.subscribe((res:any)=>{
+      this.ContractData = res
+    });
   }
 
   async initializeData() {

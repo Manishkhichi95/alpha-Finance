@@ -1,4 +1,5 @@
-import { AfterViewInit, Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Web3Service } from 'src/app/services/WEb3Service.service';
 import { readContractsService } from 'src/app/services/readContracts.service';
 @Component({
   selector: 'app-head-banner',
@@ -8,31 +9,41 @@ import { readContractsService } from 'src/app/services/readContracts.service';
 export class HeadBannerComponent implements OnInit, AfterViewInit {
   networkName: any;
   @Output() CurrentchainId = new EventEmitter<string>();
+  @Input() contractData: any = [];
   deposits: any;
   borrows: any;
   totalAvailable: any;
+  connected: boolean = false;
 
-  constructor(private readContractsService: readContractsService) {
+  constructor(private readContractsService: readContractsService, private web3Service: Web3Service) {
+    this.web3Service.connected.subscribe((connected: boolean) => {
+      this.connected = connected;
+    })
     this.networkName = localStorage.getItem('networkName');
     this.networkName == null ? this.networkName = "Arbitrum" : "";
   }
-  
-  
+
   ngOnInit(): void {
-    this.readContractsService.getTotalDeposits().then((deposits) => {
-      // Use the 'deposits' value here or perform further operations
-     this.deposits= deposits;
-    });
-    const borrows: any = localStorage.getItem('borrows');
-    // const deposits: any = localStorage.getItem('deposits');
-    const totalAvailable: any = localStorage.getItem('totalAvailable');
-    this.borrows = JSON.parse(borrows);
-    // this.deposits = JSON.parse(deposits);
-    this.totalAvailable = JSON.parse(totalAvailable);
-  }
-  
+        const deposits: any = localStorage.getItem('deposits');
+        this.readContractsService.getTotalDeposits().then((deposits: number) => {
+          this.deposits = deposits;
+          localStorage.setItem('deposits', JSON.stringify(this.deposits));
+        })
+        if (this.deposits == undefined) {
+          this.deposits = JSON.parse(deposits);
+        }
+        const borrows: any = localStorage.getItem('borrows');
+        this.readContractsService.getTotalBorrows().then((borrows: number) => {
+          this.borrows = borrows;
+          localStorage.setItem('borrows', JSON.stringify(this.borrows));
+        })
+        if (this.borrows == undefined) {
+          this.borrows = JSON.parse(borrows);
+        }
+        this.totalAvailable = (Number(this.deposits) - Number(this.borrows)).toFixed(2);
+      }
+
   ngAfterViewInit(): void {
-    console.log(this.readContractsService.getTotalDeposits())
     this.readContractsService.dropDown();
   }
 
@@ -45,19 +56,18 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
       console.log("Metamask is not installed, please install!");
     } else {
       const CurrentchainId = await provider.request({ method: 'eth_chainId' });
-      localStorage.setItem('chainId', CurrentchainId)
       if (chainId === CurrentchainId) {
         console.log("You are on the correct network");
       } else {
-
         console.log("Switch to the correct network");
         try {
-
           await provider.request({
             method: 'wallet_switchEthereumChain',
             params: [{ chainId: chainId }],
           });
           const latestchainId = await provider.request({ method: 'eth_chainId' });
+          localStorage.setItem('chainId', latestchainId)
+          console.log(latestchainId)
           this.CurrentchainId.emit(latestchainId);
           console.log("You have succefully switched to ", network, "Test network");
           this.networkName = network;

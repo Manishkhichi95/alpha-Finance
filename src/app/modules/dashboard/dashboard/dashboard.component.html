@@ -1,5 +1,7 @@
-<app-head-banner></app-head-banner>
- <section *ngIf="connected=='true'" class="dash_sect">
+<div *ngIf="connected">
+    <app-head-banner></app-head-banner>
+</div>
+ <section *ngIf="connected" class="dash_sect">
     <div class="container">
         <div class="card_connect_list">
             <div class="card_bx table-sect">
@@ -662,7 +664,7 @@
     </section>
 </section>
 
-<div *ngIf="connected=='false'">
+<div *ngIf="!connected">
     <section class="head_banner">
         <div class="container">
           <div class="row">

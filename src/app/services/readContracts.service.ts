@@ -14,11 +14,12 @@ declare global {
   providedIn: 'root',
 })
 export class readContractsService {
+  deposits: any;
   web3: Web3 | any;
   SECONDS_PER_YEAR = 31536000;
   RAY = Math.pow(10, 27);
   UiPoolDataProviderV3ABI: any
-  data: any;
+  data = new BehaviorSubject<any>([]);
   UiPoolDataProviderV3Address: any
   ReserveDataABI: any
   reserveData: any = [];
@@ -55,13 +56,17 @@ export class readContractsService {
   stableDebtTokenABI: any;
   variableDebtTokenABI: any;
   UiPoolDataProviderV2V3: any;
-  totalAvailable: string | undefined;
+  totalAvailable: any;
   borrows: any;
   totalDepositArr: any = [];
   totalBorrowsArr: any = [];
+  connected: boolean = false;
 
   constructor(private http: HttpClient, private Web3Service: Web3Service) {
     this.web3 = this.Web3Service.getWeb3();
+    this.Web3Service.connected.subscribe((connected: boolean) => {
+      this.connected = connected;
+    })
     this.UiPoolDataProviderV2V3 = new this.web3.eth.Contract([{ "inputs": [{ "internalType": "contract IChainlinkAggregator", "name": "_networkBaseTokenPriceInUsdProxyAggregator", "type": "address" }, { "internalType": "contract IChainlinkAggregator", "name": "_marketReferenceCurrencyPriceInUsdProxyAggregator", "type": "address" }], "stateMutability": "nonpayable", "type": "constructor" }, { "inputs": [], "name": "ETH_CURRENCY_UNIT", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "MKRAddress", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "bytes32", "name": "_bytes32", "type": "bytes32" }], "name": "bytes32ToString", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "pure", "type": "function" }, { "inputs": [{ "internalType": "contract ILendingPoolAddressesProvider", "name": "provider", "type": "address" }], "name": "getReservesData", "outputs": [{ "components": [{ "internalType": "address", "name": "underlyingAsset", "type": "address" }, { "internalType": "string", "name": "name", "type": "string" }, { "internalType": "string", "name": "symbol", "type": "string" }, { "internalType": "uint256", "name": "decimals", "type": "uint256" }, { "internalType": "uint256", "name": "baseLTVasCollateral", "type": "uint256" }, { "internalType": "uint256", "name": "reserveLiquidationThreshold", "type": "uint256" }, { "internalType": "uint256", "name": "reserveLiquidationBonus", "type": "uint256" }, { "internalType": "uint256", "name": "reserveFactor", "type": "uint256" }, { "internalType": "bool", "name": "usageAsCollateralEnabled", "type": "bool" }, { "internalType": "bool", "name": "borrowingEnabled", "type": "bool" }, { "internalType": "bool", "name": "stableBorrowRateEnabled", "type": "bool" }, { "internalType": "bool", "name": "isActive", "type": "bool" }, { "internalType": "bool", "name": "isFrozen", "type": "bool" }, { "internalType": "uint128", "name": "liquidityIndex", "type": "uint128" }, { "internalType": "uint128", "name": "variableBorrowIndex", "type": "uint128" }, { "internalType": "uint128", "name": "liquidityRate", "type": "uint128" }, { "internalType": "uint128", "name": "variableBorrowRate", "type": "uint128" }, { "internalType": "uint128", "name": "stableBorrowRate", "type": "uint128" }, { "internalType": "uint40", "name": "lastUpdateTimestamp", "type": "uint40" }, { "internalType": "address", "name": "aTokenAddress", "type": "address" }, { "internalType": "address", "name": "stableDebtTokenAddress", "type": "address" }, { "internalType": "address", "name": "variableDebtTokenAddress", "type": "address" }, { "internalType": "address", "name": "interestRateStrategyAddress", "type": "address" }, { "internalType": "uint256", "name": "availableLiquidity", "type": "uint256" }, { "internalType": "uint256", "name": "totalPrincipalStableDebt", "type": "uint256" }, { "internalType": "uint256", "name": "averageStableRate", "type": "uint256" }, { "internalType": "uint256", "name": "stableDebtLastUpdateTimestamp", "type": "uint256" }, { "internalType": "uint256", "name": "totalScaledVariableDebt", "type": "uint256" }, { "internalType": "uint256", "name": "priceInMarketReferenceCurrency", "type": "uint256" }, { "internalType": "uint256", "name": "variableRateSlope1", "type": "uint256" }, { "internalType": "uint256", "name": "variableRateSlope2", "type": "uint256" }, { "internalType": "uint256", "name": "stableRateSlope1", "type": "uint256" }, { "internalType": "uint256", "name": "stableRateSlope2", "type": "uint256" }, { "internalType": "bool", "name": "isPaused", "type": "bool" }, { "internalType": "uint128", "name": "accruedToTreasury", "type": "uint128" }, { "internalType": "uint128", "name": "unbacked", "type": "uint128" }, { "internalType": "uint128", "name": "isolationModeTotalDebt", "type": "uint128" }, { "internalType": "uint256", "name": "debtCeiling", "type": "uint256" }, { "internalType": "uint256", "name": "debtCeilingDecimals", "type": "uint256" }, { "internalType": "uint8", "name": "eModeCategoryId", "type": "uint8" }, { "internalType": "uint256", "name": "borrowCap", "type": "uint256" }, { "internalType": "uint256", "name": "supplyCap", "type": "uint256" }, { "internalType": "uint16", "name": "eModeLtv", "type": "uint16" }, { "internalType": "uint16", "name": "eModeLiquidationThreshold", "type": "uint16" }, { "internalType": "uint16", "name": "eModeLiquidationBonus", "type": "uint16" }, { "internalType": "address", "name": "eModePriceSource", "type": "address" }, { "internalType": "string", "name": "eModeLabel", "type": "string" }, { "internalType": "bool", "name": "borrowableInIsolation", "type": "bool" }], "internalType": "struct IUiPoolDataProviderV3.AggregatedReserveData[]", "name": "", "type": "tuple[]" }, { "components": [{ "internalType": "uint256", "name": "marketReferenceCurrencyUnit", "type": "uint256" }, { "internalType": "int256", "name": "marketReferenceCurrencyPriceInUsd", "type": "int256" }, { "internalType": "int256", "name": "networkBaseTokenPriceInUsd", "type": "int256" }, { "internalType": "uint8", "name": "networkBaseTokenPriceDecimals", "type": "uint8" }], "internalType": "struct IUiPoolDataProviderV3.BaseCurrencyInfo", "name": "", "type": "tuple" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "contract ILendingPoolAddressesProvider", "name": "provider", "type": "address" }], "name": "getReservesList", "outputs": [{ "internalType": "address[]", "name": "", "type": "address[]" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "contract ILendingPoolAddressesProvider", "name": "provider", "type": "address" }, { "internalType": "address", "name": "user", "type": "address" }], "name": "getUserReservesData", "outputs": [{ "components": [{ "internalType": "address", "name": "underlyingAsset", "type": "address" }, { "internalType": "uint256", "name": "scaledATokenBalance", "type": "uint256" }, { "internalType": "bool", "name": "usageAsCollateralEnabledOnUser", "type": "bool" }, { "internalType": "uint256", "name": "stableBorrowRate", "type": "uint256" }, { "internalType": "uint256", "name": "scaledVariableDebt", "type": "uint256" }, { "internalType": "uint256", "name": "principalStableDebt", "type": "uint256" }, { "internalType": "uint256", "name": "stableBorrowLastUpdateTimestamp", "type": "uint256" }], "internalType": "struct IUiPoolDataProviderV3.UserReserveData[]", "name": "", "type": "tuple[]" }, { "internalType": "uint8", "name": "", "type": "uint8" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "marketReferenceCurrencyPriceInUsdProxyAggregator", "outputs": [{ "internalType": "contract IChainlinkAggregator", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "networkBaseTokenPriceInUsdProxyAggregator", "outputs": [{ "internalType": "contract IChainlinkAggregator", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }], '0xed1eF2fAE2385c221F0e054f982E974bc7Dc08Ce');
     this.loadContractData();
   }
@@ -91,129 +96,128 @@ export class readContractsService {
   }
 
   async getReserveData() {
-    try {
-      if (!localStorage.getItem('walletAddress')) {
-        return [];
+      try {
+        if (!localStorage.getItem('walletAddress')) {
+          return [];
+        }
+        const getReserveData = await this.getReserveDATA();
+        this.accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+  
+        const reserveDataPromises = getReserveData[0].map(async (element: any) => {
+          const tokenContracts = this.getTokenContracts(element.underlyingAsset);
+          const rTokenAddress = this.rTokenAddress[getReserveData[0].indexOf(element)];
+  
+          const [
+            name,
+            deposit,
+            // rTOkenDecimals,
+            // getrTokenAssetPrice,
+            totalSupply,
+            balance,
+            decimals,
+          ] = await Promise.all([
+            tokenContracts.methods.name().call(),
+            new this.web3.eth.Contract(this.rTokenABI, rTokenAddress).methods.totalSupply().call(),
+            // new this.web3.eth.Contract(this.rTokenABI, rTokenAddress).methods.decimals().call(),
+            // new this.web3.eth.Contract(this.rTokenABI, rTokenAddress).methods.getAssetPrice().call(),
+            tokenContracts.methods.totalSupply().call(),
+            tokenContracts.methods.balanceOf(this.accounts[0]).call(),
+            tokenContracts.methods.decimals().call(),
+          ]);
+  
+          const depositAPR = Number(element.liquidityRate) / this.RAY;
+          const variableBorrowAPR = Number(element.variableBorrowRate) / this.RAY;
+          const stableBorrowAPR = Number(element.variableBorrowRate) / this.RAY;
+  
+          const variableDebtTokenContract = new this.web3.eth.Contract(this.variableDebtTokenABI, element.variableDebtTokenAddress);
+          const stableDebtTokenContract = new this.web3.eth.Contract(this.stableDebtTokenABI, element.stableDebtTokenAddress);
+  
+          const [
+            variableDebtTokenSupply,
+            stableDebtTokenSupply,
+            BaseCurrency,
+            getAssetPrice,
+          ] = await Promise.all([
+            variableDebtTokenContract.methods.totalSupply().call(),
+            stableDebtTokenContract.methods.totalSupply().call(),
+            this.getBaseCurrency(),
+            this.getAssetPrice(element.underlyingAsset),
+          ]);
+  
+          // const rTokenAssetPrice = (Number(getrTokenAssetPrice)).toFixed(2);
+          const depositAPY = ((Math.pow((1 + (depositAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2);
+          const variableBorrowAPY = ((Math.pow((1 + (variableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2);
+          const stableBorrowAPY = ((Math.pow((1 + (stableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2);
+          // const totalAToken = ((Number(element.totalPrincipalStableDebt) + Number(element.availableLiquidity)) / Math.pow(10, 18)).toFixed(2);
+          const assetPrice = (Number(getAssetPrice) / Number(BaseCurrency)).toFixed(2);
+          const totalSupplyValue = (Number(totalSupply) * (Number(getAssetPrice) * 0.00000000000001) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2);
+          const totalBorrowsValue = ((Number(variableDebtTokenSupply) + Number(stableDebtTokenSupply)) * (Number(getAssetPrice) * 0.00000000000001) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2);
+          let liquidationThreshold: number = 0;
+          if (name == "Tether USD" || name == "USD Coin (Arb1)" || name == "Dai Stablecoin") {
+            liquidationThreshold = 85;
+          }
+          if (name == "Wrapped BTC") {
+            liquidationThreshold = 75;
+          }
+          if (name == "Arbitrum") {
+            liquidationThreshold = 50;
+          }
+          if (name == "Wrapped Ether") {
+            liquidationThreshold = 82.5;
+          }
+          if (name == "Wrapped liquid staked Ether 2.0") {
+            liquidationThreshold = 80;
+          }
+  
+          let maxLTV: number = 0;
+          if (name == "Tether USD" || name == "USD Coin (Arb1)" || name == "Wrapped Ether") {
+            maxLTV = 80;
+          }
+          if (name == "Wrapped BTC" || name == "Wrapped liquid staked Ether 2.0") {
+            maxLTV = 70;
+          }
+          if (name == "Arbitrum") {
+            maxLTV = 40;
+          }
+          if (name == "Dai Stablecoin") {
+            maxLTV = 75;
+          }
+  
+          return {
+            name: name,
+            balance: balance,
+            details: element,
+            decimals: decimals,
+            liquidationThreshold: liquidationThreshold,
+            maxLTV: maxLTV,
+            depositAPR: depositAPR,
+            stableBorrowAPR: stableBorrowAPR,
+            address: element.underlyingAsset,
+            variableBorrowAPR: variableBorrowAPR,
+            liquidationPenalty: 15,
+            variableDebtTokenSupply: variableDebtTokenSupply,
+            // rTokenAssetPrice: rTokenAssetPrice,
+            deposit: ((Number(deposit)) / (Number(1 + '0'.repeat(Number(decimals)))) * (Number(getAssetPrice) * 0.00000000000001)).toFixed(2),
+            depositAPY: depositAPY,
+            variableBorrowAPY: variableBorrowAPY,
+            stableBorrowAPY: stableBorrowAPY,
+            // totalAToken: totalAToken,
+            assetPrice: assetPrice,
+            totalSupply: totalSupplyValue,
+            totalBorrows: totalBorrowsValue,
+          };
+        });
+        this.reserveData = await Promise.all(reserveDataPromises);
+        return this.reserveData;
+      } catch (error) {
+        console.log(error);
+        if (!this.connected) {
+          alert("Please Connect to the Wallet");
+        }
+        console.error('Error fetching reserveData:', error);
+        alert('Error fetching Reserves Data. Please try Reloading Again.')
+        throw error;
       }
-
-      const getReserveData = await this.getReserveDATA();
-      this.accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-
-      const reserveDataPromises = getReserveData[0].map(async (element: any) => {
-        const tokenContracts = this.getTokenContracts(element.underlyingAsset);
-        const rTokenAddress = this.rTokenAddress[getReserveData[0].indexOf(element)];
-
-        const [
-          name,
-          deposit,
-          // rTOkenDecimals,
-          // getrTokenAssetPrice,
-          totalSupply,
-          balance,
-          decimals,
-        ] = await Promise.all([
-          tokenContracts.methods.name().call(),
-          new this.web3.eth.Contract(this.rTokenABI, rTokenAddress).methods.totalSupply().call(),
-          // new this.web3.eth.Contract(this.rTokenABI, rTokenAddress).methods.decimals().call(),
-          // new this.web3.eth.Contract(this.rTokenABI, rTokenAddress).methods.getAssetPrice().call(),
-          tokenContracts.methods.totalSupply().call(),
-          tokenContracts.methods.balanceOf(this.accounts[0]).call(),
-          tokenContracts.methods.decimals().call(),
-        ]);
-
-        const depositAPR = Number(element.liquidityRate) / this.RAY;
-        const variableBorrowAPR = Number(element.variableBorrowRate) / this.RAY;
-        const stableBorrowAPR = Number(element.variableBorrowRate) / this.RAY;
-
-        const variableDebtTokenContract = new this.web3.eth.Contract(this.variableDebtTokenABI, element.variableDebtTokenAddress);
-        const stableDebtTokenContract = new this.web3.eth.Contract(this.stableDebtTokenABI, element.stableDebtTokenAddress);
-
-        const [
-          variableDebtTokenSupply,
-          stableDebtTokenSupply,
-          BaseCurrency,
-          getAssetPrice,
-        ] = await Promise.all([
-          variableDebtTokenContract.methods.totalSupply().call(),
-          stableDebtTokenContract.methods.totalSupply().call(),
-          this.getBaseCurrency(),
-          this.getAssetPrice(element.underlyingAsset),
-        ]);
-
-        // const rTokenAssetPrice = (Number(getrTokenAssetPrice)).toFixed(2);
-        const depositAPY = ((Math.pow((1 + (depositAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2);
-        const variableBorrowAPY = ((Math.pow((1 + (variableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2);
-        const stableBorrowAPY = ((Math.pow((1 + (stableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2);
-        // const totalAToken = ((Number(element.totalPrincipalStableDebt) + Number(element.availableLiquidity)) / Math.pow(10, 18)).toFixed(2);
-        const assetPrice = (Number(getAssetPrice) / Number(BaseCurrency)).toFixed(2);
-        const totalSupplyValue = (Number(totalSupply) * (Number(getAssetPrice) * 0.00000000000001) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2);
-        const totalBorrowsValue = ((Number(variableDebtTokenSupply) + Number(stableDebtTokenSupply)) * (Number(getAssetPrice) * 0.00000000000001) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2);
-        let liquidationThreshold: number = 0;
-        if (name == "Tether USD" || name == "USD Coin (Arb1)" || name == "Dai Stablecoin") {
-          liquidationThreshold = 85;
-        }
-        if (name == "Wrapped BTC") {
-          liquidationThreshold = 75;
-        }
-        if (name == "Arbitrum") {
-          liquidationThreshold = 50;
-        }
-        if (name == "Wrapped Ether") {
-          liquidationThreshold = 82.5;
-        }
-        if (name == "Wrapped liquid staked Ether 2.0") {
-          liquidationThreshold = 80;
-        }
-
-        let maxLTV: number = 0;
-        if (name == "Tether USD" || name == "USD Coin (Arb1)" || name == "Wrapped Ether") {
-          maxLTV = 80;
-        }
-        if (name == "Wrapped BTC" || name == "Wrapped liquid staked Ether 2.0") {
-          maxLTV = 70;
-        }
-        if (name == "Arbitrum") {
-          maxLTV = 40;
-        }
-        if (name == "Dai Stablecoin") {
-          maxLTV = 75;
-        }
-
-        return {
-          name: name,
-          balance: balance,
-          details: element,
-          decimals: decimals,
-          liquidationThreshold: liquidationThreshold,
-          maxLTV: maxLTV,
-          depositAPR: depositAPR,
-          stableBorrowAPR: stableBorrowAPR,
-          address: element.underlyingAsset,
-          variableBorrowAPR: variableBorrowAPR,
-          stableDebtTokenSupply: stableDebtTokenSupply,
-          liquidationPenalty: 15,
-          variableDebtTokenSupply: variableDebtTokenSupply,
-          // rTokenAssetPrice: rTokenAssetPrice,
-          deposit: ((Number(deposit)) / (Number(1 + '0'.repeat(Number(decimals)))) * (Number(getAssetPrice) * 0.00000000000001)).toFixed(2),
-          depositAPY: depositAPY,
-          variableBorrowAPY: variableBorrowAPY,
-          stableBorrowAPY: stableBorrowAPY,
-          // totalAToken: totalAToken,
-          assetPrice: assetPrice,
-          totalSupply: totalSupplyValue,
-          totalBorrows: totalBorrowsValue,
-        };
-      });
-      this.reserveData = await Promise.all(reserveDataPromises);
-      return this.reserveData;
-    } catch (error) {
-      console.log(error);
-      if (confirm('Error fetching Reserves Data. Please try Reloading Again.')) {
-        location.reload();
-      }
-      console.error('Error fetching reserveData:', error);
-      throw error;
-    }
   }
 
   async getBaseCurrency() {
@@ -239,52 +243,31 @@ export class readContractsService {
   }
 
   setData(data: any) {
-    this.data = data;
+    this.data.next(data);
   }
-
-  getData() {
-    return this.data;
-  }
-
-  // getTotalDeposits(){
-  //   let sumOfDeposits :any;
-  //   this.getReserveData().then((data: any) => {
-  //     this.reserveData = data;
-  //     this.reserveData.forEach((element: any) => {
-  //       this.totalDepositArr.push(element.deposit);
-  //       this.totalBorrowsArr.push(element.totalBorrows);
-  //     });
-      
-  //     sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-  //     this.deposits = sumOfDeposits.toFixed(2);
-  //     // localStorage.setItem('deposits',JSON.stringify(this.deposits))
-  //     // const sumOfBorrows = this.totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-  //     // this.borrows = sumOfBorrows.toFixed(2);
-
-  //     // localStorage.setItem('borrows',JSON.stringify(this.borrows))
-
-  //     // this.totalAvailable = (Number(this.deposits) - Number(this.borrows)).toFixed(2);
-
-  //     // localStorage.setItem('totalAvailable',JSON.stringify(this.totalAvailable))
-
-  //     console.log('asdf', this.deposits,this.totalDepositArr)
-  //     return this.deposits;
-  //   });
-  // }
 
   async getTotalDeposits() {
-    let deposits:number = 0 ;
+    this.totalDepositArr = [];
     this.reserveData.forEach((element: any) => {
       this.totalDepositArr.push(element.deposit);
-      this.totalBorrowsArr.push(element.totalBorrows);
     });
-    let sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-    deposits = sumOfDeposits.toFixed(2);
-    this.totalDepositArr = [];
-    console.log('Calculated deposits:', deposits);
-    return deposits;
+    const sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+    this.deposits = sumOfDeposits.toFixed(2);
+    console.log('Calculated deposits:', this.deposits);
+    return this.deposits;
   }
 
+  async getTotalBorrows() {
+    debugger
+    this.totalBorrowsArr = [];
+    this.reserveData.forEach((element: any) => {
+      this.totalBorrowsArr.push(element.totalBorrows);
+    });
+    const sumOfBorrows = this.totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+    this.borrows = sumOfBorrows.toFixed(2);
+    console.log('Calculated deposits:', this.borrows);
+    return this.borrows;
+  }
   // setConnected(connected: boolean) {
   //   this.connected.next(connected);
   // }

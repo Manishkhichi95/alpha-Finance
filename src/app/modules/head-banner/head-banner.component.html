@@ -19,15 +19,18 @@
         <div class="about_sect">
           <div class="card_bx">
             <h3>Total market size</h3>
-            <p>${{deposits}}M</p>
+            <p *ngIf="connected && networkName=='Arbitrum'">${{deposits}}M</p>
+            <p *ngIf="!connected || networkName!='Arbitrum'">$0.00M</p>
           </div>
           <div class="card_bx">
             <h3>Total available</h3>
-            <p>${{totalAvailable}}M</p>
+            <p *ngIf="connected && networkName=='Arbitrum'">${{totalAvailable}}M</p>
+            <p *ngIf="!connected || networkName!='Arbitrum'">$0.00M</p>
           </div>
           <div class="card_bx">
             <h3>Total Borrow</h3>
-            <p>${{borrows}}M</p>
+            <p *ngIf="connected && networkName=='Arbitrum'">${{borrows}}M</p>
+            <p *ngIf="!connected || networkName!='Arbitrum'">$0.00M</p>
           </div>
         </div>
       </div>
