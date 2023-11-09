@@ -14,34 +14,34 @@ declare global {
   providedIn: 'root',
 })
 export class readContractsService {
-  deposits: any;
+  deposits: Number = 0;
   web3: Web3 | any;
   SECONDS_PER_YEAR = 31536000;
   RAY = Math.pow(10, 27);
   UiPoolDataProviderV3ABI: any
   data = new BehaviorSubject<any>([]);
-  UiPoolDataProviderV3Address: any
-  ReserveDataABI: any
+  UiPoolDataProviderV3Address: string = '';
+  ReserveDataABI: any;
   reserveData: any = [];
-  PoolDataProvider_AaveContractABI: any
-  depositAPR: any;
-  variableBorrowAPR: any;
-  stableBorrowAPR: any;
-  accounts: any;
-  PoolAddressesProvider_AaveAddress: any;
-  PoolDataProvider_AaveAddress: any;
-  depositAPY: any;
-  variableBorrowAPY: any;
-  stableBorrowAPY: any;
-  totalAToken: any;
-  totalBorrows: any;
-  balance: any;
+  PoolDataProvider_AaveContractABI: any;
+  depositAPR: Number = 0;
+  variableBorrowAPR: Number = 0;
+  stableBorrowAPR: Number = 0;
+  accounts: string = '';
+  PoolAddressesProvider_AaveAddress: string = '';
+  PoolDataProvider_AaveAddress: string = '';
+  depositAPY: Number = 0;
+  variableBorrowAPY: Number = 0;
+  stableBorrowAPY: Number = 0;
+  totalAToken: Number = 0;
+  totalBorrows: Number = 0;
+  balance: Number = 0;
   tokenContractsABI: any;
   selectedReserve: any;
   selectedReserveContract: any;
   poolDataProvider: any;
   poolDataProviderContract: any;
-  myContractAddress: any;
+  myContractAddress: string = '';
   myContractABI: any;
   // connected = new BehaviorSubject<boolean>(false);
   rTokenAddress: string[] = ['0x727354712BDFcd8596a3852Fd2065b3C34F4F770',
@@ -96,128 +96,128 @@ export class readContractsService {
   }
 
   async getReserveData() {
-      try {
-        if (!localStorage.getItem('walletAddress')) {
-          return [];
-        }
-        const getReserveData = await this.getReserveDATA();
-        this.accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-  
-        const reserveDataPromises = getReserveData[0].map(async (element: any) => {
-          const tokenContracts = this.getTokenContracts(element.underlyingAsset);
-          const rTokenAddress = this.rTokenAddress[getReserveData[0].indexOf(element)];
-  
-          const [
-            name,
-            deposit,
-            // rTOkenDecimals,
-            // getrTokenAssetPrice,
-            totalSupply,
-            balance,
-            decimals,
-          ] = await Promise.all([
-            tokenContracts.methods.name().call(),
-            new this.web3.eth.Contract(this.rTokenABI, rTokenAddress).methods.totalSupply().call(),
-            // new this.web3.eth.Contract(this.rTokenABI, rTokenAddress).methods.decimals().call(),
-            // new this.web3.eth.Contract(this.rTokenABI, rTokenAddress).methods.getAssetPrice().call(),
-            tokenContracts.methods.totalSupply().call(),
-            tokenContracts.methods.balanceOf(this.accounts[0]).call(),
-            tokenContracts.methods.decimals().call(),
-          ]);
-  
-          const depositAPR = Number(element.liquidityRate) / this.RAY;
-          const variableBorrowAPR = Number(element.variableBorrowRate) / this.RAY;
-          const stableBorrowAPR = Number(element.variableBorrowRate) / this.RAY;
-  
-          const variableDebtTokenContract = new this.web3.eth.Contract(this.variableDebtTokenABI, element.variableDebtTokenAddress);
-          const stableDebtTokenContract = new this.web3.eth.Contract(this.stableDebtTokenABI, element.stableDebtTokenAddress);
-  
-          const [
-            variableDebtTokenSupply,
-            stableDebtTokenSupply,
-            BaseCurrency,
-            getAssetPrice,
-          ] = await Promise.all([
-            variableDebtTokenContract.methods.totalSupply().call(),
-            stableDebtTokenContract.methods.totalSupply().call(),
-            this.getBaseCurrency(),
-            this.getAssetPrice(element.underlyingAsset),
-          ]);
-  
-          // const rTokenAssetPrice = (Number(getrTokenAssetPrice)).toFixed(2);
-          const depositAPY = ((Math.pow((1 + (depositAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2);
-          const variableBorrowAPY = ((Math.pow((1 + (variableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2);
-          const stableBorrowAPY = ((Math.pow((1 + (stableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2);
-          // const totalAToken = ((Number(element.totalPrincipalStableDebt) + Number(element.availableLiquidity)) / Math.pow(10, 18)).toFixed(2);
-          const assetPrice = (Number(getAssetPrice) / Number(BaseCurrency)).toFixed(2);
-          const totalSupplyValue = (Number(totalSupply) * (Number(getAssetPrice) * 0.00000000000001) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2);
-          const totalBorrowsValue = ((Number(variableDebtTokenSupply) + Number(stableDebtTokenSupply)) * (Number(getAssetPrice) * 0.00000000000001) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2);
-          let liquidationThreshold: number = 0;
-          if (name == "Tether USD" || name == "USD Coin (Arb1)" || name == "Dai Stablecoin") {
-            liquidationThreshold = 85;
-          }
-          if (name == "Wrapped BTC") {
-            liquidationThreshold = 75;
-          }
-          if (name == "Arbitrum") {
-            liquidationThreshold = 50;
-          }
-          if (name == "Wrapped Ether") {
-            liquidationThreshold = 82.5;
-          }
-          if (name == "Wrapped liquid staked Ether 2.0") {
-            liquidationThreshold = 80;
-          }
-  
-          let maxLTV: number = 0;
-          if (name == "Tether USD" || name == "USD Coin (Arb1)" || name == "Wrapped Ether") {
-            maxLTV = 80;
-          }
-          if (name == "Wrapped BTC" || name == "Wrapped liquid staked Ether 2.0") {
-            maxLTV = 70;
-          }
-          if (name == "Arbitrum") {
-            maxLTV = 40;
-          }
-          if (name == "Dai Stablecoin") {
-            maxLTV = 75;
-          }
-  
-          return {
-            name: name,
-            balance: balance,
-            details: element,
-            decimals: decimals,
-            liquidationThreshold: liquidationThreshold,
-            maxLTV: maxLTV,
-            depositAPR: depositAPR,
-            stableBorrowAPR: stableBorrowAPR,
-            address: element.underlyingAsset,
-            variableBorrowAPR: variableBorrowAPR,
-            liquidationPenalty: 15,
-            variableDebtTokenSupply: variableDebtTokenSupply,
-            // rTokenAssetPrice: rTokenAssetPrice,
-            deposit: ((Number(deposit)) / (Number(1 + '0'.repeat(Number(decimals)))) * (Number(getAssetPrice) * 0.00000000000001)).toFixed(2),
-            depositAPY: depositAPY,
-            variableBorrowAPY: variableBorrowAPY,
-            stableBorrowAPY: stableBorrowAPY,
-            // totalAToken: totalAToken,
-            assetPrice: assetPrice,
-            totalSupply: totalSupplyValue,
-            totalBorrows: totalBorrowsValue,
-          };
-        });
-        this.reserveData = await Promise.all(reserveDataPromises);
-        return this.reserveData;
-      } catch (error) {
-        console.log(error);
-        if (!this.connected) {
-          alert("Please Connect to the Wallet");
-        }
-        console.error('Error fetching reserveData:', error);
-        alert('Error fetching Reserves Data. Please try Reloading Again.')
-        throw error;
+    try {
+      if (!localStorage.getItem('walletAddress')) {
+        return [];
       }
+      const getReserveData = await this.getReserveDATA();
+      this.accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+
+      const reserveDataPromises = getReserveData[0].map(async (element: any) => {
+        const tokenContracts = this.getTokenContracts(element.underlyingAsset);
+        const rTokenAddress = this.rTokenAddress[getReserveData[0].indexOf(element)];
+
+        const [
+          name,
+          deposit,
+          // rTOkenDecimals,
+          // getrTokenAssetPrice,
+          totalSupply,
+          balance,
+          decimals,
+        ] = await Promise.all([
+          tokenContracts.methods.name().call(),
+          new this.web3.eth.Contract(this.rTokenABI, rTokenAddress).methods.totalSupply().call(),
+          // new this.web3.eth.Contract(this.rTokenABI, rTokenAddress).methods.decimals().call(),
+          // new this.web3.eth.Contract(this.rTokenABI, rTokenAddress).methods.getAssetPrice().call(),
+          tokenContracts.methods.totalSupply().call(),
+          tokenContracts.methods.balanceOf(this.accounts[0]).call(),
+          tokenContracts.methods.decimals().call(),
+        ]);
+
+        const depositAPR = Number(element.liquidityRate) / this.RAY;
+        const variableBorrowAPR = Number(element.variableBorrowRate) / this.RAY;
+        const stableBorrowAPR = Number(element.variableBorrowRate) / this.RAY;
+
+        const variableDebtTokenContract = new this.web3.eth.Contract(this.variableDebtTokenABI, element.variableDebtTokenAddress);
+        const stableDebtTokenContract = new this.web3.eth.Contract(this.stableDebtTokenABI, element.stableDebtTokenAddress);
+
+        const [
+          variableDebtTokenSupply,
+          stableDebtTokenSupply,
+          BaseCurrency,
+          getAssetPrice,
+        ] = await Promise.all([
+          variableDebtTokenContract.methods.totalSupply().call(),
+          stableDebtTokenContract.methods.totalSupply().call(),
+          this.getBaseCurrency(),
+          this.getAssetPrice(element.underlyingAsset),
+        ]);
+
+        // const rTokenAssetPrice = (Number(getrTokenAssetPrice)).toFixed(2);
+        const depositAPY = ((Math.pow((1 + (depositAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2);
+        const variableBorrowAPY = ((Math.pow((1 + (variableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2);
+        const stableBorrowAPY = ((Math.pow((1 + (stableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2);
+        // const totalAToken = ((Number(element.totalPrincipalStableDebt) + Number(element.availableLiquidity)) / Math.pow(10, 18)).toFixed(2);
+        const assetPrice = (Number(getAssetPrice) / Number(BaseCurrency)).toFixed(2);
+        const totalSupplyValue = (Number(totalSupply) * (Number(getAssetPrice) * 0.00000000000001) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2);
+        const totalBorrowsValue = ((Number(variableDebtTokenSupply) + Number(stableDebtTokenSupply)) * (Number(getAssetPrice) * 0.00000000000001) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2);
+        let liquidationThreshold: number = 0;
+        if (name == "Tether USD" || name == "USD Coin (Arb1)" || name == "Dai Stablecoin") {
+          liquidationThreshold = 85;
+        }
+        if (name == "Wrapped BTC") {
+          liquidationThreshold = 75;
+        }
+        if (name == "Arbitrum") {
+          liquidationThreshold = 50;
+        }
+        if (name == "Wrapped Ether") {
+          liquidationThreshold = 82.5;
+        }
+        if (name == "Wrapped liquid staked Ether 2.0") {
+          liquidationThreshold = 80;
+        }
+
+        let maxLTV: number = 0;
+        if (name == "Tether USD" || name == "USD Coin (Arb1)" || name == "Wrapped Ether") {
+          maxLTV = 80;
+        }
+        if (name == "Wrapped BTC" || name == "Wrapped liquid staked Ether 2.0") {
+          maxLTV = 70;
+        }
+        if (name == "Arbitrum") {
+          maxLTV = 40;
+        }
+        if (name == "Dai Stablecoin") {
+          maxLTV = 75;
+        }
+
+        return {
+          name: name,
+          balance: balance,
+          details: element,
+          decimals: decimals,
+          liquidationThreshold: liquidationThreshold,
+          maxLTV: maxLTV,
+          depositAPR: depositAPR,
+          stableBorrowAPR: stableBorrowAPR,
+          address: element.underlyingAsset,
+          variableBorrowAPR: variableBorrowAPR,
+          liquidationPenalty: 15,
+          variableDebtTokenSupply: variableDebtTokenSupply,
+          // rTokenAssetPrice: rTokenAssetPrice,
+          deposit: ((Number(deposit)) / (Number(1 + '0'.repeat(Number(decimals)))) * (Number(getAssetPrice) * 0.00000000000001)).toFixed(2),
+          depositAPY: depositAPY,
+          variableBorrowAPY: variableBorrowAPY,
+          stableBorrowAPY: stableBorrowAPY,
+          // totalAToken: totalAToken,
+          assetPrice: assetPrice,
+          totalSupply: totalSupplyValue,
+          totalBorrows: totalBorrowsValue,
+        };
+      });
+      this.reserveData = await Promise.all(reserveDataPromises);
+      return this.reserveData;
+    } catch (error) {
+      console.log(error);
+      if (!this.connected) {
+        alert("Please Connect to the Wallet");
+      }
+      console.error('Error fetching reserveData:', error);
+      alert('Error fetching Reserves Data. Please try Reloading Again.')
+      throw error;
+    }
   }
 
   async getBaseCurrency() {

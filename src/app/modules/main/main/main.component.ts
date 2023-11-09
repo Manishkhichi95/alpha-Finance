@@ -11,17 +11,17 @@ import { Web3Service } from 'src/app/services/WEb3Service.service';
 export class MainComponent implements OnInit {
   title = 'alpha-finance-launch';
   ContractData: any = [];
-  walletAddress: any;
+  walletAddress: string|null;
   connected: boolean = false;
   error: boolean = false;
-  totalDepositArr: any = [];
-  CurrentchainId: any = localStorage.getItem('chainId');
+  totalDepositArr:any = [];
+  CurrentchainId: string|null = localStorage.getItem('chainId');
   networkName: string | null = localStorage.getItem('networkName');
   icons: string[] = ['assets/images/ic1.png', 'assets/images/ic3.png', 'assets/images/ic2.png', 'assets/images/ic4.png', 'assets/images/ic5.png', 'assets/images/ic6.png', 'assets/images/ic7.png']
   deposits: Number = 0;
   totalBorrowsArr: any = [];
   borrows: Number = 0;
-  totalAvailable: any = 0;
+  totalAvailable: Number = 0;
   showDetails: boolean = false;
 
   constructor(private readContractsService: readContractsService, private web3Service: Web3Service, private router: Router) {

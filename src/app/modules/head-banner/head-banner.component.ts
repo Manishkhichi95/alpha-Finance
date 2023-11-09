@@ -24,24 +24,28 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-        const deposits: any = localStorage.getItem('deposits');
-        this.readContractsService.getTotalDeposits().then((deposits: number) => {
-          this.deposits = deposits;
-          localStorage.setItem('deposits', JSON.stringify(this.deposits));
-        })
-        if (this.deposits == undefined) {
-          this.deposits = JSON.parse(deposits);
-        }
-        const borrows: any = localStorage.getItem('borrows');
-        this.readContractsService.getTotalBorrows().then((borrows: number) => {
-          this.borrows = borrows;
-          localStorage.setItem('borrows', JSON.stringify(this.borrows));
-        })
-        if (this.borrows == undefined) {
-          this.borrows = JSON.parse(borrows);
-        }
-        this.totalAvailable = (Number(this.deposits) - Number(this.borrows)).toFixed(2);
-      }
+    this.initializeData();
+  }
+
+  initializeData() {
+    const deposits: any = localStorage.getItem('deposits');
+    this.readContractsService.getTotalDeposits().then((deposits: Number) => {
+      this.deposits = deposits;
+      localStorage.setItem('deposits', JSON.stringify(this.deposits));
+    })
+    if (this.deposits == undefined) {
+      this.deposits = JSON.parse(deposits);
+    }
+    const borrows: any = localStorage.getItem('borrows');
+    this.readContractsService.getTotalBorrows().then((borrows: number) => {
+      this.borrows = borrows;
+      localStorage.setItem('borrows', JSON.stringify(this.borrows));
+    })
+    if (this.borrows == undefined) {
+      this.borrows = JSON.parse(borrows);
+    }
+    this.totalAvailable = (Number(this.deposits) - Number(this.borrows)).toFixed(2);
+  }
 
   ngAfterViewInit(): void {
     this.readContractsService.dropDown();
