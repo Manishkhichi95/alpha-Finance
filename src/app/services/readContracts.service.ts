@@ -138,12 +138,6 @@ export class readContractsService {
           this.getBaseCurrency(),
           this.getAssetPrice(element.underlyingAsset),
         ]);
-        const depositAPY = ((Math.pow((1 + (depositAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2);
-        const variableBorrowAPY = ((Math.pow((1 + (variableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2);
-        const stableBorrowAPY = ((Math.pow((1 + (stableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2);
-        const assetPrice = (Number(getAssetPrice) / Number(BaseCurrency)).toFixed(2);
-        const totalSupplyValue = (Number(totalSupply) * (Number(getAssetPrice) * 0.00000000000001) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2);
-        const totalBorrowsValue = ((Number(variableDebtTokenSupply) + Number(stableDebtTokenSupply)) * (Number(getAssetPrice) * 0.00000000000001) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2);
 
         let liquidationThreshold: number = 0;
         name == "Tether USD" || name == "USD Coin (Arb1)" || name == "Dai Stablecoin" ?
@@ -173,12 +167,12 @@ export class readContractsService {
           liquidationPenalty: 15,
           variableDebtTokenSupply: variableDebtTokenSupply,
           deposit: ((Number(deposit)) / (Number(1 + '0'.repeat(Number(decimals)))) * (Number(getAssetPrice) * 0.00000000000001)).toFixed(2),
-          depositAPY: depositAPY,
-          variableBorrowAPY: variableBorrowAPY,
-          stableBorrowAPY: stableBorrowAPY,
-          assetPrice: assetPrice,
-          totalSupply: totalSupplyValue,
-          totalBorrows: totalBorrowsValue,
+          depositAPY: ((Math.pow((1 + (depositAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2),
+          variableBorrowAPY: ((Math.pow((1 + (variableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2),
+          stableBorrowAPY: ((Math.pow((1 + (stableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2),
+          assetPrice: (Number(getAssetPrice) / Number(BaseCurrency)).toFixed(2),
+          totalSupply: (Number(totalSupply) * (Number(getAssetPrice) * 0.00000000000001) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2),
+          totalBorrows: ((Number(variableDebtTokenSupply) + Number(stableDebtTokenSupply)) * (Number(getAssetPrice) * 0.00000000000001) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2),
         };
       });
       this.reserveData = await Promise.all(reserveDataPromises);
