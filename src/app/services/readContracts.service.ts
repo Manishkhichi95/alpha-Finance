@@ -20,10 +20,10 @@ export class readContractsService {
   RAY = Math.pow(10, 27);
   UiPoolDataProviderV3ABI: any
   data = new BehaviorSubject<any>([]);
-  UiPoolDataProviderV3Address: any
-  ReserveDataABI: any
+  UiPoolDataProviderV3Address: any;
+  ReserveDataABI: any;
   reserveData: any = [];
-  PoolDataProvider_AaveContractABI: any
+  PoolDataProvider_AaveContractABI: any;
   depositAPR: any;
   variableBorrowAPR: any;
   stableBorrowAPR: any;
@@ -43,7 +43,6 @@ export class readContractsService {
   poolDataProviderContract: any;
   myContractAddress: any;
   myContractABI: any;
-  // connected = new BehaviorSubject<boolean>(false);
   rTokenAddress: string[] = ['0x727354712BDFcd8596a3852Fd2065b3C34F4F770',
     '0xd69D402D1bDB9A2b8c3d88D98b9CEaf9e4Cd72d9',
     '0x48a29E756CC1C097388f3B2f3b570ED270423b3d',
@@ -110,16 +109,12 @@ export class readContractsService {
         const [
           name,
           deposit,
-          // rTOkenDecimals,
-          // getrTokenAssetPrice,
           totalSupply,
           balance,
           decimals,
         ] = await Promise.all([
           tokenContracts.methods.name().call(),
           new this.web3.eth.Contract(this.rTokenABI, rTokenAddress).methods.totalSupply().call(),
-          // new this.web3.eth.Contract(this.rTokenABI, rTokenAddress).methods.decimals().call(),
-          // new this.web3.eth.Contract(this.rTokenABI, rTokenAddress).methods.getAssetPrice().call(),
           tokenContracts.methods.totalSupply().call(),
           tokenContracts.methods.balanceOf(this.accounts[0]).call(),
           tokenContracts.methods.decimals().call(),
@@ -143,45 +138,26 @@ export class readContractsService {
           this.getBaseCurrency(),
           this.getAssetPrice(element.underlyingAsset),
         ]);
-
-        // const rTokenAssetPrice = (Number(getrTokenAssetPrice)).toFixed(2);
         const depositAPY = ((Math.pow((1 + (depositAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2);
         const variableBorrowAPY = ((Math.pow((1 + (variableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2);
         const stableBorrowAPY = ((Math.pow((1 + (stableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2);
-        // const totalAToken = ((Number(element.totalPrincipalStableDebt) + Number(element.availableLiquidity)) / Math.pow(10, 18)).toFixed(2);
         const assetPrice = (Number(getAssetPrice) / Number(BaseCurrency)).toFixed(2);
         const totalSupplyValue = (Number(totalSupply) * (Number(getAssetPrice) * 0.00000000000001) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2);
         const totalBorrowsValue = ((Number(variableDebtTokenSupply) + Number(stableDebtTokenSupply)) * (Number(getAssetPrice) * 0.00000000000001) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2);
+
         let liquidationThreshold: number = 0;
-        if (name == "Tether USD" || name == "USD Coin (Arb1)" || name == "Dai Stablecoin") {
-          liquidationThreshold = 85;
-        }
-        if (name == "Wrapped BTC") {
-          liquidationThreshold = 75;
-        }
-        if (name == "Arbitrum") {
-          liquidationThreshold = 50;
-        }
-        if (name == "Wrapped Ether") {
-          liquidationThreshold = 82.5;
-        }
-        if (name == "Wrapped liquid staked Ether 2.0") {
-          liquidationThreshold = 80;
-        }
+        name == "Tether USD" || name == "USD Coin (Arb1)" || name == "Dai Stablecoin" ?
+          liquidationThreshold = 85 : name == "Wrapped BTC" ?
+            liquidationThreshold = 75 : name == "Arbitrum" ?
+              liquidationThreshold = 50 : name == "Wrapped Ether" ?
+                liquidationThreshold = 82.5 : name == "Wrapped liquid staked Ether 2.0" ?
+                  liquidationThreshold = 80 : '';
 
         let maxLTV: number = 0;
-        if (name == "Tether USD" || name == "USD Coin (Arb1)" || name == "Wrapped Ether") {
-          maxLTV = 80;
-        }
-        if (name == "Wrapped BTC" || name == "Wrapped liquid staked Ether 2.0") {
-          maxLTV = 70;
-        }
-        if (name == "Arbitrum") {
-          maxLTV = 40;
-        }
-        if (name == "Dai Stablecoin") {
-          maxLTV = 75;
-        }
+        name == "Tether USD" || name == "USD Coin (Arb1)" || name == "Wrapped Ether" ?
+          maxLTV = 80 : name == "Wrapped BTC" || name == "Wrapped liquid staked Ether 2.0" ?
+            maxLTV = 70 : name == "Arbitrum" ?
+              maxLTV = 40 : name == "Dai Stablecoin" ? maxLTV = 75 : '';
 
         return {
           name: name,
@@ -196,12 +172,10 @@ export class readContractsService {
           variableBorrowAPR: variableBorrowAPR,
           liquidationPenalty: 15,
           variableDebtTokenSupply: variableDebtTokenSupply,
-          // rTokenAssetPrice: rTokenAssetPrice,
           deposit: ((Number(deposit)) / (Number(1 + '0'.repeat(Number(decimals)))) * (Number(getAssetPrice) * 0.00000000000001)).toFixed(2),
           depositAPY: depositAPY,
           variableBorrowAPY: variableBorrowAPY,
           stableBorrowAPY: stableBorrowAPY,
-          // totalAToken: totalAToken,
           assetPrice: assetPrice,
           totalSupply: totalSupplyValue,
           totalBorrows: totalBorrowsValue,
