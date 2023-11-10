@@ -14,34 +14,34 @@ declare global {
   providedIn: 'root',
 })
 export class readContractsService {
-  deposits: Number = 0;
+  deposits = new BehaviorSubject<any>(0);
   web3: Web3 | any;
   SECONDS_PER_YEAR = 31536000;
   RAY = Math.pow(10, 27);
   UiPoolDataProviderV3ABI: any
   data = new BehaviorSubject<any>([]);
-  UiPoolDataProviderV3Address: string = '';
-  ReserveDataABI: any;
+  UiPoolDataProviderV3Address: any
+  ReserveDataABI: any
   reserveData: any = [];
-  PoolDataProvider_AaveContractABI: any;
-  depositAPR: Number = 0;
-  variableBorrowAPR: Number = 0;
-  stableBorrowAPR: Number = 0;
-  accounts: string = '';
-  PoolAddressesProvider_AaveAddress: string = '';
-  PoolDataProvider_AaveAddress: string = '';
-  depositAPY: Number = 0;
-  variableBorrowAPY: Number = 0;
-  stableBorrowAPY: Number = 0;
-  totalAToken: Number = 0;
-  totalBorrows: Number = 0;
-  balance: Number = 0;
+  PoolDataProvider_AaveContractABI: any
+  depositAPR: any;
+  variableBorrowAPR: any;
+  stableBorrowAPR: any;
+  accounts: any;
+  PoolAddressesProvider_AaveAddress: any;
+  PoolDataProvider_AaveAddress: any;
+  depositAPY: any;
+  variableBorrowAPY: any;
+  stableBorrowAPY: any;
+  totalAToken: any;
+  totalBorrows: any;
+  balance: any;
   tokenContractsABI: any;
   selectedReserve: any;
   selectedReserveContract: any;
   poolDataProvider: any;
   poolDataProviderContract: any;
-  myContractAddress: string = '';
+  myContractAddress: any;
   myContractABI: any;
   // connected = new BehaviorSubject<boolean>(false);
   rTokenAddress: string[] = ['0x727354712BDFcd8596a3852Fd2065b3C34F4F770',
@@ -56,8 +56,8 @@ export class readContractsService {
   stableDebtTokenABI: any;
   variableDebtTokenABI: any;
   UiPoolDataProviderV2V3: any;
-  totalAvailable: any;
-  borrows: any;
+  totalAvailable = new BehaviorSubject<any>(0);
+  borrows = new BehaviorSubject<any>(0);
   totalDepositArr: any = [];
   totalBorrowsArr: any = [];
   connected: boolean = false;
@@ -241,40 +241,6 @@ export class readContractsService {
   getSelectedReserve(selectedReserve: any) {
     this.selectedReserve = selectedReserve;
   }
-
-  setData(data: any) {
-    this.data.next(data);
-  }
-
-  async getTotalDeposits() {
-    this.totalDepositArr = [];
-    this.reserveData.forEach((element: any) => {
-      this.totalDepositArr.push(element.deposit);
-    });
-    const sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-    this.deposits = sumOfDeposits.toFixed(2);
-    console.log('Calculated deposits:', this.deposits);
-    return this.deposits;
-  }
-
-  async getTotalBorrows() {
-    debugger
-    this.totalBorrowsArr = [];
-    this.reserveData.forEach((element: any) => {
-      this.totalBorrowsArr.push(element.totalBorrows);
-    });
-    const sumOfBorrows = this.totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-    this.borrows = sumOfBorrows.toFixed(2);
-    console.log('Calculated deposits:', this.borrows);
-    return this.borrows;
-  }
-  // setConnected(connected: boolean) {
-  //   this.connected.next(connected);
-  // }
-
-  // getConnected() {
-  //   return this.connected.asObservable();
-  // }
 
   dropDown() {
     const selectedAll = document.querySelectorAll(".wrapper-dropdown");

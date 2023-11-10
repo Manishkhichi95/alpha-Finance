@@ -25,7 +25,7 @@ export class AssetDetailComponent implements OnInit, AfterViewInit {
   aaveOracleAddress: any;
   lineChartLegend = true;
   lineChartType = 'line';
-  
+
   lineChartData: Array<any> = [
     { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' },
   ];
@@ -49,7 +49,7 @@ export class AssetDetailComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.initializeData();
-    this.readContractsService.data.subscribe((res:any)=>{
+    this.readContractsService.data.subscribe((res: any) => {
       this.ContractData = res
     });
   }
@@ -74,7 +74,7 @@ export class AssetDetailComponent implements OnInit, AfterViewInit {
         this.availableLiquidity = '$' + (Number(this.reserve.details['availableLiquidity']) /
           (Number(1 + '0'.repeat(Number(this.reserve.decimals)))) / 1000).toFixed(2) + 'k' :
         this.availableLiquidity = '$' + (Number(this.reserve.details['availableLiquidity']) /
-          (Number(1 + '0'.repeat(Number(this.reserve.decimals))))).toFixed(2)
+          (Number(1 + '0'.repeat(Number(this.reserve.decimals))))).toFixed(2);
 
     //reserveSize
     const aTokenContract = new this.web3.eth.Contract(aTokenContractABI, this.reserve.details['aTokenAddress']);

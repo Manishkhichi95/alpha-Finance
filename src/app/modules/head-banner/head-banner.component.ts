@@ -10,9 +10,9 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
   networkName: any;
   @Output() CurrentchainId = new EventEmitter<string>();
   @Input() contractData: any = [];
-  deposits: any;
-  borrows: any;
-  totalAvailable: any;
+  deposits: any = 0;
+  borrows: any = 0;
+  totalAvailable: any = 0;
   connected: boolean = false;
 
   constructor(private readContractsService: readContractsService, private web3Service: Web3Service) {
@@ -24,27 +24,23 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    this.initializeData();
-  }
-
-  initializeData() {
-    const deposits: any = localStorage.getItem('deposits');
-    this.readContractsService.getTotalDeposits().then((deposits: Number) => {
-      this.deposits = deposits;
-      localStorage.setItem('deposits', JSON.stringify(this.deposits));
+    this.readContractsService.data.subscribe((res: any) => {
+      this.readContractsService.deposits.subscribe((res: any) => {
+        setTimeout(() => {
+          this.deposits = res;
+        }, (900));
+      });
+      this.readContractsService.borrows.subscribe((res: any) => {
+        setTimeout(() => {
+          this.borrows = res;
+        }, (900));
+      });
+      this.readContractsService.totalAvailable.subscribe((res: any) => {
+        setTimeout(() => {
+          this.totalAvailable = res;
+        }, (900));
+      });
     })
-    if (this.deposits == undefined) {
-      this.deposits = JSON.parse(deposits);
-    }
-    const borrows: any = localStorage.getItem('borrows');
-    this.readContractsService.getTotalBorrows().then((borrows: number) => {
-      this.borrows = borrows;
-      localStorage.setItem('borrows', JSON.stringify(this.borrows));
-    })
-    if (this.borrows == undefined) {
-      this.borrows = JSON.parse(borrows);
-    }
-    this.totalAvailable = (Number(this.deposits) - Number(this.borrows)).toFixed(2);
   }
 
   ngAfterViewInit(): void {
