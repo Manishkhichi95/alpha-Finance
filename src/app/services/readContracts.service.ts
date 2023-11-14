@@ -119,14 +119,11 @@ export class readContractsService {
           tokenContracts.methods.balanceOf(this.accounts[0]).call(),
           tokenContracts.methods.decimals().call(),
         ]);
-
         const depositAPR = Number(element.liquidityRate) / this.RAY;
         const variableBorrowAPR = Number(element.variableBorrowRate) / this.RAY;
         const stableBorrowAPR = Number(element.variableBorrowRate) / this.RAY;
-
         const variableDebtTokenContract = new this.web3.eth.Contract(this.variableDebtTokenABI, element.variableDebtTokenAddress);
         const stableDebtTokenContract = new this.web3.eth.Contract(this.stableDebtTokenABI, element.stableDebtTokenAddress);
-
         const [
           variableDebtTokenSupply,
           stableDebtTokenSupply,
@@ -269,10 +266,5 @@ export class readContractsService {
         dropdown.classList.remove("active");
       }
     }
-
-
-
-
-
   }
 }

@@ -38,7 +38,8 @@
                   <div class="cont_bx">
                     <h3>{{reserve.name}}</h3>
                     <p>{{reserve.details['symbol']}} <span><button class="btn_edit">
-                      <a  class="ri-edit-box-line" href="https://arbiscan.io/address/{{reserve.address}}" target="_blank"></a></button></span></p>
+                          <a class="ri-edit-box-line" href="https://arbiscan.io/address/{{reserve.address}}"
+                            target="_blank"></a></button></span></p>
 
                   </div>
 
@@ -58,7 +59,8 @@
               </div>
               <div class="card_bx">
                 <h3>Oracle Price</h3>
-                <p><span>$</span>{{OraclePrice}} <span><button class="btn_edit">                      <a  class="ri-edit-box-line" href="https://arbiscan.io/address/{{aaveOracleAddress}}" target="_blank"></a></button></span>
+                <p><span>$</span>{{OraclePrice}} <span><button class="btn_edit"> <a class="ri-edit-box-line"
+                        href="https://arbiscan.io/address/{{aaveOracleAddress}}" target="_blank"></a></button></span>
                 </p>
               </div>
             </div>
@@ -221,7 +223,7 @@
           <div class="card_bdy_inner">
             <div class="list_borrow">
               <div class="card_bx">
-                <h3>Total Borrowed</h3>  
+                <h3>Total Borrowed</h3>
                 <p>${{reserve.totalBorrows}}M</p>
                 <h4>$ 10.01K</h4>
               </div>
@@ -244,8 +246,8 @@
             <div class="head_bx">
               <h4>E-Mode Category <span>
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
-                    <mask id="mask0_1321_3911" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
-                      width="20" height="21">
+                    <mask id="mask0_1321_3911" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="20"
+                      height="21">
                       <rect y="0.5" width="20" height="20" fill="#D9D9D9" />
                     </mask>
                     <g mask="url(#mask0_1321_3911)">
@@ -276,7 +278,7 @@
                 <p>{{reserve['details'].eModeLtv}}.00%</p>
               </div>
               <div class="card_bx">
-                <h3>Liquidation threshold <span>                  
+                <h3>Liquidation threshold <span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
                       <mask id="mask0_674_1840" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
                         width="20" height="21">
@@ -328,18 +330,11 @@
                 <li>Borrow APR, stable</li>
                 <li>Utilization Rate</li>
               </ul>
-             <!-- <div style="display: block">
-  <canvas baseChart
-          [datasets]="lineChartData"
-          [labels]="lineChartLabels"
-          [options]="lineChartOptions"
-          [legend]="lineChartLegend"
-          chartType="line">
-  </canvas>
-</div> -->
-              <div class="grap_view">
-                <img src="assets/images/grap.png" alt="">
+              <div id="container">
               </div>
+              <!-- <div class="grap_view">
+                <img src="assets/images/grap.png" alt="">
+              </div> -->
 
             </div>
           </div>
@@ -374,8 +369,8 @@
               <h3>Available to supply
                 <span>
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <mask id="mask0_682_2654" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
-                      width="20" height="20">
+                    <mask id="mask0_682_2654" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="20"
+                      height="20">
                       <rect width="20" height="20" fill="#D9D9D9" />
                     </mask>
                     <g mask="url(#mask0_682_2654)">
@@ -390,7 +385,7 @@
               <h4>$ {{reserve.balance}}.00</h4>
             </div>
             <div class="rgt_bx">
-              <button class="btn">Supply</button>
+              <button class="btn" (click)="supplyAmount()">Supply</button>
             </div>
 
           </div>
@@ -399,8 +394,8 @@
               <h3>Available to borrow
                 <span>
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
-                    <mask id="mask0_682_2654" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
-                      width="20" height="20">
+                    <mask id="mask0_682_2654" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="20"
+                      height="20">
                       <rect width="20" height="20" fill="#D9D9D9" />
                     </mask>
                     <g mask="url(#mask0_682_2654)">
