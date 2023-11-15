@@ -11,12 +11,13 @@ import { Router } from '@angular/router';
 export class AppComponent implements OnInit {
   title = 'alpha-finance-launch';
   ContractData: any = [];
-  balance: any;
-  selectedAddress: any;
+  balance: number = 0;
+  selectedAddress: string | undefined;
   connected: boolean = false;
-  walletAddress: any;
+  walletAddress: string | null;
   reqAccounts: string[] | undefined;
-  constructor(private readContractsService: readContractsService, private web3Service: Web3Service, private router: Router) {
+  constructor(private readContractsService: readContractsService, private web3Service: Web3Service,
+    private router: Router) {
     this.walletAddress = localStorage.getItem('walletAddress');
     this.checkConnectionStatus();
     this.readContractsService.getReserveData().then((data: any) => {

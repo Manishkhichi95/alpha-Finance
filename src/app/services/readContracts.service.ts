@@ -136,27 +136,11 @@ export class readContractsService {
           this.getAssetPrice(element.underlyingAsset),
         ]);
 
-        let liquidationThreshold: number = 0;
-        name == "Tether USD" || name == "USD Coin (Arb1)" || name == "Dai Stablecoin" ?
-          liquidationThreshold = 85 : name == "Wrapped BTC" ?
-            liquidationThreshold = 75 : name == "Arbitrum" ?
-              liquidationThreshold = 50 : name == "Wrapped Ether" ?
-                liquidationThreshold = 82.5 : name == "Wrapped liquid staked Ether 2.0" ?
-                  liquidationThreshold = 80 : '';
-
-        let maxLTV: number = 0;
-        name == "Tether USD" || name == "USD Coin (Arb1)" || name == "Wrapped Ether" ?
-          maxLTV = 80 : name == "Wrapped BTC" || name == "Wrapped liquid staked Ether 2.0" ?
-            maxLTV = 70 : name == "Arbitrum" ?
-              maxLTV = 40 : name == "Dai Stablecoin" ? maxLTV = 75 : '';
-
         return {
           name: name,
           balance: balance,
           details: element,
           decimals: decimals,
-          liquidationThreshold: liquidationThreshold,
-          maxLTV: maxLTV,
           depositAPR: depositAPR,
           stableBorrowAPR: stableBorrowAPR,
           address: element.underlyingAsset,
