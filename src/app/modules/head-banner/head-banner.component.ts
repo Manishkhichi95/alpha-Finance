@@ -1,19 +1,19 @@
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Web3Service } from 'src/app/services/WEb3Service.service';
 import { readContractsService } from 'src/app/services/readContracts.service';
+import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 @Component({
   selector: 'app-head-banner',
   templateUrl: './head-banner.component.html',
   styleUrls: ['./head-banner.component.css']
 })
 export class HeadBannerComponent implements OnInit, AfterViewInit {
-  networkName: any;
-  @Output() CurrentchainId = new EventEmitter<string>();
-  @Input() contractData: any = [];
-  deposits: any = 0;
   borrows: any = 0;
+  networkName: any;
+  deposits: any = 0;
   totalAvailable: any = 0;
   connected: boolean = false;
+  @Input() contractData: any = [];
+  @Output() CurrentchainId = new EventEmitter<string>();
 
   constructor(private readContractsService: readContractsService, private web3Service: Web3Service) {
     this.web3Service.connected.subscribe((connected: boolean) => {

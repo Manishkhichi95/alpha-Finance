@@ -4,9 +4,9 @@ declare let window: any;
 
 interface WalletDetails {
   balance: any;
-  selectedAddress: any;
   connected: boolean;
   walletAddress: any;
+  selectedAddress: any;
 }
 
 @Injectable({
@@ -15,9 +15,9 @@ interface WalletDetails {
 export class CheckwalletConnectService {
   walletDetails: WalletDetails = {
     balance: null,
-    selectedAddress: null,
     connected: false,
-    walletAddress: null
+    walletAddress: null,
+    selectedAddress: null
   };
 
   constructor() {

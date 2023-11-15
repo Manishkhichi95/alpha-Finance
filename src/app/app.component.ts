@@ -9,13 +9,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  title = 'alpha-finance-launch';
-  ContractData: any = [];
   balance: number = 0;
-  selectedAddress: string | undefined;
+  ContractData: any = [];
   connected: boolean = false;
   walletAddress: string | null;
+  title = 'alpha-finance-launch';
   reqAccounts: string[] | undefined;
+  selectedAddress: string | undefined;
   constructor(private readContractsService: readContractsService, private web3Service: Web3Service,
     private router: Router) {
     this.walletAddress = localStorage.getItem('walletAddress');

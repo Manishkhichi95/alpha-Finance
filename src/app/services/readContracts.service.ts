@@ -1,8 +1,8 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Web3Service } from './WEb3Service.service';
 import Web3 from 'web3';
 import { BehaviorSubject } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Web3Service } from './WEb3Service.service';
 
 declare global {
   interface Window {
@@ -14,52 +14,52 @@ declare global {
   providedIn: 'root',
 })
 export class readContractsService {
-  deposits = new BehaviorSubject<any>(0);
-  web3: Web3 | any;
-  SECONDS_PER_YEAR = 31536000;
-  RAY = Math.pow(10, 27);
-  UiPoolDataProviderV3ABI: any
-  data = new BehaviorSubject<any>([]);
-  UiPoolDataProviderV3Address: any;
-  ReserveDataABI: any;
-  reserveData: any = [];
-  PoolDataProvider_AaveContractABI: any;
-  depositAPR: any;
-  variableBorrowAPR: any;
-  stableBorrowAPR: any;
-  accounts: any;
-  PoolAddressesProvider_AaveAddress: any;
-  PoolDataProvider_AaveAddress: any;
-  depositAPY: any;
-  variableBorrowAPY: any;
-  stableBorrowAPY: any;
-  totalAToken: any;
-  totalBorrows: any;
   balance: any;
-  tokenContractsABI: any;
-  selectedReserve: any;
-  selectedReserveContract: any;
-  poolDataProvider: any;
-  poolDataProviderContract: any;
-  myContractAddress: any;
-  myContractABI: any;
-  rTokenAddress: string[] = ['0x727354712BDFcd8596a3852Fd2065b3C34F4F770',
-    '0xd69D402D1bDB9A2b8c3d88D98b9CEaf9e4Cd72d9',
-    '0x48a29E756CC1C097388f3B2f3b570ED270423b3d',
-    '0x0D914606f3424804FA1BbBE56CCC3416733acEC6',
-    '0x0dF5dfd95966753f01cb80E76dc20EA958238C46',
-    '0x42C248D137512907048021B30d9dA17f48B5b7B2',
-    '0x2dADe5b7df9DA3a7e1c9748d169Cd6dFf77e3d01'];
+  accounts: any;
   rTokenABI: any;
+  depositAPY: any;
+  depositAPR: any;
+  totalAToken: any;
+  web3: Web3 | any;
+  totalBorrows: any;
   AaveOracleABI: any;
+  myContractABI: any;
+  ReserveDataABI: any;
+  selectedReserve: any;
+  stableBorrowAPR: any;
+  stableBorrowAPY: any;
+  reserveData: any = [];
+  poolDataProvider: any;
+  variableBorrowAPR: any;
+  myContractAddress: any;
+  tokenContractsABI: any;
+  variableBorrowAPY: any;
+  RAY = Math.pow(10, 27);
   stableDebtTokenABI: any;
   variableDebtTokenABI: any;
-  UiPoolDataProviderV2V3: any;
-  totalAvailable = new BehaviorSubject<any>(0);
-  borrows = new BehaviorSubject<any>(0);
-  totalDepositArr: any = [];
   totalBorrowsArr: any = [];
+  totalDepositArr: any = [];
   connected: boolean = false;
+  UiPoolDataProviderV2V3: any;
+  SECONDS_PER_YEAR = 31536000;
+  UiPoolDataProviderV3ABI: any;
+  selectedReserveContract: any;
+  poolDataProviderContract: any;
+  UiPoolDataProviderV3Address: any;
+  PoolDataProvider_AaveAddress: any;
+  data = new BehaviorSubject<any>([]);
+  PoolDataProvider_AaveContractABI: any;
+  borrows = new BehaviorSubject<any>(0);
+  deposits = new BehaviorSubject<any>(0);
+  PoolAddressesProvider_AaveAddress: any;
+  totalAvailable = new BehaviorSubject<any>(0);
+  rTokenAddress: string[] = ['0x727354712BDFcd8596a3852Fd2065b3C34F4F770',
+  '0xd69D402D1bDB9A2b8c3d88D98b9CEaf9e4Cd72d9',
+  '0x48a29E756CC1C097388f3B2f3b570ED270423b3d',
+  '0x0D914606f3424804FA1BbBE56CCC3416733acEC6',
+  '0x0dF5dfd95966753f01cb80E76dc20EA958238C46',
+  '0x42C248D137512907048021B30d9dA17f48B5b7B2',
+  '0x2dADe5b7df9DA3a7e1c9748d169Cd6dFf77e3d01'];
 
   constructor(private http: HttpClient, private Web3Service: Web3Service) {
     this.web3 = this.Web3Service.getWeb3();
@@ -73,16 +73,16 @@ export class readContractsService {
   async loadContractData() {
     try {
       const data: any = await this.http.get('assets/json/ABIs&Addresses.json').toPromise();
-      this.tokenContractsABI = data.tokenContractsABI;
-      this.PoolAddressesProvider_AaveAddress = data.PoolAddressesProvider_AaveAddress;
-      this.PoolDataProvider_AaveContractABI = data.PoolDataProvider_AaveContractABI;
-      this.PoolDataProvider_AaveAddress = data.PoolDataProvider_AaveAddress;
-      this.PoolDataProvider_AaveContractABI = data.PoolDataProvider_AaveContractABI;
-      this.ReserveDataABI = data.ReserveDataABI;
       this.rTokenABI = data.rTokenABI;
+      this.AaveOracleABI = data.AaveOracleABI;
+      this.ReserveDataABI = data.ReserveDataABI;
+      this.tokenContractsABI = data.tokenContractsABI;
       this.stableDebtTokenABI = data.stableDebtTokenABI;
       this.variableDebtTokenABI = data.variableDebtTokenABI;
-      this.AaveOracleABI = data.AaveOracleABI;
+      this.PoolDataProvider_AaveAddress = data.PoolDataProvider_AaveAddress;
+      this.PoolDataProvider_AaveContractABI = data.PoolDataProvider_AaveContractABI;
+      this.PoolDataProvider_AaveContractABI = data.PoolDataProvider_AaveContractABI;
+      this.PoolAddressesProvider_AaveAddress = data.PoolAddressesProvider_AaveAddress;
 
       this.poolDataProviderContract = new this.web3.eth.Contract(
         this.PoolDataProvider_AaveContractABI,
@@ -108,50 +108,50 @@ export class readContractsService {
 
         const [
           name,
-          deposit,
+          decimals,
           totalSupply,
           balance,
-          decimals,
+          deposit,
         ] = await Promise.all([
           tokenContracts.methods.name().call(),
-          new this.web3.eth.Contract(this.rTokenABI, rTokenAddress).methods.totalSupply().call(),
+          tokenContracts.methods.decimals().call(),
           tokenContracts.methods.totalSupply().call(),
           tokenContracts.methods.balanceOf(this.accounts[0]).call(),
-          tokenContracts.methods.decimals().call(),
+          new this.web3.eth.Contract(this.rTokenABI, rTokenAddress).methods.totalSupply().call(),
         ]);
         const depositAPR = Number(element.liquidityRate) / this.RAY;
-        const variableBorrowAPR = Number(element.variableBorrowRate) / this.RAY;
         const stableBorrowAPR = Number(element.variableBorrowRate) / this.RAY;
-        const variableDebtTokenContract = new this.web3.eth.Contract(this.variableDebtTokenABI, element.variableDebtTokenAddress);
+        const variableBorrowAPR = Number(element.variableBorrowRate) / this.RAY;
         const stableDebtTokenContract = new this.web3.eth.Contract(this.stableDebtTokenABI, element.stableDebtTokenAddress);
+        const variableDebtTokenContract = new this.web3.eth.Contract(this.variableDebtTokenABI, element.variableDebtTokenAddress);
         const [
-          variableDebtTokenSupply,
-          stableDebtTokenSupply,
           BaseCurrency,
           getAssetPrice,
+          stableDebtTokenSupply,
+          variableDebtTokenSupply,
         ] = await Promise.all([
-          variableDebtTokenContract.methods.totalSupply().call(),
-          stableDebtTokenContract.methods.totalSupply().call(),
           this.getBaseCurrency(),
           this.getAssetPrice(element.underlyingAsset),
+          stableDebtTokenContract.methods.totalSupply().call(),
+          variableDebtTokenContract.methods.totalSupply().call(),
         ]);
 
         return {
           name: name,
-          balance: balance,
           details: element,
+          balance: balance,
           decimals: decimals,
-          depositAPR: depositAPR,
-          stableBorrowAPR: stableBorrowAPR,
-          address: element.underlyingAsset,
-          variableBorrowAPR: variableBorrowAPR,
           liquidationPenalty: 15,
+          depositAPR: depositAPR,
+          address: element.underlyingAsset,
+          stableBorrowAPR: stableBorrowAPR,
+          variableBorrowAPR: variableBorrowAPR,
           variableDebtTokenSupply: variableDebtTokenSupply,
-          deposit: ((Number(deposit)) / (Number(1 + '0'.repeat(Number(decimals)))) * (Number(getAssetPrice) * 0.00000000000001)).toFixed(2),
-          depositAPY: ((Math.pow((1 + (depositAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2),
-          variableBorrowAPY: ((Math.pow((1 + (variableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2),
-          stableBorrowAPY: ((Math.pow((1 + (stableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2),
           assetPrice: (Number(getAssetPrice) / Number(BaseCurrency)).toFixed(2),
+          depositAPY: ((Math.pow((1 + (depositAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2),
+          stableBorrowAPY: ((Math.pow((1 + (stableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2),
+          variableBorrowAPY: ((Math.pow((1 + (variableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2),
+          deposit: ((Number(deposit)) / (Number(1 + '0'.repeat(Number(decimals)))) * (Number(getAssetPrice) * 0.00000000000001)).toFixed(2),
           totalSupply: (Number(totalSupply) * (Number(getAssetPrice) * 0.00000000000001) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2),
           totalBorrows: ((Number(variableDebtTokenSupply) + Number(stableDebtTokenSupply)) * (Number(getAssetPrice) * 0.00000000000001) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2),
         };

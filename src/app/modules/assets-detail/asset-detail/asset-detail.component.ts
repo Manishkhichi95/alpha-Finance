@@ -12,17 +12,6 @@ import { readContractsService } from 'src/app/services/readContracts.service';
 export class AssetDetailComponent implements OnInit, AfterViewInit {
   web3: any;
   reserve: any;
-  showDetails: boolean = false;
-  availableLiquidity: any;
-  assetPrice: any;
-  showSelectedReserve: any;
-  ContractData: any = [];
-  icons: string[] = ['assets/images/ic1.png', 'assets/images/ic3.png', 'assets/images/ic2.png', 'assets/images/ic4.png', 'assets/images/ic5.png', 'assets/images/ic6.png', 'assets/images/ic7.png'];
-  SelectedIcon: any;
-  reserveSize: any;
-  utilizationRate: any;
-  OraclePrice: any;
-  aaveOracleAddress: any;
   options: any = {
     chart: {
       type: 'spline',
@@ -127,13 +116,24 @@ export class AssetDetailComponent implements OnInit, AfterViewInit {
       }
     }
   };
-  Pool_Proxy_Aave_ABI: any;
-  Pool_Proxy_Aave_Address: any;
+  assetPrice: any;
+  reserveSize: any;
+  OraclePrice: any;
+  SelectedIcon: any;
+  utilizationRate: any;
+  ContractData: any = [];
+  aaveOracleAddress: any;
   borrowValue: number = 0;
-  RadiantLendingPoolV2Address: any;
-  RadiantLendingPoolV2ABI: any;
-  RadiantLendingPoolV2Contract: any;
+  availableLiquidity: any;
+  showSelectedReserve: any;
+  Pool_Proxy_Aave_ABI: any;
   liquidationThreshold: any;
+  RadiantLendingPoolV2ABI: any;
+  Pool_Proxy_Aave_Address: any;
+  showDetails: boolean = false;
+  RadiantLendingPoolV2Address: any;
+  RadiantLendingPoolV2Contract: any;
+  icons: string[] = ['assets/images/ic1.png', 'assets/images/ic3.png', 'assets/images/ic2.png', 'assets/images/ic4.png', 'assets/images/ic5.png', 'assets/images/ic6.png', 'assets/images/ic7.png'];
   constructor(private router: Router, private readContractsService: readContractsService, private Web3Service: Web3Service, private http: HttpClient) {
     this.web3 = this.Web3Service.getWeb3();
     localStorage.setItem('showAssetDetails', JSON.stringify(this.showDetails));
@@ -152,13 +152,13 @@ export class AssetDetailComponent implements OnInit, AfterViewInit {
 
   async initializeData() {
     const data: any = await this.http.get('assets/json/ABIs&Addresses.json').toPromise();
-    this.RadiantLendingPoolV2Address = data.RadiantLendingPoolV2Address;
-    this.RadiantLendingPoolV2ABI = data.RadiantLendingPoolV2ABI;
-    this.Pool_Proxy_Aave_ABI = data.Pool_Proxy_Aave_ABI;
-    this.Pool_Proxy_Aave_Address = data.Pool_Proxy_Aave_Address;
+    let aaveOracleABI = data.aaveOracleABI;
     let aTokenContractABI = data.aTokenContractABI;
     this.aaveOracleAddress = data.aaveOracleAddress;
-    let aaveOracleABI = data.aaveOracleABI;
+    this.Pool_Proxy_Aave_ABI = data.Pool_Proxy_Aave_ABI;
+    this.RadiantLendingPoolV2ABI = data.RadiantLendingPoolV2ABI;
+    this.Pool_Proxy_Aave_Address = data.Pool_Proxy_Aave_Address;
+    this.RadiantLendingPoolV2Address = data.RadiantLendingPoolV2Address;
     this.liquidationThreshold = Number(this.reserve['details'].reserveLiquidationThreshold) / 100,
       this.RadiantLendingPoolV2Contract = new this.web3.eth.Contract(this.RadiantLendingPoolV2ABI, this.RadiantLendingPoolV2Address);
     const leverager = await this.RadiantLendingPoolV2Contract.methods.leverager().call();

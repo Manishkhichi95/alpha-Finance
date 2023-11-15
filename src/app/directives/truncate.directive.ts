@@ -4,9 +4,9 @@ import { Directive, Input, ElementRef, Renderer2, OnInit } from '@angular/core';
   selector: '[TruncateText]'
 })
 export class TruncateDirective implements OnInit {
+  @Input() endLength: number = 10;
   @Input('TruncateText') text: any;
   @Input() startLength: number = 10;
-  @Input() endLength: number = 10;
 
   constructor(private el: ElementRef, private renderer: Renderer2) { }
 

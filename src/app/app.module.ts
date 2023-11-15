@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { AuthGuard } from './auth.guard';
 import { CommonModule } from '@angular/common';
-import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from './shared/shared.module';
 import { MainModule } from "./modules/main/main.module";
-import { AuthGuard } from './auth.guard';
+import { AppRoutingModule } from './app-routing.module';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
     declarations: [
         AppComponent,
@@ -14,12 +14,12 @@ import { AuthGuard } from './auth.guard';
     providers: [AuthGuard],
     bootstrap: [AppComponent],
     imports: [
+        MainModule,
+        CommonModule,
         SharedModule,
         BrowserModule,
-        CommonModule,
         AppRoutingModule,
-        BrowserAnimationsModule,
-        MainModule
+        BrowserAnimationsModule
     ]
 })
 export class AppModule { }
