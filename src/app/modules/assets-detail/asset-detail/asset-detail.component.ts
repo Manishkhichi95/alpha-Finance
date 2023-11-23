@@ -161,7 +161,6 @@ export class AssetDetailComponent implements OnInit, AfterViewInit {
         this.reserveSize = '$' + (Number(aTokenSupply) / (Number(1 + '0'.repeat(Number(this.reserve.decimals))))).toFixed(2);
 
     //utilizationRate
-    debugger
     this.utilizationRate = ((((Number(reserveSize)) - (Number(availableLiquidity))) / (Number(reserveSize))) * 100).toFixed(2);
 
     //OraclePrice
@@ -180,8 +179,8 @@ export class AssetDetailComponent implements OnInit, AfterViewInit {
     });
   }
 
-  goToMarket() {
-    this.router.navigateByUrl('/market');
+  goBack() {
+    console.log(this.router.lastSuccessfulNavigation);
   }
 
   async supplyAmount() {
