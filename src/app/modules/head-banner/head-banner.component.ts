@@ -7,10 +7,10 @@ import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@
   styleUrls: ['./head-banner.component.css']
 })
 export class HeadBannerComponent implements OnInit, AfterViewInit {
-  borrows: any = 0;
+  borrows: Number = 0;
   networkName: any;
-  deposits: any = 0;
-  totalAvailable: any = 0;
+  deposits: Number = 0;
+  totalAvailable: Number = 0;
   connected: boolean = false;
   @Input() contractData: any = [];
   @Output() CurrentchainId = new EventEmitter<string>();
@@ -25,17 +25,17 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.readContractsService.data.subscribe((res: any) => {
-      this.readContractsService.deposits.subscribe((res: any) => {
+      this.readContractsService.deposits.subscribe((res: Number) => {
         setTimeout(() => {
           this.deposits = res;
         }, (900));
       });
-      this.readContractsService.borrows.subscribe((res: any) => {
+      this.readContractsService.borrows.subscribe((res: Number) => {
         setTimeout(() => {
           this.borrows = res;
         }, (900));
       });
-      this.readContractsService.totalAvailable.subscribe((res: any) => {
+      this.readContractsService.totalAvailable.subscribe((res: Number) => {
         setTimeout(() => {
           this.totalAvailable = res;
         }, (900));

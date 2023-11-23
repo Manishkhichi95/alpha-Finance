@@ -12,16 +12,16 @@ const routes: Routes = [
     loadChildren: () => import('./modules/main/main.module').then(m => m.MainModule)
   },
   {
-    path: 'dashboard-wallet-connected',
-    loadChildren: () => import('./modules/dashboard/dashboard.module').then(m => m.DashboardModule)
-  },
-  {
     path: 'manage-wallet-connected',
     loadChildren: () => import('./modules/manage/manage.module').then(m => m.ManageModule)
   },
   {
     path: 'bridge',
     loadChildren: () => import('./modules/bridge/bridge.module').then(m => m.BridgeModule)
+  },
+  {
+    path: 'dashboard-wallet-connected',
+    loadChildren: () => import('./modules/dashboard/dashboard.module').then(m => m.DashboardModule)
   },
   {
     path: 'details', canActivate: [AuthGuard],

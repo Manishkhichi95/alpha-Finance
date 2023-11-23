@@ -38,11 +38,9 @@
                   <div class="cont_bx">
                     <h3>{{reserve.name}}</h3>
                     <p>{{reserve.details['symbol']}} <span><button class="btn_edit">
-                          <a class="ri-edit-box-line" href="https://arbiscan.io/address/{{reserve.address}}"
+                          <a class="ri-edit-box-line" href="https://mumbai.polygonscan.com/address/{{reserve.address}}"
                             target="_blank"></a></button></span></p>
-
                   </div>
-
                 </div>
               </div>
               <div class="card_bx">
@@ -60,7 +58,7 @@
               <div class="card_bx">
                 <h3>Oracle Price</h3>
                 <p><span>$</span>{{OraclePrice}} <span><button class="btn_edit"> <a class="ri-edit-box-line"
-                        href="https://arbiscan.io/address/{{aaveOracleAddress}}" target="_blank"></a></button></span>
+                        href="https://mumbai.polygonscan.com/address/{{aaveOracleAddress}}" target="_blank"></a></button></span>
                 </p>
               </div>
             </div>
@@ -115,10 +113,9 @@
                 <h4>
                   <0.01% </h4>
               </div>
-
             </div>
-            <h4>Collateral usage</h4>
-            <div class="noted_bx">
+            <h4>Collateral usage \/ can be Collateral</h4>
+            <!-- <div class="noted_bx">
               <div class="icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
                   <mask id="mask0_674_1884" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="20"
@@ -137,7 +134,7 @@
                 <p>In Isolation mode you cannot supply other assets as collateral for borrowing. Assets used as
                   collateral in Isolation mode can only be borrowed to a specific debt ceiling. Learn more</p>
               </div>
-            </div>
+            </div> -->
             <div class="list_Collat">
               <div class="card_bx">
                 <h3>Max LTV <span>
@@ -188,33 +185,7 @@
                     </svg>
                   </span>
                 </h3>
-                <p>{{reserve.liquidationPenalty}}%</p>
-              </div>
-
-            </div>
-            <div class="progress_Ceil">
-              <div class="head_bx">
-                <h3>Isolated debt Ceiling <span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
-                      <mask id="mask0_674_1872" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
-                        width="20" height="21">
-                        <rect y="0.5" width="20" height="20" fill="#D9D9D9" />
-                      </mask>
-                      <g mask="url(#mask0_674_1872)">
-                        <path
-                          d="M9.37468 14.458H10.6246V9.66632H9.37468V14.458ZM9.99965 8.24005C10.1904 8.24005 10.3502 8.17555 10.4792 8.04655C10.6082 7.91755 10.6727 7.7577 10.6727 7.56699C10.6727 7.37629 10.6082 7.21644 10.4792 7.08743C10.3502 6.95843 10.1904 6.89393 9.99965 6.89393C9.80895 6.89393 9.64909 6.95843 9.52009 7.08743C9.39109 7.21644 9.32659 7.37629 9.32659 7.56699C9.32659 7.7577 9.39109 7.91755 9.52009 8.04655C9.64909 8.17555 9.80895 8.24005 9.99965 8.24005ZM10.001 18.4163C8.90611 18.4163 7.87691 18.2085 6.91347 17.793C5.95001 17.3774 5.11194 16.8135 4.39926 16.1011C3.68656 15.3887 3.12235 14.551 2.70661 13.588C2.29088 12.625 2.08301 11.596 2.08301 10.5011C2.08301 9.40611 2.29079 8.37691 2.70634 7.41347C3.1219 6.45001 3.68586 5.61194 4.39822 4.89926C5.11059 4.18656 5.94829 3.62235 6.91132 3.20661C7.87433 2.79088 8.90331 2.58301 9.99826 2.58301C11.0932 2.58301 12.1224 2.79079 13.0858 3.20634C14.0493 3.6219 14.8874 4.18586 15.6001 4.89822C16.3127 5.61059 16.877 6.44829 17.2927 7.41132C17.7084 8.37434 17.9163 9.40331 17.9163 10.4983C17.9163 11.5932 17.7085 12.6224 17.293 13.5858C16.8774 14.5493 16.3135 15.3874 15.6011 16.1001C14.8887 16.8127 14.051 17.377 13.088 17.7927C12.125 18.2084 11.096 18.4163 10.001 18.4163ZM9.99965 17.1663C11.8608 17.1663 13.4372 16.5205 14.7288 15.2288C16.0205 13.9372 16.6663 12.3608 16.6663 10.4997C16.6663 8.63854 16.0205 7.06215 14.7288 5.77049C13.4372 4.47882 11.8608 3.83299 9.99965 3.83299C8.13854 3.83299 6.56215 4.47882 5.27049 5.77049C3.97882 7.06215 3.33299 8.63854 3.33299 10.4997C3.33299 12.3608 3.97882 13.9372 5.27049 15.2288C6.56215 16.5205 8.13854 17.1663 9.99965 17.1663Z"
-                          fill="#90A6C8" />
-                      </g>
-                    </svg>
-                  </span>
-                </h3>
-                <p><span>$</span> 0 of <span>$</span> 5.00M</p>
-
-              </div>
-              <div class="progress">
-                <div class="progress-bar" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"
-                  style="width:20%">
-                </div>
+                <p>{{liquidationPenalty}}%</p>
               </div>
 
             </div>
@@ -244,20 +215,9 @@
           <h4>E-mode Info</h4>
           <div class="card_bdy_inner">
             <div class="head_bx">
-              <h4>E-Mode Category <span>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="21" viewBox="0 0 20 21" fill="none">
-                    <mask id="mask0_1321_3911" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="20"
-                      height="21">
-                      <rect y="0.5" width="20" height="20" fill="#D9D9D9" />
-                    </mask>
-                    <g mask="url(#mask0_1321_3911)">
-                      <path
-                        d="M9.37468 14.4589H10.6246V9.6673H9.37468V14.4589ZM9.99965 8.24103C10.1904 8.24103 10.3502 8.17653 10.4792 8.04753C10.6082 7.91853 10.6727 7.75867 10.6727 7.56796C10.6727 7.37727 10.6082 7.21742 10.4792 7.0884C10.3502 6.9594 10.1904 6.8949 9.99965 6.8949C9.80895 6.8949 9.64909 6.9594 9.52009 7.0884C9.39109 7.21742 9.32659 7.37727 9.32659 7.56796C9.32659 7.75867 9.39109 7.91853 9.52009 8.04753C9.64909 8.17653 9.80895 8.24103 9.99965 8.24103ZM10.001 18.4173C8.90611 18.4173 7.87691 18.2095 6.91347 17.7939C5.95001 17.3784 5.11194 16.8144 4.39926 16.1021C3.68656 15.3897 3.12235 14.552 2.70661 13.589C2.29088 12.626 2.08301 11.597 2.08301 10.502C2.08301 9.40708 2.29079 8.37789 2.70634 7.41444C3.1219 6.45098 3.68586 5.61292 4.39822 4.90024C5.11059 4.18754 5.94829 3.62333 6.91132 3.20759C7.87433 2.79185 8.90331 2.58398 9.99826 2.58398C11.0932 2.58398 12.1224 2.79176 13.0858 3.20732C14.0493 3.62287 14.8874 4.18683 15.6001 4.89919C16.3127 5.61157 16.877 6.44927 17.2927 7.4123C17.7084 8.37531 17.9163 9.40429 17.9163 10.4992C17.9163 11.5942 17.7085 12.6234 17.293 13.5868C16.8774 14.5503 16.3135 15.3883 15.6011 16.101C14.8887 16.8137 14.051 17.3779 13.088 17.7937C12.125 18.2094 11.096 18.4173 10.001 18.4173ZM9.99965 17.1673C11.8608 17.1673 13.4372 16.5215 14.7288 15.2298C16.0205 13.9381 16.6663 12.3617 16.6663 10.5006C16.6663 8.63952 16.0205 7.06313 14.7288 5.77146C13.4372 4.4798 11.8608 3.83396 9.99965 3.83396C8.13854 3.83396 6.56215 4.4798 5.27049 5.77146C3.97882 7.06313 3.33299 8.63952 3.33299 10.5006C3.33299 12.3617 3.97882 13.9381 5.27049 15.2298C6.56215 16.5215 8.13854 17.1673 9.99965 17.1673Z"
-                        fill="#90A6C8" />
-                    </g>
-                  </svg>
-                </span></h4>
-              <h4>Stablecoins</h4>
+              <h4>E-Mode Category
+                Stablecoins
+              </h4>
             </div>
             <div class="list_Collat">
               <div class="card_bx">
@@ -323,7 +283,10 @@
             <div class="grap_sect">
               <div class="head_bx">
                 <h3><span>Utilization Rate</span><span>{{utilizationRate}}%</span></h3>
-                <button class="btn">Interest rate strategy</button>
+                <button class="btn">Interest rate strategy
+                  <a class="ri-edit-box-line" href="https://mumbai.polygonscan.com/address/{{this.reserve['details'].interestRateStrategyAddress}}"
+                  target="_blank"></a>
+                </button>
               </div>
               <ul>
                 <li>Borrow APR, variable</li>
@@ -332,10 +295,6 @@
               </ul>
               <div id="container">
               </div>
-              <div class="grap_view">
-                <img src="assets/images/grap.png" alt="">
-              </div>
-
             </div>
           </div>
         </div>
@@ -360,7 +319,7 @@
             </div>
             <div class="cont_bx">
               <h3>Wallet balance</h3>
-              <p>{{reserve.balance}}.00 <span> USDT</span></p>
+              <p>{{balance}} <span> MATIC</span></p>
             </div>
           </div>
 
@@ -381,8 +340,9 @@
                   </svg>
                 </span>
               </h3>
-              <p>{{reserve.balance}}.00 <span>USDT</span></p>
-              <h4>$ {{reserve.balance}}.00</h4>
+              <p><input type="text" style="background-color:#0E1330;border:none;color:white;"
+                  [(ngModel)]="supplyVal"><span>MATIC</span></p>
+              <h4>{{reserve.balance}} MATIC</h4>
             </div>
             <div class="rgt_bx">
               <button class="btn" (click)="supplyAmount()">Supply</button>
@@ -406,11 +366,12 @@
                   </svg>
                 </span>
               </h3>
-              <p>0 <span>USDT</span></p>
+              <p><input type="text" style="background-color:#0E1330;border:none;color:white;" [(ngModel)]="borrowValue">
+                <span>USDT</span></p>
               <h4>$ 0</h4>
             </div>
             <div class="rgt_bx">
-              <button class="btn btn_Bor">Borrow</button>
+              <button class="btn btn_Bor" (click)="borrowAmount()">Borrow</button>
             </div>
 
           </div>

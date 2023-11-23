@@ -87,7 +87,6 @@ export class MainComponent implements OnInit {
   goToAsset(selectedAsset: any, img: string) {
     this.showDetails = true;
     localStorage.setItem('showAssetDetails', JSON.stringify(this.showDetails));
-    console.log(selectedAsset, img);
     selectedAsset.icon = img;
     this.readContractsService.getSelectedReserve(selectedAsset);
     this.router.navigateByUrl('/details');

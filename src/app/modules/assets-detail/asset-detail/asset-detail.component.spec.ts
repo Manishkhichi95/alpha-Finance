@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AssetDetailComponent } from './asset-detail.component';
+import { AssetDetailComponent } from './AssetDetailComponent';
 
 describe('AssetDetailComponent', () => {
   let component: AssetDetailComponent;

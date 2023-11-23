@@ -20,9 +20,6 @@ export class AppComponent implements OnInit {
     private router: Router) {
     this.walletAddress = localStorage.getItem('walletAddress');
     this.checkConnectionStatus();
-    this.readContractsService.getReserveData().then((data: any) => {
-      this.ContractData = data;
-    });
   }
 
   checkConnectionStatus() {

@@ -1,6 +1,6 @@
-import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
-import { HttpLink } from 'apollo-angular/http';
 import { NgModule } from '@angular/core';
+import { HttpLink } from 'apollo-angular/http';
+import { APOLLO_OPTIONS, ApolloModule } from 'apollo-angular';
 import { ApolloClientOptions, InMemoryCache } from '@apollo/client/core';
 
 const uri = 'https://api.studio.thegraph.com/query/50025/sumit/0.0.3'; 
