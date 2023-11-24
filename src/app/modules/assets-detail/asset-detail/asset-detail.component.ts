@@ -100,7 +100,7 @@ export class AssetDetailComponent implements OnInit, AfterViewInit {
   RadiantLendingPoolV2Contract: any;
   icons: string[] = ['assets/images/ic1.png', 'assets/images/ic3.png', 'assets/images/ic2.png', 'assets/images/ic4.png', 'assets/images/ic5.png', 'assets/images/ic6.png', 'assets/images/ic7.png'];
   previousUrl: any;
-  constructor(private router: Router, private readContractsService: readContractsService, private Web3Service: Web3Service, private http: HttpClient, private location:Location) {
+  constructor(private router: Router, private readContractsService: readContractsService, private Web3Service: Web3Service, private http: HttpClient, private location: Location) {
     this.web3 = this.Web3Service.getWeb3();
     this.reserve = this.readContractsService.selectedReserve;
     this.showSelectedReserve = this.reserve.name;
@@ -161,9 +161,8 @@ export class AssetDetailComponent implements OnInit, AfterViewInit {
       reserveSize.toString().length == 5 || reserveSize.toString().length == 4 ?
         this.reserveSize = '$' + (Number(aTokenSupply) / (Number(1 + '0'.repeat(Number(this.reserve.decimals)))) / 1000).toFixed(2) + 'k' :
         this.reserveSize = '$' + (Number(aTokenSupply) / (Number(1 + '0'.repeat(Number(this.reserve.decimals))))).toFixed(2);
-
     //utilizationRate
-    this.utilizationRate = ((((Number(reserveSize)) - (Number(availableLiquidity))) / (Number(reserveSize))) * 100).toFixed(2);
+    this.utilizationRate = ((((Number(availableLiquidity)) - (Number(reserveSize))) / (Number(reserveSize))) * 100).toFixed(2);
 
     //OraclePrice
     const aaveOracleContract = new this.web3.eth.Contract(aaveOracleABI, this.aaveOracleAddress);

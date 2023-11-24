@@ -104,8 +104,8 @@
                       </svg>
                     </span>
                   </h3>
-                  <h4>{{reserve.totalSupply}} of 2.00B</h4>
-                  <p>${{reserve.totalSupply}} of $2.00B</p>
+                  <h4>{{reserve.totalSupply}} of 50.00M</h4>
+                  <p>${{reserve.totalSupply}} of $50.00M</p>
                 </div>
               </div>
               <div class="cont_prog">
@@ -341,8 +341,8 @@
                 </span>
               </h3>
               <p><input type="text" style="background-color:#0E1330;border:none;color:white;"
-                  [(ngModel)]="supplyVal"><span>MATIC</span></p>
-              <h4>{{reserve.balance}} MATIC</h4>
+                  [(ngModel)]="supplyVal"><span>{{reserve['details'].symbol}}</span></p>
+              <h4>{{reserve.balance}} {{reserve['details'].symbol}}</h4>
             </div>
             <div class="rgt_bx">
               <button class="btn" (click)="supplyAmount()">Supply</button>

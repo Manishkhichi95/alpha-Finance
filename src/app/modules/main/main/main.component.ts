@@ -22,7 +22,7 @@ export class MainComponent implements OnInit {
   title = 'alpha-finance-launch';
   CurrentchainId: any = localStorage.getItem('chainId');
   networkName: string | null = localStorage.getItem('networkName');
-  icons: string[] = ['assets/images/ic1.png', 'assets/images/ic3.png', 'assets/images/ic2.png', 'assets/images/ic4.png', 'assets/images/ic5.png', 'assets/images/ic6.png', 'assets/images/ic7.png']
+  icons: string[] = ['assets/alphalogo.png']
 
   constructor(private readContractsService: readContractsService, private web3Service: Web3Service, private router: Router) {
     this.walletAddress = localStorage.getItem('walletAddress');
@@ -34,34 +34,35 @@ export class MainComponent implements OnInit {
     this.web3Service.connected.subscribe((connected: boolean) => {
       this.connected = connected;
     })
-    this.networkName == 'Arbitrum' && this.CurrentchainId == '0xa4b1' ?
-      (this.readContractsService.getReserveData().then((data: any) => {
+      this.readContractsService.getReserveData().then((data: any) => {
         this.ContractData = data,
           this.readContractsService.data.next(this.ContractData)
         if (this.ContractData.length > 0) {
           this.totalDepositArr = [];
           this.totalBorrowsArr = [];
           this.ContractData.forEach((element: any) => {
+            debugger
             this.totalDepositArr.push(element.deposit);
+            console.log('element',element)
             this.totalBorrowsArr.push(element.totalBorrows);
           });
           const sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-          this.deposits = sumOfDeposits.toFixed(2);
+          this.deposits = sumOfDeposits;
           const sumOfBorrows = this.totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-          this.borrows = sumOfBorrows.toFixed(2);
+          this.borrows = sumOfBorrows;
           this.totalAvailable = (Number(this.deposits) - Number(this.borrows)).toFixed(2);
           this.readContractsService.borrows.next(this.borrows);
           this.readContractsService.deposits.next(this.deposits);
           this.readContractsService.totalAvailable.next(this.totalAvailable);
         }
-      })) : this.ContractData = [];
+      }) ;
   }
 
   setCurrentchainId(chainId: string) {
     localStorage.setItem('networkName', chainId);
     this.CurrentchainId = chainId;
     chainId == '0xa4b1' ? this.networkName = 'Arbitrum' : chainId == '0x89' ? this.networkName = 'Polygon Mainnet' : this.networkName = 'Polygon Testnet';
-    this.networkName == 'Arbitrum' ? this.readContractsService.getReserveData().
+    this.readContractsService.getReserveData().
       then((data: any) => {
         this.ContractData = [];
         this.ContractData = data;
@@ -69,19 +70,21 @@ export class MainComponent implements OnInit {
           this.totalDepositArr = [];
           this.totalBorrowsArr = [];
           this.ContractData.forEach((element: any) => {
+            console.log('element',element)
             this.totalDepositArr.push(element.deposit);
             this.totalBorrowsArr.push(element.totalBorrows);
           });
+          debugger
           const sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-          this.deposits = sumOfDeposits.toFixed(2);
+          this.deposits = sumOfDeposits;
           const sumOfBorrows = this.totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-          this.borrows = sumOfBorrows.toFixed(2);
-          this.totalAvailable = (Number(this.deposits) - Number(this.borrows)).toFixed(2);
+          this.borrows = sumOfBorrows;
+          this.totalAvailable = (Number(this.deposits) - Number(this.borrows));
           this.readContractsService.deposits.next(this.deposits);
           this.readContractsService.borrows.next(this.borrows);
           this.readContractsService.totalAvailable.next(this.totalAvailable);
         }
-      }) : this.ContractData = [];
+      }) 
   };
 
   goToAsset(selectedAsset: any, img: string) {
