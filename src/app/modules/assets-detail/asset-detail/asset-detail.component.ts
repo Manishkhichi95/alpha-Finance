@@ -1,5 +1,6 @@
 import * as Highcharts from 'highcharts';
 import { Router } from '@angular/router';
+import { Location } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Web3Service } from 'src/app/services/WEb3Service.service';
@@ -98,7 +99,8 @@ export class AssetDetailComponent implements OnInit, AfterViewInit {
   RadiantLendingPoolV2Address: any;
   RadiantLendingPoolV2Contract: any;
   icons: string[] = ['assets/images/ic1.png', 'assets/images/ic3.png', 'assets/images/ic2.png', 'assets/images/ic4.png', 'assets/images/ic5.png', 'assets/images/ic6.png', 'assets/images/ic7.png'];
-  constructor(private router: Router, private readContractsService: readContractsService, private Web3Service: Web3Service, private http: HttpClient) {
+  previousUrl: any;
+  constructor(private router: Router, private readContractsService: readContractsService, private Web3Service: Web3Service, private http: HttpClient, private location:Location) {
     this.web3 = this.Web3Service.getWeb3();
     this.reserve = this.readContractsService.selectedReserve;
     this.showSelectedReserve = this.reserve.name;
@@ -180,7 +182,7 @@ export class AssetDetailComponent implements OnInit, AfterViewInit {
   }
 
   goBack() {
-    console.log(this.router.lastSuccessfulNavigation);
+    this.location.back();
   }
 
   async supplyAmount() {
