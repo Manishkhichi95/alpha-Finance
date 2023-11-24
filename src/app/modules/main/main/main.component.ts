@@ -27,23 +27,24 @@ export class MainComponent implements OnInit {
   constructor(private readContractsService: readContractsService, private web3Service: Web3Service, private router: Router) {
     this.walletAddress = localStorage.getItem('walletAddress');
     localStorage.setItem('showAssetDetails', JSON.stringify(this.showDetails));
-    this.CurrentchainId == '0xa4b1' ? this.networkName = 'Arbitrum' : this.CurrentchainId == '0x89' ? this.networkName = 'Polygon Mainnet' : this.networkName = 'Polygon Testnet';
+    this.CurrentchainId == '0xa4b1' ? this.networkName = 'Arbitrum' : this.CurrentchainId == '0x89' ? this.networkName = 'Polygon Mainnet' : this.networkName = 'Mumbai Testnet';
   }
 
   ngOnInit() {
     this.web3Service.connected.subscribe((connected: boolean) => {
       this.connected = connected;
     })
-      this.readContractsService.getReserveData().then((data: any) => {
+    this.networkName == 'Mumbai Testnet' && this.CurrentchainId == '0x13881' ?
+      (this.readContractsService.getReserveData().then((data: any) => {
         this.ContractData = data,
           this.readContractsService.data.next(this.ContractData)
         if (this.ContractData.length > 0) {
           this.totalDepositArr = [];
           this.totalBorrowsArr = [];
           this.ContractData.forEach((element: any) => {
-            debugger
+            
             this.totalDepositArr.push(element.deposit);
-            console.log('element',element)
+            console.log('element', element)
             this.totalBorrowsArr.push(element.totalBorrows);
           });
           const sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
@@ -51,42 +52,46 @@ export class MainComponent implements OnInit {
           const sumOfBorrows = this.totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
           this.borrows = sumOfBorrows;
           this.totalAvailable = (Number(this.deposits) - Number(this.borrows)).toFixed(2);
+          localStorage.setItem('borrows',JSON.stringify(this.borrows));
+          localStorage.setItem('deposits',JSON.stringify(this.deposits));
+          localStorage.setItem('totalAvailable',JSON.stringify(this.totalAvailable));
+
           this.readContractsService.borrows.next(this.borrows);
           this.readContractsService.deposits.next(this.deposits);
           this.readContractsService.totalAvailable.next(this.totalAvailable);
         }
-      }) ;
+      })) : this.ContractData = [];
   }
 
   setCurrentchainId(chainId: string) {
     localStorage.setItem('networkName', chainId);
     this.CurrentchainId = chainId;
-    chainId == '0xa4b1' ? this.networkName = 'Arbitrum' : chainId == '0x89' ? this.networkName = 'Polygon Mainnet' : this.networkName = 'Polygon Testnet';
-    this.readContractsService.getReserveData().
-      then((data: any) => {
-        this.ContractData = [];
-        this.ContractData = data;
-        if (this.ContractData.length > 0) {
-          this.totalDepositArr = [];
-          this.totalBorrowsArr = [];
-          this.ContractData.forEach((element: any) => {
-            console.log('element',element)
-            this.totalDepositArr.push(element.deposit);
-            this.totalBorrowsArr.push(element.totalBorrows);
-          });
-          debugger
-          const sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-          this.deposits = sumOfDeposits;
-          const sumOfBorrows = this.totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-          this.borrows = sumOfBorrows;
-          this.totalAvailable = (Number(this.deposits) - Number(this.borrows));
-          this.readContractsService.deposits.next(this.deposits);
-          this.readContractsService.borrows.next(this.borrows);
-          this.readContractsService.totalAvailable.next(this.totalAvailable);
-        }
-      }) 
-  };
-
+    chainId == '0xa4b1' ? this.networkName = 'Arbitrum' : chainId == '0x89' ? this.networkName = 'Polygon Mainnet' : this.networkName = 'Mumbai Testnet';
+    this.networkName == 'Mumbai Testnet' && this.CurrentchainId == '0x13881' ?
+      (this.readContractsService.getReserveData().
+        then((data: any) => {
+          this.ContractData = [];
+          this.ContractData = data;
+          if (this.ContractData.length > 0) {
+            this.totalDepositArr = [];
+            this.totalBorrowsArr = [];
+            this.ContractData.forEach((element: any) => {
+              console.log('element', element)
+              this.totalDepositArr.push(element.deposit);
+              this.totalBorrowsArr.push(element.totalBorrows);
+            });
+            
+            const sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+            this.deposits = sumOfDeposits;
+            const sumOfBorrows = this.totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+            this.borrows = sumOfBorrows;
+            this.totalAvailable = (Number(this.deposits) - Number(this.borrows));
+            this.readContractsService.deposits.next(this.deposits);
+            this.readContractsService.borrows.next(this.borrows);
+            this.readContractsService.totalAvailable.next(this.totalAvailable);
+          }
+        })) : this.ContractData = []
+  }
   goToAsset(selectedAsset: any, img: string) {
     this.showDetails = true;
     localStorage.setItem('showAssetDetails', JSON.stringify(this.showDetails));

@@ -24,20 +24,30 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    localStorage.getItem('borrows');
+    localStorage.getItem('deposits');
+    localStorage.getItem('totalAvailable');
+    debugger
     this.readContractsService.data.subscribe((res: any) => {
       this.readContractsService.deposits.subscribe((res: Number) => {
         setTimeout(() => {
           this.deposits = res;
+          const deposits: any = localStorage.getItem('deposits')
+          this.deposits == 0 ? this.deposits = JSON.parse(deposits) : ''
         }, (900));
       });
       this.readContractsService.borrows.subscribe((res: Number) => {
         setTimeout(() => {
           this.borrows = res;
+          const borrows: any = localStorage.getItem('borrows')
+          this.borrows == 0 ? this.borrows = JSON.parse(borrows) : ''
         }, (900));
       });
       this.readContractsService.totalAvailable.subscribe((res: Number) => {
         setTimeout(() => {
           this.totalAvailable = res;
+          const totalAvailable: any = localStorage.getItem('totalAvailable')
+          this.totalAvailable == 0 ? this.totalAvailable = JSON.parse(totalAvailable) : ''
         }, (900));
       });
     })
@@ -74,7 +84,7 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
           localStorage.setItem('networkName', network);
         } catch (switchError: any) {
           if (switchError.code === 4001) {
-            CurrentchainId == '0xa4b1' ? this.networkName = 'Arbitrum' : CurrentchainId == '0x89' ? this.networkName = 'Polygon Mainnet' : this.networkName = 'Polygon Testnet';
+            CurrentchainId == '0xa4b1' ? this.networkName = 'Arbitrum' : CurrentchainId == '0x89' ? this.networkName = 'Polygon Mainnet' : this.networkName = 'Mumbai Testnet';
             const getElement: any = document.getElementById('destination');
             getElement.innerHTML = this.networkName;
             localStorage.setItem('networkName', this.networkName);

@@ -12,25 +12,27 @@
           </svg>
           <ul class="dropdown">
             <li class="item" (click)="switchNetwork('Arbitrum')"><span><img src="#" alt=""></span>Arbitrum</li>
-            <li class="item" (click)="switchNetwork('Polygon Testnet')"><span><img src="#" alt=""></span>Polygon Testnet</li>
-            <li class="item" (click)="switchNetwork('Polygon Mainnet')"><span><img src="#" alt=""></span>Polygon Mainnet</li>
+            <li class="item" (click)="switchNetwork('Mumbai Testnet')"><span><img src="#" alt=""></span>Mumbai Testnet
+            </li>
+            <li class="item" (click)="switchNetwork('Polygon Mainnet')"><span><img src="#" alt=""></span>Polygon Mainnet
+            </li>
           </ul>
         </div>
         <div class="about_sect">
           <div class="card_bx">
             <h3>Total market size</h3>
-            <p *ngIf="connected">${{deposits}}M</p>
-            <p *ngIf="!connected">$0.00M</p>
+            <p *ngIf="connected && networkName=='Mumbai Testnet'">${{deposits}}M</p>
+            <p *ngIf="!connected || networkName!='Mumbai Testnet'">$0.00M</p>
           </div>
           <div class="card_bx">
             <h3>Total available</h3>
-            <p *ngIf="connected">${{totalAvailable}}M</p>
-            <p *ngIf="!connected">$0.00M</p>
+            <p *ngIf="connected && networkName=='Mumbai Testnet'">${{totalAvailable}}M</p>
+            <p *ngIf="!connected || networkName!='Mumbai Testnet'">$0.00M</p>
           </div>
           <div class="card_bx">
             <h3>Total Borrow</h3>
-            <p *ngIf="connected">${{borrows}}M</p>
-            <p *ngIf="!connected">$0.00M</p>
+            <p *ngIf="connected  && networkName=='Mumbai Testnet'">${{borrows}}M</p>
+            <p *ngIf="!connected || networkName!='Mumbai Testnet'">$0.00M</p>
           </div>
         </div>
       </div>

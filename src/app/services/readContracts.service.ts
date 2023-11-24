@@ -78,7 +78,7 @@ export class readContractsService {
       if (!localStorage.getItem('walletAddress')) {
         return [];
       }
-      debugger
+      
       const getReserveData = await this.getReserveDATA();
       this.accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
 
@@ -95,7 +95,7 @@ export class readContractsService {
         ] = await Promise.all([
           tokenContracts.methods.name().call(),
           tokenContracts.methods.decimals().call(),
-          tokenContracts.methods.totalSupply().call(),
+          aTOkenContract.methods.totalSupply().call(),
           tokenContracts.methods.balanceOf(this.accounts[0]).call(),
           aTOkenContract.methods.totalSupply().call()
         ]);
@@ -115,7 +115,8 @@ export class readContractsService {
           stableDebtTokenContract.methods.totalSupply().call(),
           variableDebtTokenContract.methods.totalSupply().call(),
         ]);
-        debugger
+        
+        console.log(totalSupply)
         return {
           name: name,
           details: element,

@@ -1,5 +1,5 @@
 <div *ngIf="connected">
-  <app-head-banner></app-head-banner>
+  <app-head-banner (CurrentchainId)="setCurrentchainId($event)"></app-head-banner>
 </div>
 <section *ngIf="connected" class="dash_sect">
   <div class="container">
@@ -21,7 +21,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
+                <tr *ngIf="networkName=='Mumbai Testnet'">
                   <td>
                     <div class="user_avtar">
                       <div class="icon"><img src="assets/alphalogo.png" alt=""></div>
@@ -59,11 +59,18 @@
                   <td>
                     <div class="dt_table">
                       <div class="btn_grp">
-                        <button class="btn" (click)="supplyAmount(this.depositedAsset.address)">Supply</button>
+                        <button class="btn" (click)="supplyAmount(this.depositedAsset.address.address)">Supply</button>
                         <button class="btn" (click)="withdrawAmount()">Withdraw</button>
                       </div>
                     </div>
 
+                  </td>
+                </tr>
+                <tr *ngIf="networkName!='Mumbai Testnet'">
+                  <td colspan="4">
+                    <div class="data_notfound">
+                      <p>No items found</p>
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -123,7 +130,7 @@
                       <th></th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody *ngIf="networkName=='Mumbai Testnet'">
                     <tr *ngFor="let items of ContractData, let i = index">
                       <td>
                         <div class="user_avtar">
@@ -171,6 +178,15 @@
                       </td>
                     </tr>
                   </tbody>
+                  <tbody *ngIf="networkName!='Mumbai Testnet'">
+                    <tr>
+                      <td colspan="4">
+                        <div class="data_notfound">
+                          <p>No items found</p>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
                 </table>
               </div>
             </div>
@@ -193,7 +209,7 @@
                       <th></th>
                     </tr>
                   </thead>
-                  <tbody>
+                  <tbody *ngIf="networkName=='Mumbai Testnet'">
                     <tr *ngFor="let items of ContractData, let i = index">
                       <td>
                         <div class="user_avtar">
@@ -237,6 +253,15 @@
                             <button class="btn" (click)="supplyAmount(items.address)">Supply</button>
                             <button class="btn" (click)="goToAsset(items,icons[i])">Details</button>
                           </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tbody *ngIf="networkName!='Mumbai Testnet'">
+                    <tr>
+                      <td colspan="4">
+                        <div class="data_notfound">
+                          <p>No items found</p>
                         </div>
                       </td>
                     </tr>
