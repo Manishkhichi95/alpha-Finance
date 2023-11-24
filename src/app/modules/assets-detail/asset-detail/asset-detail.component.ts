@@ -217,7 +217,7 @@ export class AssetDetailComponent implements OnInit, AfterViewInit {
 
   async borrowAmount() {
     let RadiantLendingPoolV2Contract = await new this.web3.eth.Contract(this.RadiantLendingPoolV2ABI, this.RadiantLendingPoolV2Address);
-    const amount = this.borrowValue * Math.pow(10, 14);
+    const amount = 1 * Math.pow(10, 14);
     const interestRateMode = 1;
     const referralCode = 0;
     try {
