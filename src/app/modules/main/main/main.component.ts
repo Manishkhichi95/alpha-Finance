@@ -27,6 +27,7 @@ export class MainComponent implements OnInit {
   constructor(private readContractsService: readContractsService, private web3Service: Web3Service, private router: Router) {
     this.walletAddress = localStorage.getItem('walletAddress');
     localStorage.setItem('showAssetDetails', JSON.stringify(this.showDetails));
+    this.networkName == null ? this.networkName = "Mumbai Testnet" : "";
     this.CurrentchainId == '0xa4b1' ? this.networkName = 'Arbitrum' : this.CurrentchainId == '0x89' ? this.networkName = 'Polygon Mainnet' : this.networkName = 'Mumbai Testnet';
   }
 
@@ -34,7 +35,8 @@ export class MainComponent implements OnInit {
     this.web3Service.connected.subscribe((connected: boolean) => {
       this.connected = connected;
     })
-    this.networkName == 'Mumbai Testnet' && this.CurrentchainId == '0x13881' ?
+    debugger
+    this.networkName == 'Mumbai Testnet' ?
       (this.readContractsService.getReserveData().then((data: any) => {
         this.ContractData = data,
           this.readContractsService.data.next(this.ContractData)

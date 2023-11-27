@@ -28,7 +28,7 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
     localStorage.getItem('deposits');
     localStorage.getItem('totalAvailable');
     debugger
-    this.readContractsService.data.subscribe((res: any) => {
+    // this.readContractsService.getReserveData().subscribe((res: any) => {
       this.readContractsService.deposits.subscribe((res: Number) => {
           this.deposits = res;
           const deposits: any = localStorage.getItem('deposits')
@@ -44,7 +44,7 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
           const totalAvailable: any = localStorage.getItem('totalAvailable')
           this.totalAvailable == 0 ? this.totalAvailable = JSON.parse(totalAvailable) : '';
       });
-    })
+    // })
   }
 
   ngAfterViewInit(): void {

@@ -29,13 +29,14 @@ export class DashboardComponent {
   constructor(private web3Service: Web3Service, private http: HttpClient, private readContractsService: readContractsService, private router: Router) {
     this.web3Service.connected.subscribe((connected: boolean) => {
       this.connected = connected;
-    })
+    });
+    this.networkName ==null ? this.networkName='Mumbai Testnet':'';
     this.reserve = this.readContractsService.selectedReserve;
     this.web3 = this.web3Service.getWeb3();
     this.getUserReservesData();
   }
   async getUserReservesData() {
-    if (this.networkName == 'Mumbai Testnet' && this.CurrentchainId == '0x13881') {
+    if (this.networkName == 'Mumbai Testnet') {
       this.accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
       const data: any = await this.http.get('assets/json/ABIs&Addresses.json').toPromise()
       this.tokenContractsABI = data.tokenContractsABI;
@@ -71,7 +72,7 @@ export class DashboardComponent {
     this.CurrentchainId = chainId;
     chainId == '0xa4b1' ? this.networkName = 'Arbitrum' : chainId == '0x89' ? this.networkName = 'Polygon Mainnet' : this.networkName = 'Mumbai Testnet';
 
-    if (this.networkName == 'Mumbai Testnet' && this.CurrentchainId == '0x13881') {
+    if (this.networkName == 'Mumbai Testnet') {
       this.accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
       const data: any = await this.http.get('assets/json/ABIs&Addresses.json').toPromise()
       this.tokenContractsABI = data.tokenContractsABI;
