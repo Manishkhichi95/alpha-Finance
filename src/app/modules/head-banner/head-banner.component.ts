@@ -20,7 +20,7 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
       this.connected = connected;
     })
     this.networkName = localStorage.getItem('networkName');
-    this.networkName == null ? this.networkName = "Arbitrum" : "";
+    this.networkName == null ? this.networkName = "Mumbai Testnet" : "";
   }
 
   ngOnInit(): void {
@@ -30,25 +30,19 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
     debugger
     this.readContractsService.data.subscribe((res: any) => {
       this.readContractsService.deposits.subscribe((res: Number) => {
-        setTimeout(() => {
           this.deposits = res;
           const deposits: any = localStorage.getItem('deposits')
-          this.deposits == 0 ? this.deposits = JSON.parse(deposits) : ''
-        }, (900));
+          this.deposits == 0 ? this.deposits = JSON.parse(deposits) : '';
       });
       this.readContractsService.borrows.subscribe((res: Number) => {
-        setTimeout(() => {
           this.borrows = res;
           const borrows: any = localStorage.getItem('borrows')
-          this.borrows == 0 ? this.borrows = JSON.parse(borrows) : ''
-        }, (900));
+          this.borrows == 0 ? this.borrows = JSON.parse(borrows) : '';
       });
       this.readContractsService.totalAvailable.subscribe((res: Number) => {
-        setTimeout(() => {
           this.totalAvailable = res;
           const totalAvailable: any = localStorage.getItem('totalAvailable')
-          this.totalAvailable == 0 ? this.totalAvailable = JSON.parse(totalAvailable) : ''
-        }, (900));
+          this.totalAvailable == 0 ? this.totalAvailable = JSON.parse(totalAvailable) : '';
       });
     })
   }
