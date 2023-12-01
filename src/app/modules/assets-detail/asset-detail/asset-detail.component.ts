@@ -162,7 +162,13 @@ export class AssetDetailComponent implements OnInit, AfterViewInit {
         this.reserveSize = '$' + (Number(aTokenSupply) / (Number(1 + '0'.repeat(Number(this.reserve.decimals)))) / 1000).toFixed(2) + 'k' :
         this.reserveSize = '$' + (Number(aTokenSupply) / (Number(1 + '0'.repeat(Number(this.reserve.decimals))))).toFixed(2);
     //utilizationRate
-    this.utilizationRate = ((((Number(availableLiquidity)) - (Number(reserveSize))) / (Number(reserveSize))) * 100).toFixed(2);
+    debugger
+    console.log("reserveSize",reserveSize)
+    if(reserveSize=="0"){
+      this.utilizationRate = "0.00"
+    }else{
+      this.utilizationRate = ((((Number(availableLiquidity)) - (Number(reserveSize))) / (Number(reserveSize))) * 100).toFixed(2);
+    }
 
     //OraclePrice
     const aaveOracleContract = new this.web3.eth.Contract(aaveOracleABI, this.aaveOracleAddress);

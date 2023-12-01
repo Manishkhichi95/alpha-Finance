@@ -57,35 +57,6 @@
           </li>
         </ul>
         <div class="btn_grp"> 
-          <div class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
-              data-bs-toggle="dropdown" aria-expanded="false">
-              <span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="15" height="23" viewBox="0 0 15 23" fill="none">
-                  <g clip-path="url(#clip0_639_880)">
-                    <path
-                      d="M7.89062 -0.00976562L7.73633 0.51466V15.7323L7.89062 15.8863L14.9545 11.7109L7.89062 -0.00976562Z"
-                      fill="#525252" />
-                    <path d="M7.891 -0.00976562L0.827148 11.7109L7.891 15.8864V8.50017V-0.00976562Z" fill="white" />
-                    <path d="M7.89163 17.2241L7.80469 17.3301V22.7509L7.89163 23.0049L14.9597 13.0508L7.89163 17.2241Z"
-                      fill="#4D4D4D" />
-                    <path d="M7.891 23.0049V17.2241L0.827148 13.0508L7.891 23.0049Z" fill="white" />
-                    <path d="M7.89062 15.8861L14.9544 11.7107L7.89062 8.5V15.8861Z" fill="#8D8D8D" />
-                    <path d="M0.827148 11.7107L7.89089 15.8861V8.5L0.827148 11.7107Z" fill="#D5D5D5" />
-                  </g>
-                  <defs>
-                    <clipPath id="clip0_639_880">
-                      <rect width="14.1319" height="23.0195" fill="white" transform="translate(0.827148 -0.00976562)" />
-                    </clipPath>
-                  </defs>
-                </svg>
-              </span>
-              <span> Ethereum</span>
-            </a> 
-             <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-            </ul>
-          </div> 
            <button *ngIf="connected" class="btn btn_cpy"><span><img src="assets/images/ic.png" alt=""></span><span
               [TruncateText]="walletAddress" [startLength]="4" [endLength]="4"></span></button>
           <button class="btn" *ngIf="!connected" (click)="connectWallet()">Connect Wallet</button>

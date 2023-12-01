@@ -31,7 +31,7 @@
           </div>
           <div class="card_bx">
             <h3>Total Borrow</h3>
-            <p *ngIf="connected  && networkName=='Mumbai Testnet'">${{borrows}}M</p>
+            <p *ngIf="connected  && networkName=='Mumbai Testnet'">${{borrows}}.00M</p>
             <p *ngIf="!connected || networkName!='Mumbai Testnet'">$0.00M</p>
           </div>
         </div>

@@ -75,6 +75,7 @@ export class readContractsService {
 
   async getReserveData() {
     try {
+      debugger;
       const getReserveData = await this.getReserveDATA();
       this.accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
 
