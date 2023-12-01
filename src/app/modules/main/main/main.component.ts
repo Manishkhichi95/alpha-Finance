@@ -22,7 +22,7 @@ export class MainComponent implements OnInit {
   title = 'alpha-finance-launch';
   CurrentchainId: any = localStorage.getItem('chainId');
   networkName: string | null = localStorage.getItem('networkName');
-  icons: string[] = ['assets/alphalogo.png']
+  icons: string[] = ["assets/alphalogo.png", "assets/images/busd-c4257f9b.svg", "assets/images/ic3.png"]
 
   constructor(private readContractsService: readContractsService, private web3Service: Web3Service, private router: Router) {
     this.walletAddress = localStorage.getItem('walletAddress');
@@ -44,7 +44,7 @@ export class MainComponent implements OnInit {
           this.totalDepositArr = [];
           this.totalBorrowsArr = [];
           this.ContractData.forEach((element: any) => {
-            
+
             this.totalDepositArr.push(element.deposit);
             console.log('element', element)
             this.totalBorrowsArr.push(element.totalBorrows);
@@ -54,13 +54,26 @@ export class MainComponent implements OnInit {
           const sumOfBorrows = this.totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
           this.borrows = sumOfBorrows;
           this.totalAvailable = (Number(this.deposits) - Number(this.borrows)).toFixed(2);
-          localStorage.setItem('borrows',JSON.stringify(this.borrows));
-          localStorage.setItem('deposits',JSON.stringify(this.deposits));
-          localStorage.setItem('totalAvailable',JSON.stringify(this.totalAvailable));
+          localStorage.setItem('borrows', JSON.stringify(this.borrows));
+          localStorage.setItem('deposits', JSON.stringify(this.deposits));
+          localStorage.setItem('totalAvailable', JSON.stringify(this.totalAvailable));
 
           this.readContractsService.borrows.next(this.borrows);
           this.readContractsService.deposits.next(this.deposits);
           this.readContractsService.totalAvailable.next(this.totalAvailable);
+          const sortedContractData = this.ContractData.sort((a:any, b:any) => {
+            const nameA = a.name.toUpperCase(); 
+            const nameB = b.name.toUpperCase(); 
+          
+            if (nameA < nameB) {
+              return -1;
+            }
+            if (nameA > nameB) {
+              return 1;
+            }
+            return 0; 
+          });
+          this.ContractData = sortedContractData;
         }
       })) : this.ContractData = [];
   }
@@ -82,7 +95,7 @@ export class MainComponent implements OnInit {
               this.totalDepositArr.push(element.deposit);
               this.totalBorrowsArr.push(element.totalBorrows);
             });
-            
+
             const sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
             this.deposits = sumOfDeposits;
             const sumOfBorrows = this.totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
@@ -91,6 +104,19 @@ export class MainComponent implements OnInit {
             this.readContractsService.deposits.next(this.deposits);
             this.readContractsService.borrows.next(this.borrows);
             this.readContractsService.totalAvailable.next(this.totalAvailable);
+            const sortedContractData = this.ContractData.sort((a:any, b:any) => {
+              const nameA = a.name.toUpperCase(); 
+              const nameB = b.name.toUpperCase(); 
+            
+              if (nameA < nameB) {
+                return -1;
+              }
+              if (nameA > nameB) {
+                return 1;
+              }
+              return 0; 
+            });
+            this.ContractData = sortedContractData;
           }
         })) : this.ContractData = []
   }

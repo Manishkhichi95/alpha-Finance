@@ -86,13 +86,11 @@ export class readContractsService {
         const [
           name,
           decimals,
-          totalSupply,
           balance,
           deposit,
         ] = await Promise.all([
           tokenContracts.methods.name().call(),
           tokenContracts.methods.decimals().call(),
-          aTOkenContract.methods.totalSupply().call(),
           tokenContracts.methods.balanceOf(this.accounts[0]).call(),
           aTOkenContract.methods.totalSupply().call()
         ]);
@@ -113,11 +111,10 @@ export class readContractsService {
           variableDebtTokenContract.methods.totalSupply().call(),
         ]);
 
-        console.log(totalSupply)
         return {
           name: name,
           details: element,
-          balance: balance,
+          balance:(Number(balance)/ (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2),
           decimals: decimals,
           depositAPR: depositAPR,
           address: element.underlyingAsset,
@@ -129,7 +126,7 @@ export class readContractsService {
           stableBorrowAPY: ((Math.pow((1 + (stableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2),
           variableBorrowAPY: ((Math.pow((1 + (variableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2),
           deposit: ((Number(deposit)) / (Number(1 + '0'.repeat(Number(decimals)))) * (Number(getAssetPrice) / 100000000)).toFixed(2),
-          totalSupply: (Number(totalSupply) * (Number(getAssetPrice) / 100000000) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2),
+          totalSupply: (Number(deposit) * (Number(getAssetPrice) / 100000000) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2),
           totalBorrows: ((Number(variableDebtTokenSupply) + Number(stableDebtTokenSupply)) * (Number(getAssetPrice) / 100000000) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2)
         };
       });

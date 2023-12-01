@@ -16,24 +16,24 @@
                   <th>Assets</th>
                   <th>Current Balance</th>
                   <th>APY</th>
-                  <th>Collateral</th>
+                  <!-- <th>Collateral</th> -->
                   <th></th>
                 </tr>
               </thead>
-              <tbody>
-                <tr *ngIf="networkName=='Mumbai Testnet'">
+              <tbody *ngIf="networkName=='Mumbai Testnet'">
+                <tr *ngFor="let items of depositedAsset,let i = index">
                   <td>
                     <div class="user_avtar">
-                      <div class="icon"><img src="assets/alphalogo.png" alt=""></div>
+                      <div class="icon"><img src="{{icons[i]}}" alt=""></div>
                       <div class="cont_bx">
-                        <h3>{{depositedAsset.name}}</h3>
+                        <h3>{{items.name}}</h3>
                       </div>
                     </div>
                   </td>
                   <td>
                     <div class="dt_table">
-                      <h3>${{depositedAsset.balance}}</h3>
-                      <p>${{depositedAsset.balance}}</p>
+                      <h3>${{items.balance}}</h3>
+                      <p>${{items.balance}}</p>
                     </div>
                   </td>
                   <td>
@@ -44,16 +44,16 @@
 
                   </td>
                   <td>
-                    <div class="dt_table">
+                    <!-- <div class="dt_table">
                       <h3>
                         <label class="switch">
-                          <input type="checkbox"> <span class="slider"></span>
+                          <input type="checkbox"> <span class="slider"></span> 
                         </label>
                       </h3>
                       <p>
                         Isolated
                       </p>
-                    </div>
+                    </div> -->
 
                   </td>
                   <td>
@@ -142,7 +142,7 @@
                       </td>
                       <td>
                         <div class="dt_table">
-                          <h3>{{balanceAsset}}</h3>
+                          <h3>{{items.balance}}</h3>
                         </div>
                       </td>
                       <td>
