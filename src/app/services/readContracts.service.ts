@@ -114,7 +114,6 @@ export class readContractsService {
         return {
           name: name,
           details: element,
-          balance:(Number(balance)/ (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2),
           decimals: decimals,
           depositAPR: depositAPR,
           address: element.underlyingAsset,
@@ -122,11 +121,12 @@ export class readContractsService {
           variableBorrowAPR: variableBorrowAPR,
           variableDebtTokenSupply: variableDebtTokenSupply,
           assetPrice: (Number(getAssetPrice) / Number(BaseCurrency)).toFixed(2),
+          balance: (Number(balance) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2),
           depositAPY: ((Math.pow((1 + (depositAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2),
           stableBorrowAPY: ((Math.pow((1 + (stableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2),
-          variableBorrowAPY: ((Math.pow((1 + (variableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2),
           deposit: ((Number(deposit)) / (Number(1 + '0'.repeat(Number(decimals)))) * (Number(getAssetPrice) / 100000000)).toFixed(2),
           totalSupply: (Number(deposit) * (Number(getAssetPrice) / 100000000) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2),
+          variableBorrowAPY: ((Math.pow((1 + (variableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2),
           totalBorrows: ((Number(variableDebtTokenSupply) + Number(stableDebtTokenSupply)) * (Number(getAssetPrice) / 100000000) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2)
         };
       });
