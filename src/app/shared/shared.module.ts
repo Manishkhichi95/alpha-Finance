@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { NgChartsModule } from 'ng2-charts';
-import { FormsModule } from '@angular/forms';
+import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { GraphQLModule } from 'src/GraphQl/graphql.module';
@@ -16,6 +16,7 @@ import { HeadBannerComponent } from '../modules/head-banner/head-banner.componen
     GraphQLModule,
     NgChartsModule,
     HttpClientModule,
+    ReactiveFormsModule,
     MatProgressSpinnerModule
   ],
   exports: [
@@ -25,6 +26,7 @@ import { HeadBannerComponent } from '../modules/head-banner/head-banner.componen
     HttpClientModule,
     TruncateDirective,
     HeadBannerComponent,
+    ReactiveFormsModule,
     MatProgressSpinnerModule
   ]
 })

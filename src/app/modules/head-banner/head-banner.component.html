@@ -21,7 +21,7 @@
         <div class="about_sect">
           <div class="card_bx">
             <h3>Total market size</h3>
-            <p *ngIf="connected && networkName=='Mumbai Testnet'">${{deposits}}M</p>
+            <p *ngIf="connected && networkName=='Mumbai Testnet'">${{deposits}}.00M</p>
             <p *ngIf="!connected || networkName!='Mumbai Testnet'">$0.00M</p>
           </div>
           <div class="card_bx">

@@ -11,6 +11,7 @@ import { readContractsService } from 'src/app/services/readContracts.service';
 })
 export class DashboardComponent {
   web3: any;
+  amount: any = 0;
   reserve: any;
   address: any;
   accounts: any;
@@ -27,28 +28,21 @@ export class DashboardComponent {
   CurrentchainId: any = localStorage.getItem('chainId');
   networkName: string | null = localStorage.getItem('networkName');
   icons: string[] = ["assets/alphalogo.png", "assets/images/busd-c4257f9b.svg", "assets/images/ic3.png"]
+  selectedReserve: any;
+  transactionType: any;
+  withdrawTo: any;
+  disabled: boolean = false;
   constructor(private web3Service: Web3Service, private http: HttpClient, private readContractsService: readContractsService, private router: Router) {
     this.web3Service.connected.subscribe((connected: boolean) => {
       this.connected = connected;
     });
     this.networkName == null ? this.networkName = 'Mumbai Testnet' : '';
-    // this.reserve = this.readContractsService.selectedReserve;
-    // this.reserve.balance = (Number(this.reserve.balance) / 1000000000000000000).toFixed(2);
     this.web3 = this.web3Service.getWeb3();
     this.getUserReservesData();
   }
   async getUserReservesData() {
     if (this.networkName == 'Mumbai Testnet') {
       this.accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
-      // const lendingPoolConfigurator = new this.web3.eth.Contract([{ "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "asset", "type": "address" }, { "indexed": true, "internalType": "address", "name": "proxy", "type": "address" }, { "indexed": true, "internalType": "address", "name": "implementation", "type": "address" }], "name": "ATokenUpgraded", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "asset", "type": "address" }], "name": "BorrowingDisabledOnReserve", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "asset", "type": "address" }, { "indexed": false, "internalType": "bool", "name": "stableRateEnabled", "type": "bool" }], "name": "BorrowingEnabledOnReserve", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "asset", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "ltv", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "liquidationThreshold", "type": "uint256" }, { "indexed": false, "internalType": "uint256", "name": "liquidationBonus", "type": "uint256" }], "name": "CollateralConfigurationChanged", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "asset", "type": "address" }], "name": "ReserveActivated", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "asset", "type": "address" }], "name": "ReserveDeactivated", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "asset", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "decimals", "type": "uint256" }], "name": "ReserveDecimalsChanged", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "asset", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "factor", "type": "uint256" }], "name": "ReserveFactorChanged", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "asset", "type": "address" }], "name": "ReserveFrozen", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "asset", "type": "address" }, { "indexed": true, "internalType": "address", "name": "aToken", "type": "address" }, { "indexed": false, "internalType": "address", "name": "stableDebtToken", "type": "address" }, { "indexed": false, "internalType": "address", "name": "variableDebtToken", "type": "address" }, { "indexed": false, "internalType": "address", "name": "interestRateStrategyAddress", "type": "address" }], "name": "ReserveInitialized", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "asset", "type": "address" }, { "indexed": false, "internalType": "address", "name": "strategy", "type": "address" }], "name": "ReserveInterestRateStrategyChanged", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "asset", "type": "address" }], "name": "ReserveUnfrozen", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "asset", "type": "address" }, { "indexed": true, "internalType": "address", "name": "proxy", "type": "address" }, { "indexed": true, "internalType": "address", "name": "implementation", "type": "address" }], "name": "StableDebtTokenUpgraded", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "asset", "type": "address" }], "name": "StableRateDisabledOnReserve", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "asset", "type": "address" }], "name": "StableRateEnabledOnReserve", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "asset", "type": "address" }, { "indexed": true, "internalType": "address", "name": "proxy", "type": "address" }, { "indexed": true, "internalType": "address", "name": "implementation", "type": "address" }], "name": "VariableDebtTokenUpgraded", "type": "event" }, { "inputs": [{ "internalType": "address", "name": "asset", "type": "address" }], "name": "activateReserve", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "components": [{ "internalType": "address", "name": "aTokenImpl", "type": "address" }, { "internalType": "address", "name": "stableDebtTokenImpl", "type": "address" }, { "internalType": "address", "name": "variableDebtTokenImpl", "type": "address" }, { "internalType": "uint8", "name": "underlyingAssetDecimals", "type": "uint8" }, { "internalType": "address", "name": "interestRateStrategyAddress", "type": "address" }, { "internalType": "address", "name": "underlyingAsset", "type": "address" }, { "internalType": "address", "name": "treasury", "type": "address" }, { "internalType": "address", "name": "incentivesController", "type": "address" }, { "internalType": "uint256", "name": "allocPoint", "type": "uint256" }, { "internalType": "string", "name": "underlyingAssetName", "type": "string" }, { "internalType": "string", "name": "aTokenName", "type": "string" }, { "internalType": "string", "name": "aTokenSymbol", "type": "string" }, { "internalType": "string", "name": "variableDebtTokenName", "type": "string" }, { "internalType": "string", "name": "variableDebtTokenSymbol", "type": "string" }, { "internalType": "string", "name": "stableDebtTokenName", "type": "string" }, { "internalType": "string", "name": "stableDebtTokenSymbol", "type": "string" }, { "internalType": "bytes", "name": "params", "type": "bytes" }], "internalType": "struct ILendingPoolConfigurator.InitReserveInput[]", "name": "input", "type": "tuple[]" }], "name": "batchInitReserve", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "asset", "type": "address" }, { "internalType": "uint256", "name": "ltv", "type": "uint256" }, { "internalType": "uint256", "name": "liquidationThreshold", "type": "uint256" }, { "internalType": "uint256", "name": "liquidationBonus", "type": "uint256" }], "name": "configureReserveAsCollateral", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "asset", "type": "address" }], "name": "deactivateReserve", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "asset", "type": "address" }], "name": "disableBorrowingOnReserve", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "asset", "type": "address" }], "name": "disableReserveStableRate", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "asset", "type": "address" }, { "internalType": "bool", "name": "stableBorrowRateEnabled", "type": "bool" }], "name": "enableBorrowingOnReserve", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "asset", "type": "address" }], "name": "enableReserveStableRate", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "asset", "type": "address" }], "name": "freezeReserve", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "contract ILendingPoolAddressesProvider", "name": "provider", "type": "address" }], "name": "initialize", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "bool", "name": "val", "type": "bool" }], "name": "setPoolPause", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "asset", "type": "address" }, { "internalType": "uint256", "name": "reserveFactor", "type": "uint256" }], "name": "setReserveFactor", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "asset", "type": "address" }, { "internalType": "address", "name": "rateStrategyAddress", "type": "address" }], "name": "setReserveInterestRateStrategyAddress", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "internalType": "address", "name": "asset", "type": "address" }], "name": "unfreezeReserve", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "components": [{ "internalType": "address", "name": "asset", "type": "address" }, { "internalType": "address", "name": "treasury", "type": "address" }, { "internalType": "address", "name": "incentivesController", "type": "address" }, { "internalType": "string", "name": "name", "type": "string" }, { "internalType": "string", "name": "symbol", "type": "string" }, { "internalType": "address", "name": "implementation", "type": "address" }, { "internalType": "bytes", "name": "params", "type": "bytes" }], "internalType": "struct ILendingPoolConfigurator.UpdateATokenInput", "name": "input", "type": "tuple" }], "name": "updateAToken", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "components": [{ "internalType": "address", "name": "asset", "type": "address" }, { "internalType": "address", "name": "incentivesController", "type": "address" }, { "internalType": "string", "name": "name", "type": "string" }, { "internalType": "string", "name": "symbol", "type": "string" }, { "internalType": "address", "name": "implementation", "type": "address" }, { "internalType": "bytes", "name": "params", "type": "bytes" }], "internalType": "struct ILendingPoolConfigurator.UpdateDebtTokenInput", "name": "input", "type": "tuple" }], "name": "updateStableDebtToken", "outputs": [], "stateMutability": "nonpayable", "type": "function" }, { "inputs": [{ "components": [{ "internalType": "address", "name": "asset", "type": "address" }, { "internalType": "address", "name": "incentivesController", "type": "address" }, { "internalType": "string", "name": "name", "type": "string" }, { "internalType": "string", "name": "symbol", "type": "string" }, { "internalType": "address", "name": "implementation", "type": "address" }, { "internalType": "bytes", "name": "params", "type": "bytes" }], "internalType": "struct ILendingPoolConfigurator.UpdateDebtTokenInput", "name": "input", "type": "tuple" }], "name": "updateVariableDebtToken", "outputs": [], "stateMutability": "nonpayable", "type": "function" }], '0x308AE4EdA4dD95c23a3c2968D6951ac3f589773B')
-      // const batchInitReserve = lendingPoolConfigurator.methods.batchInitReserve([['0xEf9bBa295a4b3acB014304C4Ada27a3D190E3BB2'], ['0x6695EdB1671d78E434224977709911BB1F5AC1A9'], ['0xf67a2D777bDC066793aD79873fCfA33Fb01ab619'], ['6'], ['0xc6F3222E3a4fC4Fda7170f34FE8C84FAa7A20e4C'], ['0x1fdE0eCc619726f4cD597887C9F3b4c8740e19e2'], ['0x58F3499Ce37791fef39D0b6F6339c60844895AFc'], ['0x530C6d01F7Ea4f968CEB9053708431a089A9a352'], ['10'], ['USDT'], ['USDTATOKEN'], ['USDTATOKEN'], ['USDTVDTOKEN'], ['USDTVDTOKEN'], ['USDTSDTOKEN'], ['USDTSDTOKEN'], ['0x10']]).send(
-      //   {
-      //     from: this.accounts[0],
-      //     data: lendingPoolConfigurator.methods.batchInitReserve([['0xEf9bBa295a4b3acB014304C4Ada27a3D190E3BB2'], ['0x6695EdB1671d78E434224977709911BB1F5AC1A9'], ['0xf67a2D777bDC066793aD79873fCfA33Fb01ab619'], ['6'], ['0xc6F3222E3a4fC4Fda7170f34FE8C84FAa7A20e4C'], ['0x1fdE0eCc619726f4cD597887C9F3b4c8740e19e2'], ['0x58F3499Ce37791fef39D0b6F6339c60844895AFc'], ['0x530C6d01F7Ea4f968CEB9053708431a089A9a352'], ['10'], ['USDT'], ['USDTATOKEN'], ['USDTATOKEN'], ['USDTVDTOKEN'], ['USDTVDTOKEN'], ['USDTSDTOKEN'], ['USDTSDTOKEN'], ['0x10']]).encodeABI()
-      //   }
-      // );
-      // batchInitReserve.then(console.log)
-
       const data: any = await this.http.get('assets/json/ABIs&Addresses.json').toPromise()
       this.tokenContractsABI = data.tokenContractsABI;
       this.RadiantLendingPoolV2ABI = data.RadiantLendingPoolV2ABI;
@@ -86,6 +80,7 @@ export class DashboardComponent {
           const totalSupply = await tokenContracts.methods.totalSupply().call();
           const balance = (Number(res.scaledATokenBalance) / Math.pow(10, Number(decimals))).toFixed(2);
           this.depositedAsset.push({
+            address: res.underlyingAsset,
             decimals: decimals,
             name: name,
             totalSupply: totalSupply,
@@ -144,6 +139,7 @@ export class DashboardComponent {
           const totalSupply = await tokenContracts.methods.totalSupply().call();
           const balance = (Number(res.scaledATokenBalance) / Math.pow(10, Number(decimals))).toFixed(2);
           this.depositedAsset.push({
+            address: res.underlyingAsset,
             decimals: decimals,
             name: name,
             totalSupply: totalSupply,
@@ -162,61 +158,103 @@ export class DashboardComponent {
     this.router.navigateByUrl('/details');
   }
 
-  async supplyAmount(reserveAddress: string) {
-    this.address = localStorage.getItem('walletAddress');
-    this.Addresscontract = new this.web3.eth.Contract(this.tokenContractsABI, reserveAddress);
-    const decimals = await this.Addresscontract.methods.decimals().call();
-    const amount = 1 * Math.pow(10, Number(decimals));
-    const balance = await this.Addresscontract.methods.balanceOf(localStorage.getItem('walletAddress')).call();
-    // if (Number(balance) < Number(amount)) {
-    //   throw new Error('Insufficient balance to perform the transaction.');
-    // }
-    const Approve = await this.Addresscontract.methods.approve("0x1198AeE495289FFBA2B3fc37A9dFB4CC5a48a287", amount.toString()).send({
-      from: localStorage.getItem('walletAddress'),
-      data: await this.Addresscontract.methods.approve("0x1198AeE495289FFBA2B3fc37A9dFB4CC5a48a287", amount.toString()).encodeABI()
-    });
-    console.log('Transaction hash:', Approve);
-    let Pool_Proxy_Aave_Contract = await new this.web3.eth.Contract(this.RadiantLendingPoolV2ABI, this.RadiantLendingPoolV2Address);
-    const referralCode = 0;
-    try {
-      const deposit = await Pool_Proxy_Aave_Contract.methods.deposit(reserveAddress, amount.toString(), this.address, referralCode.toString()).send({
-        from: this.address,
-        data: await Pool_Proxy_Aave_Contract.methods.deposit(reserveAddress, amount.toString(), this.address, referralCode.toString()).encodeABI(),
-        gas: 1000000
-      });
-
-      const receipt = await this.web3.eth.getTransactionReceipt(deposit.transactionHash);
-      if (receipt && receipt.status) {
-        alert("Transaction Successfull");
-        console.log('Transaction succeeded!');
-      }
-      console.log('Transaction hash:', deposit);
-    } catch (error) {
-      alert(error);
-      console.error('Error:', error);
+  openDialog(reserveAddress: string, transactionType: any) {
+    if (this.amount == 0 ) {
+      this.disabled = true;
     }
+    this.selectedReserve = reserveAddress;
+    this.transactionType = transactionType;
+    console.log(this.transactionType)
+    const element: any = document.getElementById("myModal");
+    element.style.display = "block";
   }
 
-  async withdrawAmount() {
-    this.address = localStorage.getItem('walletAddress');
-    const amount = 1 * Math.pow(10, 18);
-    let Pool_Proxy_Aave_Contract = await new this.web3.eth.Contract(this.RadiantLendingPoolV2ABI, this.RadiantLendingPoolV2Address);
-    try {
-      const deposit = await Pool_Proxy_Aave_Contract.methods.withdraw(this.depositedAsset.address, amount.toString(), '0x4d77242918E4f4fc182069C984cB675FFb31db3c').send({
-        from: this.address,
-        data: await Pool_Proxy_Aave_Contract.methods.withdraw(this.depositedAsset.address, amount.toString(), '0x4d77242918E4f4fc182069C984cB675FFb31db3c').encodeABI(),
-        gas: 1000000
-      });
+  closeDialog() {
+    const element: any = document.getElementById("myModal")
+    element.style.display = "none";
+    this.amount = 0;
+  }
 
-      const receipt = await this.web3.eth.getTransactionReceipt(deposit.transactionHash);
-      if (receipt && receipt.status) {
-        alert("Transaction Successfull");
-        console.log('Transaction succeeded!');
+  async submitt() {
+    console.log(this.amount)
+    if (this.amount > 0 ) {
+      this.disabled = false;
+    }
+    const element: any = document.getElementById("myModal")
+    element.style.display = "none";
+    if (this.transactionType == 'Supply') {
+      this.address = localStorage.getItem('walletAddress');
+      this.Addresscontract = new this.web3.eth.Contract(this.tokenContractsABI, this.selectedReserve);
+      const decimals = await this.Addresscontract.methods.decimals().call();
+      const amount = this.amount * Math.pow(10, Number(decimals));
+      this.amount = 0;
+      const balance = await this.Addresscontract.methods.balanceOf(localStorage.getItem('walletAddress')).call();
+      const Approve = await this.Addresscontract.methods.approve("0x1198AeE495289FFBA2B3fc37A9dFB4CC5a48a287", amount.toString()).send({
+        from: localStorage.getItem('walletAddress'),
+        data: await this.Addresscontract.methods.approve("0x1198AeE495289FFBA2B3fc37A9dFB4CC5a48a287", amount.toString()).encodeABI()
+      });
+      console.log('Transaction hash:', Approve);
+      let Pool_Proxy_Aave_Contract = await new this.web3.eth.Contract(this.RadiantLendingPoolV2ABI, this.RadiantLendingPoolV2Address);
+      const referralCode = 0;
+      try {
+        const deposit = await Pool_Proxy_Aave_Contract.methods.deposit(this.selectedReserve, amount.toString(), this.address, referralCode.toString()).send({
+          from: this.address,
+          data: await Pool_Proxy_Aave_Contract.methods.deposit(this.selectedReserve, amount.toString(), this.address, referralCode.toString()).encodeABI(),
+          gas: 1000000
+        });
+        const receipt = await this.web3.eth.getTransactionReceipt(deposit.transactionHash);
+        if (receipt && receipt.status) {
+          alert("Transaction Successfull");
+          console.log('Transaction succeeded!');
+        }
+        console.log('Transaction hash:', deposit);
+      } catch (error) {
+        alert(error);
+        console.error('Error:', error);
       }
-      console.log('Transaction hash:', deposit);
-    } catch (error) {
-      alert(error);
-      console.error('Error:', error);
+    }
+
+    if (this.transactionType == 'Withdraw') {
+      this.address = localStorage.getItem('walletAddress');
+      const amount = this.amount * Math.pow(10, 18);
+      this.amount = 0;
+      let Pool_Proxy_Aave_Contract = await new this.web3.eth.Contract(this.RadiantLendingPoolV2ABI, this.RadiantLendingPoolV2Address);
+      try {
+        const deposit = await Pool_Proxy_Aave_Contract.methods.withdraw(this.selectedReserve, amount.toString(), this.withdrawTo).send({
+          from: this.address,
+          data: await Pool_Proxy_Aave_Contract.methods.withdraw(this.selectedReserve, amount.toString(), this.withdrawTo).encodeABI(),
+          gas: 1000000
+        });
+
+        const receipt = await this.web3.eth.getTransactionReceipt(deposit.transactionHash);
+        if (receipt && receipt.status) {
+          alert("Transaction Successfull");
+          console.log('Transaction succeeded!');
+        }
+        console.log('Transaction hash:', deposit);
+      } catch (error) {
+        alert(error);
+        console.error('Error:', error);
+      }
+    }
+
+    if (this.transactionType == 'Borrow') {
+      this.address = localStorage.getItem('walletAddress');
+      let RadiantLendingPoolV2Contract = await new this.web3.eth.Contract(this.RadiantLendingPoolV2ABI, this.RadiantLendingPoolV2Address);
+      const amount = this.amount * Math.pow(10, 6);
+      this.amount = 0;
+      const interestRateMode = 1;
+      const referralCode = 0;
+      try {
+        const result = await RadiantLendingPoolV2Contract.methods.borrow(this.selectedReserve, amount.toString(), interestRateMode.toString(), referralCode.toString(), this.address).send({
+          from: this.address,
+          data: await RadiantLendingPoolV2Contract.methods.borrow(this.selectedReserve, amount.toString(), interestRateMode.toString(), referralCode.toString(), this.address).encodeABI(),
+          gas: 100000000
+        });
+        console.log('Transaction hash:', result);
+      } catch (error) {
+        console.error('Errorasdfbhsd:', error);
+      }
     }
   }
 }

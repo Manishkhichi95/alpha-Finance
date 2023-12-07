@@ -2,6 +2,18 @@
   <app-head-banner (CurrentchainId)="setCurrentchainId($event)"></app-head-banner>
 </div>
 <section *ngIf="connected" class="dash_sect">
+
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <span class="close" (click)="closeDialog()">&times;</span>
+      <h2>Enter the Amount to {{transactionType}}:</h2>
+      <input type="text" [(ngModel)]="amount">
+      <h2 *ngIf="transactionType=='Withdraw'">Withdraw To:</h2>
+      <input type="text" *ngIf="transactionType=='Withdraw'" [(ngModel)]="withdrawTo">
+      <button class="submittBtn" (click)="submitt()">Submit</button>
+    </div>
+  </div>
+
   <div class="container">
     <div class="card_connect_list">
       <div class="card_bx table-sect">
@@ -44,23 +56,13 @@
 
                   </td>
                   <td>
-                    <!-- <div class="dt_table">
-                      <h3>
-                        <label class="switch">
-                          <input type="checkbox"> <span class="slider"></span> 
-                        </label>
-                      </h3>
-                      <p>
-                        Isolated
-                      </p>
-                    </div> -->
 
                   </td>
                   <td>
                     <div class="dt_table">
                       <div class="btn_grp">
-                        <button class="btn" (click)="supplyAmount(this.depositedAsset.address)">Supply</button>
-                        <button class="btn" (click)="withdrawAmount()">Withdraw</button>
+                        <button class="btn" (click)="openDialog(items.address,'Supply')">Supply</button>
+                        <button class="btn" (click)="openDialog(items.address,'Withdraw')">Withdraw</button>
                       </div>
                     </div>
 
@@ -171,7 +173,7 @@
                       <td>
                         <div class="dt_table">
                           <div class="btn_grp">
-                            <button class="btn" (click)="supplyAmount(items.address)">Supply</button>
+                            <button class="btn" (click)="openDialog(items.address,'supply')">Supply</button>
                             <button class="btn" (click)="goToAsset(items,icons[i])">Details</button>
                           </div>
                         </div>
@@ -250,7 +252,7 @@
                       <td>
                         <div class="dt_table">
                           <div class="btn_grp">
-                            <button class="btn" (click)="supplyAmount(items.address)">Supply</button>
+                            <button class="btn" (click)="openDialog(items.address,'Borrow')">Borrow</button>
                             <button class="btn" (click)="goToAsset(items,icons[i])">Details</button>
                           </div>
                         </div>
