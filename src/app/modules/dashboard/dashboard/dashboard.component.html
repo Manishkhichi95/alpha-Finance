@@ -3,16 +3,28 @@
 </div>
 <section *ngIf="connected" class="dash_sect">
 
+  
+
+  
   <div id="myModal" class="modal">
     <div class="modal-content">
       <span class="close" (click)="closeDialog()">&times;</span>
-      <h2>Enter the Amount to {{transactionType}}:</h2>
-      <input type="text" [(ngModel)]="amount">
-      <h2 *ngIf="transactionType=='Withdraw'">Withdraw To:</h2>
-      <input type="text" *ngIf="transactionType=='Withdraw'" [(ngModel)]="withdrawTo">
-      <button class="submittBtn" (click)="submitt()">Submit</button>
+      <h2>Enter the Amount to {{ transactionType }}:</h2>
+      <form [formGroup]="Form">
+        <input type="text" formControlName="amount">
+        <p *ngIf="isInvalid('amount') || showError" style="margin: 0 auto;">Please Enter the Amount to {{
+          transactionType }}</p>
+        <h2 *ngIf="transactionType==='Withdraw'">Withdraw To:</h2>
+        <input type="text" formControlName="withdrawTo" *ngIf="transactionType==='Withdraw'">
+        <p *ngIf="transactionType == 'Withdraw' && showError || isInvalid('withdrawTo')" style="margin: 0 auto;">Please
+          Enter the Address to {{ transactionType }}</p>
+        <button class="submittBtn" (click)="submitt()">Submit</button>
+      </form>
     </div>
   </div>
+
+
+
 
   <div class="container">
     <div class="card_connect_list">
@@ -61,8 +73,13 @@
                   <td>
                     <div class="dt_table">
                       <div class="btn_grp">
-                        <button class="btn" (click)="openDialog(items.address,'Supply')">Supply</button>
-                        <button class="btn" (click)="openDialog(items.address,'Withdraw')">Withdraw</button>
+                        <button class="btn" style="width: 63.3px;"
+                        *ngIf="selectedWithdrawReserve==items.address && showSpinner">
+                        <mat-spinner style="margin:0 auto; height:20px;width:20px;"></mat-spinner>
+                      </button>
+                      <button class="btn" (click)="openDialog(items.address,'Withdraw')"
+                        *ngIf="selectedWithdrawReserve!=items.address">
+                        Withdraw</button>
                       </div>
                     </div>
 
@@ -133,7 +150,7 @@
                     </tr>
                   </thead>
                   <tbody *ngIf="networkName=='Mumbai Testnet'">
-                    <tr *ngFor="let items of ContractData, let i = index">
+                    <tr *ngFor="let items of SupplyContractData, let i = index">
                       <td>
                         <div class="user_avtar">
                           <div class="icon"><img [src]="icons[i]" alt=""></div>
@@ -173,7 +190,13 @@
                       <td>
                         <div class="dt_table">
                           <div class="btn_grp">
-                            <button class="btn" (click)="openDialog(items.address,'supply')">Supply</button>
+                            <button class="btn" style="width: 63.3px;"
+                              *ngIf="selectedSupplyReserve==items.address && showSpinner">
+                              <mat-spinner style="margin:0 auto; height:20px;width:20px;"></mat-spinner>
+                            </button>
+                            <button class="btn" (click)="openDialog(items.address,'Supply')"
+                              *ngIf="selectedSupplyReserve!=items.address">
+                              Supply</button>
                             <button class="btn" (click)="goToAsset(items,icons[i])">Details</button>
                           </div>
                         </div>
@@ -212,7 +235,7 @@
                     </tr>
                   </thead>
                   <tbody *ngIf="networkName=='Mumbai Testnet'">
-                    <tr *ngFor="let items of ContractData, let i = index">
+                    <tr *ngFor="let items of borrowContractData, let i = index">
                       <td>
                         <div class="user_avtar">
                           <div class="icon"><img [src]="icons[i]" alt=""></div>
@@ -252,7 +275,13 @@
                       <td>
                         <div class="dt_table">
                           <div class="btn_grp">
-                            <button class="btn" (click)="openDialog(items.address,'Borrow')">Borrow</button>
+                            <button class="btn" style="width: 63.3px;"
+                            *ngIf="selectedBorrowReserve==items.address && showSpinner">
+                            <mat-spinner style="margin:0 auto; height:20px;width:20px;"></mat-spinner>
+                          </button>
+                          <button class="btn" (click)="openDialog(items.address,'Borrow')"
+                            *ngIf="selectedBorrowReserve!=items.address">
+                            Borrow</button>
                             <button class="btn" (click)="goToAsset(items,icons[i])">Details</button>
                           </div>
                         </div>
@@ -273,9 +302,7 @@
             </div>
           </div>
         </div>
-
       </div>
-
     </div>
   </section>
 </section>
