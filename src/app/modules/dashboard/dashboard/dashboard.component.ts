@@ -23,13 +23,13 @@ export class DashboardComponent {
   transactionType: any;
   Addresscontract: any;
   tokenContractsABI: any;
-  borrowContractData: any;
   borrowedAsset: any = [];
-  SupplyContractData: any;
   depositedAsset: any = [];
   showError: boolean = false;
   connected: boolean = false;
   UiPoolDataProviderV2V3: any;
+  SupplyContractData: any = [];
+  borrowContractData: any = [];
   showDetails: boolean = false;
   showSpinner: boolean = false;
   RadiantLendingPoolV2ABI: any;
@@ -62,6 +62,7 @@ export class DashboardComponent {
       (this.readContractsService.getReserveData().then((data: any) => {
         this.borrowContractData = data;
         this.SupplyContractData = data;
+        console.log(this.SupplyContractData)
         const sortedContractData = this.SupplyContractData.sort((a: any, b: any) => {
           const nameA = a.name.toUpperCase();
           const nameB = b.name.toUpperCase();
@@ -239,16 +240,41 @@ export class DashboardComponent {
         }
         console.log('Transaction hash:', Approve);
       } catch (error: any) {
+        const err = JSON.stringify(error);
+        const innerErr = JSON.parse(err);
+
+        console.error('Error:', innerErr);
         this.showSpinner = false;
         this.selectedSupplyReserve = '';
-        Swal.fire({
-          title: "Error:",
-          text: error,
-          icon: "warning",
-        });
-        console.log('error', error.splice(': Web3 validator found 1 error[s]:'))
+        if (innerErr.innerError) {
+          if (innerErr.innerError.code === 4001) {
+            Swal.fire({
+              title: "Transaction Rejected",
+              text: "Please approve the transaction in Metamask.",
+              icon: "warning",
+            });
+          } else {
+            Swal.fire({
+              title: "Error",
+              text: 'Unknown error occurred',
+              icon: "error",
+            });
+          }
+        }
+        else {
+          Swal.fire({
+            title: "Error",
+            text: error,
+            icon: "error",
+          });
+        }
+        console.error('Error:', innerErr);
+        this.showSpinner = false;
+        this.Form.reset();
+        this.selectedSupplyReserve = '';
         return;
       }
+
       let Pool_Proxy_Aave_Contract = await new this.web3.eth.Contract(this.RadiantLendingPoolV2ABI, this.RadiantLendingPoolV2Address);
       const referralCode = 0;
       try {
@@ -271,6 +297,31 @@ export class DashboardComponent {
               this.borrowContractData = [];
               this.depositedAsset = [];
               this.getUserReservesData();
+              this.readContractsService.getReserveData().then((data: any) => {
+                this.SupplyContractData = data;
+                const totalDepositArr: any = [];
+                const totalBorrowsArr: any = [];
+                let deposits: any = 0;
+                let borrows: any = 0;
+                let totalAvailable: any = 0;
+                this.SupplyContractData.forEach((element: any) => {
+
+                  totalDepositArr.push(element.deposit);
+                  totalBorrowsArr.push(element.totalBorrows);
+                });
+                const sumOfDeposits = totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+                deposits = sumOfDeposits;
+                const sumOfBorrows = totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+                borrows = sumOfBorrows;
+                totalAvailable = (Number(deposits) - Number(borrows)).toFixed(2);
+                localStorage.setItem('borrows', JSON.stringify(borrows));
+                localStorage.setItem('deposits', JSON.stringify(deposits));
+                localStorage.setItem('totalAvailable', JSON.stringify(totalAvailable));
+
+                this.readContractsService.borrows.next(borrows);
+                this.readContractsService.deposits.next(deposits);
+                this.readContractsService.totalAvailable.next(totalAvailable);
+              })
             }
           });
           console.log('Transaction succeeded!');
@@ -279,23 +330,48 @@ export class DashboardComponent {
         this.selectedSupplyReserve = '';
         console.log('Transaction hash:', deposit);
       } catch (error: any) {
-        Swal.fire({
-          title: "Error:",
-          text: error,
-          icon: "warning",
-        });
+        const err = JSON.stringify(error);
+        const innerErr = JSON.parse(err);
+
+        console.error('Error:', innerErr);
         this.showSpinner = false;
         this.selectedSupplyReserve = '';
-        console.error('Error:', error);
+        if (innerErr.innerError) {
+          if (innerErr.innerError.code === 4001) {
+            Swal.fire({
+              title: "Transaction Rejected",
+              text: "Please approve the transaction in Metamask.",
+              icon: "warning",
+            });
+          } else {
+            Swal.fire({
+              title: "Error",
+              text: 'Unknown error occurred',
+              icon: "error",
+            });
+          }
+        }
+        else {
+          Swal.fire({
+            title: "Error",
+            text: error,
+            icon: "error",
+          });
+        }
+        console.error('Error:', innerErr);
       }
       this.showSpinner = false;
+      this.Form.reset();
       this.selectedSupplyReserve = '';
     }
 
     if (this.transactionType == 'Withdraw') {
       this.showSpinner = true;
+      this.Addresscontract = new this.web3.eth.Contract(this.tokenContractsABI, this.selectedWithdrawReserve);
+      const decimals = await this.Addresscontract.methods.decimals().call();
+
       this.address = localStorage.getItem('walletAddress');
-      const amount = this.Form.get('amount').value * Math.pow(10, 18);
+      const amount = this.Form.get('amount').value * Math.pow(10, Number(decimals));
       let Pool_Proxy_Aave_Contract = await new this.web3.eth.Contract(this.RadiantLendingPoolV2ABI, this.RadiantLendingPoolV2Address);
       try {
         const withdraw = await Pool_Proxy_Aave_Contract.methods.withdraw(this.selectedWithdrawReserve, amount.toString(), this.Form.get('withdrawTo').value).send({
@@ -303,80 +379,94 @@ export class DashboardComponent {
           data: await Pool_Proxy_Aave_Contract.methods.withdraw(this.selectedWithdrawReserve, amount.toString(), this.Form.get('withdrawTo').value).encodeABI(),
           gas: 1000000
         })
-              this.showSpinner = false;
-              const receipt = await this.web3.eth.getTransactionReceipt(withdraw.transactionHash);
-              if (receipt && receipt.status) {
-                this.showSpinner = false;
-                this.selectedWithdrawReserve = '';
-                Swal.fire({
-                  title: "Transaction Successfull",
-                  icon: "success",
-                }).then((result) => {
-                  if (result.isConfirmed) {
-                    this.SupplyContractData = [];
-                    this.borrowContractData = [];
-                    this.depositedAsset = [];
-                    this.getUserReservesData();
-                  }
+        const receipt = await this.web3.eth.getTransactionReceipt(withdraw.transactionHash);
+        if (receipt && receipt.status) {
+          this.showSpinner = false;
+          this.selectedWithdrawReserve = '';
+          Swal.fire({
+            title: "Transaction Successful",
+            icon: "success",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              this.SupplyContractData = [];
+              this.borrowContractData = [];
+              this.depositedAsset = [];
+              this.getUserReservesData();
+              this.readContractsService.getReserveData().then((data: any) => {
+                this.SupplyContractData = data;
+                const totalDepositArr: any = [];
+                const totalBorrowsArr: any = [];
+                let deposits: any = 0;
+                let borrows: any = 0;
+                let totalAvailable: any = 0;
+                this.SupplyContractData.forEach((element: any) => {
+
+                  totalDepositArr.push(element.deposit);
+                  totalBorrowsArr.push(element.totalBorrows);
                 });
-                console.log('Transaction succeeded!');
-              }
-              this.showSpinner = false;
-              this.selectedWithdrawReserve = '';
-              console.log('Transaction hash:', withdraw);
-            } catch (error: any) {
-              this.showSpinner = false;
-              this.selectedWithdrawReserve = '';
-              Swal.fire({
-                title: "Error:",
-                text: error,
-                icon: "warning",
-              });
-              console.error('Error:', error);
+                const sumOfDeposits = totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+                deposits = sumOfDeposits;
+                const sumOfBorrows = totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+                borrows = sumOfBorrows;
+                totalAvailable = (Number(deposits) - Number(borrows)).toFixed(2);
+                localStorage.setItem('borrows', JSON.stringify(borrows));
+                localStorage.setItem('deposits', JSON.stringify(deposits));
+                localStorage.setItem('totalAvailable', JSON.stringify(totalAvailable));
+
+                this.readContractsService.borrows.next(borrows);
+                this.readContractsService.deposits.next(deposits);
+                this.readContractsService.totalAvailable.next(totalAvailable);
+              })
             }
-            this.showSpinner = false;
-            this.selectedWithdrawReserve = '';
+          });
+          console.log('Transaction succeeded!');
+        }
+      } catch (error: any) {
+        const err = JSON.stringify(error);
+        const innerErr = JSON.parse(err);
+
+        console.error('Error:', innerErr);
+        this.showSpinner = false;
+        this.selectedWithdrawReserve = '';
+        if (innerErr.innerError) {
+          if (innerErr.innerError.code === 4001) {
+            Swal.fire({
+              title: "Transaction Rejected",
+              text: "Please approve the transaction in Metamask.",
+              icon: "warning",
+            });
+          } else {
+            Swal.fire({
+              title: "Error",
+              text: 'Unknown error occurred',
+              icon: "error",
+            });
           }
-    //       .then((tx: any) => {
-    //         this.web3.waitForTransaction(tx.hash)
-    //           .then(() => {
-    //             this.showSpinner = false;
-    //             this.selectedWithdrawReserve = '';
-    //             Swal.fire({
-    //               title: "Transaction Successfull",
-    //               icon: "success",
-    //             }).then((result) => {
-    //               if (result.isConfirmed) {
-    //                 this.SupplyContractData = [];
-    //                 this.borrowContractData = [];
-    //                 this.depositedAsset = [];
-    //                 this.getUserReservesData();
-    //               }
-    //             });
-    //             console.log("success");
-    //             console.log(tx.hash);
-    //           })
-    //       })
-    //       .catch((error: any) => {
-    //         this.showSpinner = false;
-    //         this.selectedWithdrawReserve = '';
-    //         Swal.fire({
-    //           title: "Error:",
-    //           text: error.message,
-    //           icon: "warning",
-    //         });
-    //         console.log('message', error.message);
-    //       })
-    //   } catch (error: any) {
-    //     console.log(error)
-    //   }
-    // }
+        }
+        else {
+          Swal.fire({
+            title: "Error",
+            text: error,
+            icon: "error",
+          });
+        }
+
+        console.error('Error:', innerErr);
+      }
+      this.showSpinner = false;
+      this.Form.reset();
+      this.selectedWithdrawReserve = '';
+    }
 
     if (this.transactionType == 'Borrow') {
       this.showSpinner = true;
+      this.Addresscontract = new this.web3.eth.Contract(this.tokenContractsABI, this.selectedBorrowReserve);
+      const decimals = await this.Addresscontract.methods.decimals().call();
+
       this.address = localStorage.getItem('walletAddress');
+      const amount = this.Form.get('amount').value * Math.pow(10, Number(decimals));
+
       let RadiantLendingPoolV2Contract = await new this.web3.eth.Contract(this.RadiantLendingPoolV2ABI, this.RadiantLendingPoolV2Address);
-      const amount = this.Form.get('amount').value * Math.pow(10, 6);
       const interestRateMode = 1;
       const referralCode = 0;
       try {
@@ -398,6 +488,31 @@ export class DashboardComponent {
               this.borrowContractData = [];
               this.depositedAsset = [];
               this.getUserReservesData();
+              this.readContractsService.getReserveData().then((data: any) => {
+                this.SupplyContractData = data;
+                const totalDepositArr: any = [];
+                const totalBorrowsArr: any = [];
+                let deposits: any = 0;
+                let borrows: any = 0;
+                let totalAvailable: any = 0;
+                this.SupplyContractData.forEach((element: any) => {
+
+                  totalDepositArr.push(element.deposit);
+                  totalBorrowsArr.push(element.totalBorrows);
+                });
+                const sumOfDeposits = totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+                deposits = sumOfDeposits;
+                const sumOfBorrows = totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+                borrows = sumOfBorrows;
+                totalAvailable = (Number(deposits) - Number(borrows)).toFixed(2);
+                localStorage.setItem('borrows', JSON.stringify(borrows));
+                localStorage.setItem('deposits', JSON.stringify(deposits));
+                localStorage.setItem('totalAvailable', JSON.stringify(totalAvailable));
+
+                this.readContractsService.borrows.next(borrows);
+                this.readContractsService.deposits.next(deposits);
+                this.readContractsService.totalAvailable.next(totalAvailable);
+              })
             }
           });
           console.log('Transaction succeeded!');
@@ -406,14 +521,36 @@ export class DashboardComponent {
         this.selectedBorrowReserve = '';
         console.log('Transaction hash:', result);
       } catch (error: any) {
+        const err = JSON.stringify(error);
+        const innerErr = JSON.parse(err);
+        console.error('Error:', innerErr);
+
         this.showSpinner = false;
         this.selectedBorrowReserve = '';
-        Swal.fire({
-          title: "Error:",
-          text: error,
-          icon: "warning",
-        });
-        console.error('Error:', error);
+        if (innerErr.innerError) {
+          if (innerErr.innerError.code === 4001) {
+            Swal.fire({
+              title: "Transaction Rejected",
+              text: "Please approve the transaction in Metamask.",
+              icon: "warning",
+            });
+          } else {
+            Swal.fire({
+              title: "Error",
+              text: 'Unknown error occurred',
+              icon: "error",
+            });
+          }
+        }
+        else {
+          Swal.fire({
+            title: "Error",
+            text: error,
+            icon: "error",
+          });
+        }
+
+        console.error('Error:', innerErr);
       }
       this.showSpinner = false;
       this.selectedBorrowReserve = '';

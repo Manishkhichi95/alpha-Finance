@@ -5,7 +5,7 @@
 
   
 
-  
+
   <div id="myModal" class="modal">
     <div class="modal-content">
       <span class="close" (click)="closeDialog()">&times;</span>
@@ -38,9 +38,9 @@
               <thead>
                 <tr>
                   <th>Assets</th>
-                  <th>Current Balance</th>
+                  <th>Deposits</th>
                   <th>APY</th>
-                  <!-- <th>Collateral</th> -->
+                  <th></th>
                   <th></th>
                 </tr>
               </thead>
@@ -56,8 +56,8 @@
                   </td>
                   <td>
                     <div class="dt_table">
-                      <h3>${{items.balance}}</h3>
-                      <p>${{items.balance}}</p>
+                      <h3>{{items.balance}}</h3>
+                      <p>{{items.balance}}</p>
                     </div>
                   </td>
                   <td>
@@ -107,7 +107,7 @@
               <thead>
                 <tr>
                   <th>Assets</th>
-                  <th>Current Balance</th>
+                  <th>Borrows</th>
                   <th>APY</th>
                   <th></th>
                 </tr>
@@ -143,7 +143,7 @@
                   <thead>
                     <tr>
                       <th>Assets</th>
-                      <th>Available</th>
+                      <th>Current Balance</th>
                       <th>APY</th>
                       <th>Can be collateral</th>
                       <th></th>
@@ -166,7 +166,7 @@
                       </td>
                       <td>
                         <div class="dt_table">
-                          <h3>0.12%</h3>
+                          <h3>{{items.depositAPY}}%</h3>
                         </div>
                       </td>
                       <td>
@@ -246,12 +246,12 @@
                       </td>
                       <td>
                         <div class="dt_table">
-                          <h3>0%</h3>
+                          <h3>0</h3>
                         </div>
                       </td>
                       <td>
                         <div class="dt_table">
-                          <h3>0.12%</h3>
+                          <h3>{{items.variableBorrowAPY}}%</h3>
                         </div>
                       </td>
                       <td>
@@ -313,7 +313,6 @@
       <div class="row">
         <div class="col-sm-12">
           <h3>Please connect your wallet</h3>
-          <button class="btn">Connect Wallet</button>
         </div>
       </div>
     </div>
@@ -331,7 +330,7 @@
                 <thead>
                   <tr>
                     <th>Assets</th>
-                    <th>Current Balance</th>
+                    <th>Deposits</th>
                     <th>APY</th>
                     <th>Collateral</th>
                   </tr>
@@ -340,7 +339,6 @@
                   <tr>
                     <td colspan="4">
                       <div class="btn_grp">
-                        <button class="btn_connt">Connect Wallet</button>
                       </div>
                     </td>
                   </tr>
@@ -359,7 +357,7 @@
                 <thead>
                   <tr>
                     <th>Assets</th>
-                    <th>Current Balance</th>
+                    <th>Borrows</th>
                     <th>APY</th>
                     <th></th>
                   </tr>
@@ -368,7 +366,6 @@
                   <tr>
                     <td colspan="4">
                       <div class="btn_grp">
-                        <button class="btn_connt">Connect Wallet</button>
                       </div>
                     </td>
                   </tr>
