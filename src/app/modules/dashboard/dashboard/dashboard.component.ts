@@ -1,5 +1,4 @@
-import Swal from 'sweetalert2';
-import { ResponseError } from 'web3';
+import Swal from "sweetalert2";
 import { Router } from '@angular/router';
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -341,7 +340,7 @@ export class DashboardComponent {
           Swal.fire({
             title: "Transaction Successfull",
             icon: "success",
-          }).then((result) => {
+          }).then((result:any) => {
             if (result.isConfirmed) {
               this.SupplyContractData = [];
               this.borrowContractData = [];
@@ -437,7 +436,7 @@ export class DashboardComponent {
           Swal.fire({
             title: "Transaction Successful",
             icon: "success",
-          }).then((result) => {
+          }).then((result:any) => {
             if (result.isConfirmed) {
               this.SupplyContractData = [];
               this.borrowContractData = [];
@@ -527,7 +526,7 @@ export class DashboardComponent {
           Swal.fire({
             title: "Transaction Successful",
             icon: "success",
-          }).then((result) => {
+          }).then((result:any) => {
             if (result.isConfirmed) {
               this.SupplyContractData = [];
               this.borrowContractData = [];
@@ -620,7 +619,7 @@ export class DashboardComponent {
           Swal.fire({
             title: "Transaction Successfull",
             icon: "success",
-          }).then((result) => {
+          }).then((result:any) => {
             if (result.isConfirmed) {
               this.SupplyContractData = [];
               this.borrowContractData = [];
