@@ -48,7 +48,7 @@
                 <tr *ngFor="let items of depositedAsset,let i = index">
                   <td>
                     <div class="user_avtar">
-                      <div class="icon"><img src="{{icons[i]}}" alt=""></div>
+                      <div class="icon"><img src="{{items.icon}}" alt=""></div>
                       <div class="cont_bx">
                         <h3>{{items.name}}</h3>
                       </div>
@@ -63,7 +63,7 @@
                   <td>
                     <div class="dt_table">
                       <h3>
-                        <0.01% </h3>
+                        {{items.depositAPY}}%</h3>
                     </div>
 
                   </td>
@@ -112,8 +112,46 @@
                   <th></th>
                 </tr>
               </thead>
-              <tbody>
-                <tr>
+              <tbody *ngIf="networkName=='Mumbai Testnet'">
+                <tr *ngFor="let items of borrowedAsset,let i = index">
+                  <td>
+                    <div class="user_avtar">
+                      <div class="icon"><img src="{{items.icon}}" alt=""></div>
+                      <div class="cont_bx">
+                        <h3>{{items.name}}</h3>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="dt_table">
+                      <h3>{{items.totalBorrows}}</h3>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="dt_table">
+                      <h3>
+                        {{items.variableBorrowAPY}}% </h3>
+                    </div>
+                  </td>
+                  <td>
+
+                  </td>
+                  <td>
+                    <div class="dt_table">
+                      <div class="btn_grp">
+                        <button class="btn" style="width: 63.3px;"
+                        *ngIf="selectedRepayReserve==items.address && showSpinner">
+                        <mat-spinner style="margin:0 auto; height:20px;width:20px;"></mat-spinner>
+                      </button>
+                      <button class="btn" (click)="openDialog(items.address,'Repay')"
+                        *ngIf="selectedRepayReserve!=items.address">
+                        Repay</button>
+                      </div>
+                    </div>
+
+                  </td>
+                </tr>
+                <tr *ngIf="networkName!='Mumbai Testnet'">
                   <td colspan="4">
                     <div class="data_notfound">
                       <p>No items found</p>
@@ -153,7 +191,7 @@
                     <tr *ngFor="let items of SupplyContractData, let i = index">
                       <td>
                         <div class="user_avtar">
-                          <div class="icon"><img [src]="icons[i]" alt=""></div>
+                          <div class="icon"><img [src]="items.icon" alt=""></div>
                           <div class="cont_bx">
                             <h3>{{items['details'].symbol}}</h3>
                           </div>
@@ -238,7 +276,7 @@
                     <tr *ngFor="let items of borrowContractData, let i = index">
                       <td>
                         <div class="user_avtar">
-                          <div class="icon"><img [src]="icons[i]" alt=""></div>
+                          <div class="icon"><img [src]="items.icon" alt=""></div>
                           <div class="cont_bx">
                             <h3>{{items['details'].symbol}}</h3>
                           </div>

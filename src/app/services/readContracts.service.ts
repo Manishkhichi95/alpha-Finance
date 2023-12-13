@@ -93,7 +93,8 @@ export class readContractsService {
           tokenContracts.methods.balanceOf(this.accounts[0]).call(),
           aTOkenContract.methods.totalSupply().call()
         ]);
-        const depositAPR = Number(element.liquidityRate) / this.RAY;
+        debugger
+        const depositAPR: any = Number(element.liquidityRate) / this.RAY;
         const stableBorrowAPR = Number(element.variableBorrowRate) / this.RAY;
         const variableBorrowAPR = Number(element.variableBorrowRate) / this.RAY;
         const stableDebtTokenContract = new this.web3.eth.Contract(this.stableDebtTokenABI, element.stableDebtTokenAddress);
@@ -109,6 +110,11 @@ export class readContractsService {
           stableDebtTokenContract.methods.totalSupply().call(),
           variableDebtTokenContract.methods.totalSupply().call(),
         ]);
+        debugger
+        console.log('DEPOSIT',depositAPR,'VARIABLEbORROW',variableBorrowAPR)
+        const FinalDepositAPR = ((Number(depositAPR) * 100000000)).toFixed(2);
+        const FinalvariableBorrowAPR = (Number(variableBorrowAPR) * 1000000).toFixed(2);
+        console.log('FinalDepositAPR',FinalDepositAPR,'FinalvariableBorrowAPR',FinalvariableBorrowAPR)
 
         return {
           name: name,
@@ -121,11 +127,11 @@ export class readContractsService {
           variableDebtTokenSupply: variableDebtTokenSupply,
           assetPrice: (Number(getAssetPrice) / Number(BaseCurrency)).toFixed(2),
           balance: (Number(balance) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2),
-          depositAPY: ((Math.pow((1 + (depositAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2),
           stableBorrowAPY: ((Math.pow((1 + (stableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2),
           deposit: ((Number(deposit)) / (Number(1 + '0'.repeat(Number(decimals)))) * (Number(getAssetPrice) / 100000000)).toFixed(2),
           totalSupply: (Number(deposit) * (Number(getAssetPrice) / 100000000) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2),
-          variableBorrowAPY: ((Math.pow((1 + (variableBorrowAPR / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100).toFixed(2),
+          depositAPY:  (((Math.pow((1 + (Number(FinalDepositAPR) / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100)/100000000000).toFixed(2),
+          variableBorrowAPY:( ((Math.pow((1 + (Number(FinalvariableBorrowAPR) / this.SECONDS_PER_YEAR)), this.SECONDS_PER_YEAR) - 1) * 100)/100000000000000000000000000000000000000000000).toFixed(2),
           totalBorrows: ((Number(variableDebtTokenSupply) + Number(stableDebtTokenSupply)) * (Number(getAssetPrice) / 100000000) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2)
         };
       });
