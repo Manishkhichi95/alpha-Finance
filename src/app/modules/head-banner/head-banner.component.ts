@@ -7,20 +7,38 @@ import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@
   styleUrls: ['./head-banner.component.css']
 })
 export class HeadBannerComponent implements OnInit, AfterViewInit {
-  borrows: Number = 0;
-  networkName: any;
-  deposits: Number = 0;
-  totalAvailable: Number = 0;
+  borrows: any = 0;
+  networkName: any = localStorage.getItem('networkName');
+  deposits: any = 0;
+  totalAvailable: any = 0;
   connected: boolean = false;
   @Input() contractData: any = [];
   @Output() CurrentchainId = new EventEmitter<string>();
+  web3: any;
+  finalDepo: any;
+  finalBrow: any;
+  finalttlAvlble: any;
 
   constructor(private readContractsService: readContractsService, private web3Service: Web3Service) {
     this.web3Service.connected.subscribe((connected: boolean) => {
       this.connected = connected;
     })
-    this.networkName = localStorage.getItem('networkName');
-    this.networkName == null ? this.networkName = "Mumbai Testnet" : "";
+    this.checkNetworkId();
+  }
+
+  async checkNetworkId() {
+    this.web3 = this.web3Service.getWeb3();
+    const CurrentchainId = await this.web3.eth.net.getId();
+    console.log(CurrentchainId)
+    if (CurrentchainId == 80001n) {
+      this.networkName = 'Mumbai Testnet';
+    }
+    if (CurrentchainId == 42161n) {
+      this.networkName = 'Arbitrum';
+    }
+    if (CurrentchainId == 137n) {
+      this.networkName = 'Polygon Mainnet';
+    }
   }
 
   ngOnInit(): void {
@@ -28,23 +46,62 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
     localStorage.getItem('deposits');
     localStorage.getItem('totalAvailable');
     debugger
-    // this.readContractsService.getReserveData().subscribe((res: any) => {
-      this.readContractsService.deposits.subscribe((res: Number) => {
-          this.deposits = res;
-          const deposits: any = localStorage.getItem('deposits')
-          this.deposits == 0 ? this.deposits = JSON.parse(deposits) : '';
-      });
-      this.readContractsService.borrows.subscribe((res: Number) => {
-          this.borrows = res;
-          const borrows: any = localStorage.getItem('borrows')
-          this.borrows == 0 ? this.borrows = JSON.parse(borrows) : '';
-      });
-      this.readContractsService.totalAvailable.subscribe((res: Number) => {
-          this.totalAvailable = res;
-          const totalAvailable: any = localStorage.getItem('totalAvailable')
-          this.totalAvailable == 0 ? this.totalAvailable = JSON.parse(totalAvailable) : '';
-      });
-    // })
+    this.readContractsService.deposits.subscribe((res: Number) => {
+      this.deposits = res;
+      const deposits: any = localStorage.getItem('deposits')
+      this.deposits == 0 ? this.deposits = JSON.parse(deposits) : '';
+      if (this.deposits.toString().length == 1 || this.deposits.toString().length == 2) {
+        this.finalDepo = this.deposits;
+      }
+      if (this.deposits.toString().length == 3 || this.deposits.toString().length == 4 || this.deposits.toString().length == 5) {
+       console.log(this.deposits)
+        this.finalDepo = (this.deposits / 1000) + 'k';
+      }
+      if (this.deposits.toString().length == 6 || this.deposits.toString().length == 7 || this.deposits.toString().length == 8) {
+        this.finalDepo = (this.deposits / 1000000) + 'M';
+      }
+      if (this.deposits.toString().length > 9) {
+        this.finalDepo = (this.deposits / 1000000000) + 'B';
+      }
+    });
+    this.readContractsService.borrows.subscribe((res: Number) => {
+      this.borrows = res;
+      const borrows: any = localStorage.getItem('borrows')
+      this.borrows == 0 ? this.borrows = JSON.parse(borrows) : '';
+      if (this.borrows.toString().length == 1 || this.borrows.toString().length == 2) {
+        this.finalBrow = this.borrows;
+      }
+      if (this.borrows.toString().length == 3 || this.borrows.toString().length == 4 || this.borrows.toString().length == 5) {
+        this.finalBrow = (this.borrows / 1000) + 'k';
+      }
+      if (this.borrows.toString().length == 6 || this.borrows.toString().length == 7 || this.borrows.toString().length == 8) {
+        this.finalBrow = (this.borrows / 1000000) + 'M';
+      }
+      if (this.borrows.toString().length > 9) {
+        this.finalBrow = (this.borrows / 1000000000) + 'B';
+      }
+    });
+
+    this.readContractsService.totalAvailable.subscribe((res: Number) => {
+      this.totalAvailable = res;
+      const totalAvailable: any = localStorage.getItem('totalAvailable')
+      this.totalAvailable == 0 ? this.totalAvailable = JSON.parse(totalAvailable) : '';
+      const fixedtotalAvailable =Math.floor(this.totalAvailable) ;
+      console.log('fixedtotalAvailable',fixedtotalAvailable)
+
+      if (fixedtotalAvailable.toString().length == 1 || fixedtotalAvailable.toString().length == 2) {
+        this.finalttlAvlble = fixedtotalAvailable;
+      }
+      if (fixedtotalAvailable.toString().length == 3 || fixedtotalAvailable.toString().length == 4 || fixedtotalAvailable.toString().length == 5) {
+        this.finalttlAvlble = (fixedtotalAvailable / 1000) + 'k';
+      }
+      if (fixedtotalAvailable.toString().length == 6 || fixedtotalAvailable.toString().length == 7 || fixedtotalAvailable.toString().length == 8) {
+        this.finalttlAvlble = (fixedtotalAvailable / 1000000) + 'M';
+      }
+      if (fixedtotalAvailable.toString().length > 9) {
+        this.finalttlAvlble = (fixedtotalAvailable / 1000000000) + 'B';
+      }
+    });
   }
 
   ngAfterViewInit(): void {
@@ -54,7 +111,7 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
   async switchNetwork(network: string) {
     const provider = window.ethereum;
     let chainId = '';
-    network == 'Arbitrum' ? chainId = '0xa4b1' : network == 'Polygon Mainnet' ? chainId = '0x89' : chainId = '0x13881';
+    network == 'Arbitrum' ? chainId = '0xa4b1' : network == 'Polygon Mainnet' ? chainId = '0x89' : network == 'Mumbai Testnet' ? chainId = '0x13881' : chainId = '';
     console.log(chainId)
     if (!provider) {
       console.log("Metamask is not installed, please install!");

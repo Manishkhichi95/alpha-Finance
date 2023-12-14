@@ -3,7 +3,8 @@
     <div class="container">
         <div class="table_body">
             <div class="head_bx">
-                <h3>{{networkName}} assets</h3>
+                <h3 *ngIf="networkName!='Select Network'">{{networkName}} assets</h3>
+                <h3 *ngIf="networkName=='Select Network'">Please Select the Network</h3>
             </div>
             <div class="table_scoll">
                 <table class="table" id="assets_table">
@@ -23,7 +24,7 @@
                             
                             <td>
                                 <div class="user_avtar">
-                                    <div class="icon"><img [src]="icons[i]" alt="" height="24px"></div>
+                                    <div class="icon"><img src="{{items.icon}}" alt="" height="24px"></div>
                                     <div class="cont_bx">
                                         <h3>{{items.name}}</h3>
                                         <p>{{items.symbol}}</p>
@@ -64,7 +65,7 @@
                     <div *ngIf="networkName!='Mumbai Testnet'" style="color:white;padding-left:10px;font:x-large;width:489px;">No Data Available as of now.Please try Connecting to Different Network.</div>
                 </table>
             </div>
-            <mat-spinner style="margin-left:47%;color:warn;" *ngIf="ContractData.length<=0 && networkName=='Mumbai Testnet' && connected"></mat-spinner>
+            <mat-spinner style="margin:0 auto;color:warn;" *ngIf="ContractData.length<=0 && networkName=='Mumbai Testnet' && connected"></mat-spinner>
         </div>
     </div>
 </section>

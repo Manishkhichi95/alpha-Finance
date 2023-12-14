@@ -23,21 +23,35 @@ export class MainComponent implements OnInit {
   CurrentchainId: any = localStorage.getItem('chainId');
   networkName: string | null = localStorage.getItem('networkName');
   icons: string[] = ["assets/alphalogo.png", "assets/images/busd-c4257f9b.svg", "assets/images/ic3.png"]
+  web3: any;
 
   constructor(private readContractsService: readContractsService, private web3Service: Web3Service, private router: Router) {
     this.walletAddress = localStorage.getItem('walletAddress');
     localStorage.setItem('showAssetDetails', JSON.stringify(this.showDetails));
-    this.networkName == null ? this.networkName = "Mumbai Testnet" : "";
-    this.CurrentchainId == '0xa4b1' ? this.networkName = 'Arbitrum' : this.CurrentchainId == '0x89' ? this.networkName = 'Polygon Mainnet' : this.networkName = 'Mumbai Testnet';
+    this.checkNetworkId();
   }
 
-  ngOnInit() {
-    this.web3Service.connected.subscribe((connected: boolean) => {
-      this.connected = connected;
-    })
-    debugger
-    this.networkName == 'Mumbai Testnet' ?
-      (this.readContractsService.getReserveData().then((data: any) => {
+  async checkNetworkId() {
+    this.web3 = this.web3Service.getWeb3();
+    const CurrentchainId = await this.web3.eth.net.getId();
+    console.log(CurrentchainId)
+    if (CurrentchainId == 80001n) {
+      this.networkName = 'Mumbai Testnet';
+      this.readContractsService.getReserveData().then((data: any) => {
+        data.forEach((item: any) => {
+          if (item.name == 'Alpha') {
+            item.icon = "assets/alphalogo.png";
+          }
+          if (item.name == 'BUSD Token') {
+            item.icon = "assets/images/busd-c4257f9b.svg";
+          }
+          if (item.name == 'USDT') {
+            item.icon = "assets/images/ic3.png";
+          }
+          if (item.name == 'WETH') {
+            item.icon = "assets/images/eth-a91aa368.svg";
+          }
+        })
         this.ContractData = data,
           this.readContractsService.data.next(this.ContractData)
         if (this.ContractData.length > 0) {
@@ -61,21 +75,37 @@ export class MainComponent implements OnInit {
           this.readContractsService.borrows.next(this.borrows);
           this.readContractsService.deposits.next(this.deposits);
           this.readContractsService.totalAvailable.next(this.totalAvailable);
-          const sortedContractData = this.ContractData.sort((a:any, b:any) => {
-            const nameA = a.name.toUpperCase(); 
-            const nameB = b.name.toUpperCase(); 
-          
+          const sortedContractData = this.ContractData.sort((a: any, b: any) => {
+            const nameA = a.name.toUpperCase();
+            const nameB = b.name.toUpperCase();
+
             if (nameA < nameB) {
               return -1;
             }
             if (nameA > nameB) {
               return 1;
             }
-            return 0; 
+            return 0;
           });
           this.ContractData = sortedContractData;
         }
-      })) : this.ContractData = [];
+        if (CurrentchainId == 42161n) {
+          this.networkName = 'Arbitrum';
+          this.ContractData = [];
+        }
+        if (CurrentchainId == 137n) {
+          this.networkName = 'Polygon Mainnet';
+          this.ContractData = [];
+        }
+      })
+    }
+  }
+
+  ngOnInit() {
+    debugger
+    this.web3Service.connected.subscribe((connected: boolean) => {
+      this.connected = connected;
+    })
   }
 
   setCurrentchainId(chainId: string) {
@@ -104,17 +134,17 @@ export class MainComponent implements OnInit {
             this.readContractsService.deposits.next(this.deposits);
             this.readContractsService.borrows.next(this.borrows);
             this.readContractsService.totalAvailable.next(this.totalAvailable);
-            const sortedContractData = this.ContractData.sort((a:any, b:any) => {
-              const nameA = a.name.toUpperCase(); 
-              const nameB = b.name.toUpperCase(); 
-            
+            const sortedContractData = this.ContractData.sort((a: any, b: any) => {
+              const nameA = a.name.toUpperCase();
+              const nameB = b.name.toUpperCase();
+
               if (nameA < nameB) {
                 return -1;
               }
               if (nameA > nameB) {
                 return 1;
               }
-              return 0; 
+              return 0;
             });
             this.ContractData = sortedContractData;
           }

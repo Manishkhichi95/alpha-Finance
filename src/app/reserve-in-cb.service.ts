@@ -22,19 +22,19 @@ export class ReserveInCBService {
       aTokenImpl: '0xEf9bBa295a4b3acB014304C4Ada27a3D190E3BB2',
       stableDebtTokenImpl: '0x6695EdB1671d78E434224977709911BB1F5AC1A9',
       variableDebtTokenImpl: '0xf67a2D777bDC066793aD79873fCfA33Fb01ab619',
-      underlyingAssetDecimals: 6,
+      underlyingAssetDecimals: 18,
       interestRateStrategyAddress: '0xc6F3222E3a4fC4Fda7170f34FE8C84FAa7A20e4C',
-      underlyingAsset: '0x1fdE0eCc619726f4cD597887C9F3b4c8740e19e2',
+      underlyingAsset: '0x9C09c96eEa005C9C77be44fa52001FC5c41dac17',
       treasury: '0x58F3499Ce37791fef39D0b6F6339c60844895AFc',
       incentivesController: '0x530C6d01F7Ea4f968CEB9053708431a089A9a352',
       allocPoint: 10,
-      underlyingAssetName: 'USDT',
-      aTokenName: 'USDTATOKEN',
-      aTokenSymbol: 'USDTATOKEN',
-      variableDebtTokenName: 'USDTVDTOKEN',
-      variableDebtTokenSymbol: 'USDTVDTOKEN',
-      stableDebtTokenName: 'USDTSDTOKEN',
-      stableDebtTokenSymbol: 'USDTSDTOKEN',
+      underlyingAssetName: 'WETH',
+      aTokenName: 'WETHATOKEN',
+      aTokenSymbol: 'WETHATOKEN',
+      variableDebtTokenName: 'WETHVDTOKEN',
+      variableDebtTokenSymbol: 'WETHVDTOKEN',
+      stableDebtTokenName: 'WETHSDTOKEN',
+      stableDebtTokenSymbol: 'WETHSDTOKEN',
       params: '0x10'
     };
     const batchInitReserve = lendingPoolConfigurator.methods.batchInitReserve([params]).send(
@@ -43,7 +43,8 @@ export class ReserveInCBService {
         data: lendingPoolConfigurator.methods.batchInitReserve([params]).encodeABI()
       }
     );
-    batchInitReserve.then(console.log)
-
+    batchInitReserve.then((res:any)=>{
+      console.log('batchInitReserve',batchInitReserve)
+    })
   }
 }

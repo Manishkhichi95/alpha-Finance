@@ -37,22 +37,40 @@ export class DashboardComponent {
   selectedBorrowReserve: string = '';
   selectedWithdrawReserve: string = '';
   CurrentchainId: any = localStorage.getItem('chainId');
-  networkName: string | null = localStorage.getItem('networkName');
+  networkName: string ='';
   icons: string[] = ["assets/alphalogo.png", "assets/images/busd-c4257f9b.svg", "assets/images/ic3.png"]
   selectedRepayReserve: any;
+  totalBorrowsArr: any = [];
+  totalDepositArr: any = [];
+  totalAvailable: any = 0;
+  borrows: any = 0;
+  deposits: any = 0;
   constructor(private fb: FormBuilder, private web3Service: Web3Service, private http: HttpClient, private readContractsService: readContractsService, private router: Router) {
     this.Form = this.fb.group({
       amount: [null, Validators.required],
       withdrawTo: ['', Validators.required]
     });
+    debugger
     this.web3Service.connected.subscribe((connected: boolean) => {
       this.connected = connected;
     });
-    this.networkName == null ? this.networkName = 'Mumbai Testnet' : '';
+    this.networkName == null ? this.networkName = 'Select Network' : '';
     this.web3 = this.web3Service.getWeb3();
     this.getUserReservesData();
   }
   async getUserReservesData() {
+    this.web3 = this.web3Service.getWeb3();
+    const CurrentchainId = await this.web3.eth.net.getId();
+    console.log(CurrentchainId)
+    if (CurrentchainId == 80001n) {
+      this.networkName = 'Mumbai Testnet';
+    }
+    if (CurrentchainId == 42161n) {
+      this.networkName = 'Arbitrum';
+    }
+    if (CurrentchainId == 137n) {
+      this.networkName = 'Polygon Mainnet';
+    }
     if (this.networkName == 'Mumbai Testnet') {
       this.accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
       const data: any = await this.http.get('assets/json/ABIs&Addresses.json').toPromise()
@@ -70,11 +88,30 @@ export class DashboardComponent {
           if (item.name == 'USDT') {
             item.icon = "assets/images/ic3.png";
           }
+          if (item.name == 'WETH') {
+            item.icon = "assets/images/eth-a91aa368.svg";
+          }
         })
+      
         this.borrowContractData = data;
         this.SupplyContractData = data;
+        this.SupplyContractData.forEach((item: any) => {
+          this.totalDepositArr.push(item.deposit);
+          this.totalBorrowsArr.push(item.totalBorrows);
+        })
+        const sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+        this.deposits = sumOfDeposits;
+        const sumOfBorrows = this.totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+        this.borrows = sumOfBorrows;
+        this.totalAvailable = (Number(this.deposits) - Number(this.borrows)).toFixed(2);
+        localStorage.setItem('borrows', JSON.stringify(this.borrows));
+        localStorage.setItem('deposits', JSON.stringify(this.deposits));
+        localStorage.setItem('totalAvailable', JSON.stringify(this.totalAvailable));
+        this.readContractsService.borrows.next(this.borrows);
+        this.readContractsService.deposits.next(this.deposits);
+        this.readContractsService.totalAvailable.next(this.totalAvailable);
         this.UiPoolDataProviderV2V3 = new this.web3.eth.Contract([{ "inputs": [{ "internalType": "contract IChainlinkAggregator", "name": "_networkBaseTokenPriceInUsdProxyAggregator", "type": "address" }, { "internalType": "contract IChainlinkAggregator", "name": "_marketReferenceCurrencyPriceInUsdProxyAggregator", "type": "address" }], "stateMutability": "nonpayable", "type": "constructor" }, { "inputs": [], "name": "ETH_CURRENCY_UNIT", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "MKRAddress", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "bytes32", "name": "_bytes32", "type": "bytes32" }], "name": "bytes32ToString", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "pure", "type": "function" }, { "inputs": [{ "internalType": "contract ILendingPoolAddressesProvider", "name": "provider", "type": "address" }], "name": "getReservesData", "outputs": [{ "components": [{ "internalType": "address", "name": "underlyingAsset", "type": "address" }, { "internalType": "string", "name": "name", "type": "string" }, { "internalType": "string", "name": "symbol", "type": "string" }, { "internalType": "uint256", "name": "decimals", "type": "uint256" }, { "internalType": "uint256", "name": "baseLTVasCollateral", "type": "uint256" }, { "internalType": "uint256", "name": "reserveLiquidationThreshold", "type": "uint256" }, { "internalType": "uint256", "name": "reserveLiquidationBonus", "type": "uint256" }, { "internalType": "uint256", "name": "reserveFactor", "type": "uint256" }, { "internalType": "bool", "name": "usageAsCollateralEnabled", "type": "bool" }, { "internalType": "bool", "name": "borrowingEnabled", "type": "bool" }, { "internalType": "bool", "name": "stableBorrowRateEnabled", "type": "bool" }, { "internalType": "bool", "name": "isActive", "type": "bool" }, { "internalType": "bool", "name": "isFrozen", "type": "bool" }, { "internalType": "uint128", "name": "liquidityIndex", "type": "uint128" }, { "internalType": "uint128", "name": "variableBorrowIndex", "type": "uint128" }, { "internalType": "uint128", "name": "liquidityRate", "type": "uint128" }, { "internalType": "uint128", "name": "variableBorrowRate", "type": "uint128" }, { "internalType": "uint128", "name": "stableBorrowRate", "type": "uint128" }, { "internalType": "uint40", "name": "lastUpdateTimestamp", "type": "uint40" }, { "internalType": "address", "name": "aTokenAddress", "type": "address" }, { "internalType": "address", "name": "stableDebtTokenAddress", "type": "address" }, { "internalType": "address", "name": "variableDebtTokenAddress", "type": "address" }, { "internalType": "address", "name": "interestRateStrategyAddress", "type": "address" }, { "internalType": "uint256", "name": "availableLiquidity", "type": "uint256" }, { "internalType": "uint256", "name": "totalPrincipalStableDebt", "type": "uint256" }, { "internalType": "uint256", "name": "averageStableRate", "type": "uint256" }, { "internalType": "uint256", "name": "stableDebtLastUpdateTimestamp", "type": "uint256" }, { "internalType": "uint256", "name": "totalScaledVariableDebt", "type": "uint256" }, { "internalType": "uint256", "name": "priceInMarketReferenceCurrency", "type": "uint256" }, { "internalType": "uint256", "name": "variableRateSlope1", "type": "uint256" }, { "internalType": "uint256", "name": "variableRateSlope2", "type": "uint256" }, { "internalType": "uint256", "name": "stableRateSlope1", "type": "uint256" }, { "internalType": "uint256", "name": "stableRateSlope2", "type": "uint256" }, { "internalType": "bool", "name": "isPaused", "type": "bool" }, { "internalType": "uint128", "name": "accruedToTreasury", "type": "uint128" }, { "internalType": "uint128", "name": "unbacked", "type": "uint128" }, { "internalType": "uint128", "name": "isolationModeTotalDebt", "type": "uint128" }, { "internalType": "uint256", "name": "debtCeiling", "type": "uint256" }, { "internalType": "uint256", "name": "debtCeilingDecimals", "type": "uint256" }, { "internalType": "uint8", "name": "eModeCategoryId", "type": "uint8" }, { "internalType": "uint256", "name": "borrowCap", "type": "uint256" }, { "internalType": "uint256", "name": "supplyCap", "type": "uint256" }, { "internalType": "uint16", "name": "eModeLtv", "type": "uint16" }, { "internalType": "uint16", "name": "eModeLiquidationThreshold", "type": "uint16" }, { "internalType": "uint16", "name": "eModeLiquidationBonus", "type": "uint16" }, { "internalType": "address", "name": "eModePriceSource", "type": "address" }, { "internalType": "string", "name": "eModeLabel", "type": "string" }, { "internalType": "bool", "name": "borrowableInIsolation", "type": "bool" }], "internalType": "struct IUiPoolDataProviderV3.AggregatedReserveData[]", "name": "", "type": "tuple[]" }, { "components": [{ "internalType": "uint256", "name": "marketReferenceCurrencyUnit", "type": "uint256" }, { "internalType": "int256", "name": "marketReferenceCurrencyPriceInUsd", "type": "int256" }, { "internalType": "int256", "name": "networkBaseTokenPriceInUsd", "type": "int256" }, { "internalType": "uint8", "name": "networkBaseTokenPriceDecimals", "type": "uint8" }], "internalType": "struct IUiPoolDataProviderV3.BaseCurrencyInfo", "name": "", "type": "tuple" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "contract ILendingPoolAddressesProvider", "name": "provider", "type": "address" }], "name": "getReservesList", "outputs": [{ "internalType": "address[]", "name": "", "type": "address[]" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "contract ILendingPoolAddressesProvider", "name": "provider", "type": "address" }, { "internalType": "address", "name": "user", "type": "address" }], "name": "getUserReservesData", "outputs": [{ "components": [{ "internalType": "address", "name": "underlyingAsset", "type": "address" }, { "internalType": "uint256", "name": "scaledATokenBalance", "type": "uint256" }, { "internalType": "bool", "name": "usageAsCollateralEnabledOnUser", "type": "bool" }, { "internalType": "uint256", "name": "stableBorrowRate", "type": "uint256" }, { "internalType": "uint256", "name": "scaledVariableDebt", "type": "uint256" }, { "internalType": "uint256", "name": "principalStableDebt", "type": "uint256" }, { "internalType": "uint256", "name": "stableBorrowLastUpdateTimestamp", "type": "uint256" }], "internalType": "struct IUiPoolDataProviderV3.UserReserveData[]", "name": "", "type": "tuple[]" }, { "internalType": "uint8", "name": "", "type": "uint8" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "marketReferenceCurrencyPriceInUsdProxyAggregator", "outputs": [{ "internalType": "contract IChainlinkAggregator", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "networkBaseTokenPriceInUsdProxyAggregator", "outputs": [{ "internalType": "contract IChainlinkAggregator", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }], '0x7BaBAC953cc866A50a1Fc9fA57ba77223B33a156');
-        const depositedAssetContract = await this.UiPoolDataProviderV2V3.methods.getUserReservesData('0x5743f572A55CbB84c035903D0e888583CdD508c3', localStorage.getItem('walletAddress')).call();
+        const depositedAssetContract = await this.UiPoolDataProviderV2V3.methods.getUserReservesData('0x5743f572A55CbB84c035903D0e888583CdD508c3', this.accounts[0]).call();
 
         depositedAssetContract[0].forEach(async (res: any) => {
           const tokenContracts = new this.web3.eth.Contract(this.tokenContractsABI, res.underlyingAsset);
@@ -83,6 +120,8 @@ export class DashboardComponent {
             this.balanceAsset = (Number(res) / 1000000000000000000).toFixed(2);
           })
           if (res.scaledATokenBalance != 0) {
+            
+            console.log('dataaaaaaaaa',this.SupplyContractData)
             const decimals = await tokenContracts.methods.decimals().call();
             const name = await tokenContracts.methods.name().call();
             const totalSupply = await tokenContracts.methods.totalSupply().call();
@@ -94,6 +133,7 @@ export class DashboardComponent {
               totalSupply: totalSupply,
               balance: balance
             })
+
             this.depositedAsset.forEach((item: any) => {
               if (item.name == 'Alpha') {
                 item.icon = "assets/alphalogo.png";
@@ -103,6 +143,9 @@ export class DashboardComponent {
               }
               if (item.name == 'USDT') {
                 item.icon = "assets/images/ic3.png";
+              }
+              if (item.name == 'WETH') {
+                item.icon = "assets/images/eth-a91aa368.svg";
               }
               this.SupplyContractData.forEach((data: any) => {
                 if (data.name == item.name) {
@@ -126,10 +169,8 @@ export class DashboardComponent {
             });
             this.depositedAsset = sortedDepositedAsset;
           }
-          else {
-            this.SupplyContractData = [];
-            this.borrowContractData = [];
-            this.depositedAsset = [];
+          else if(res.scaledATokenBalance == 0) {
+              return;
           }
         }
         )
@@ -166,49 +207,17 @@ export class DashboardComponent {
         this.SupplyContractData = sortedContractData;
         this.borrowContractData = sortedContractData;
       }))
-
-
     }
   }
+
   async setCurrentchainId(chainId: string) {
     localStorage.setItem('networkName', chainId);
     this.CurrentchainId = chainId;
     chainId == '0xa4b1' ? this.networkName = 'Arbitrum' : chainId == '0x89' ? this.networkName = 'Polygon Mainnet' : this.networkName = 'Mumbai Testnet';
-
     if (this.networkName == 'Mumbai Testnet') {
-      this.accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
-      const data: any = await this.http.get('assets/json/ABIs&Addresses.json').toPromise()
-      this.tokenContractsABI = data.tokenContractsABI;
-      this.RadiantLendingPoolV2ABI = data.RadiantLendingPoolV2ABI;
-      this.RadiantLendingPoolV2Address = data.RadiantLendingPoolV2Address;
-      (this.readContractsService.getReserveData().then((data: any) => {
-        this.SupplyContractData = data;
-        this.borrowContractData = data;
-      }))
-
-      this.UiPoolDataProviderV2V3 = new this.web3.eth.Contract([{ "inputs": [{ "internalType": "contract IChainlinkAggregator", "name": "_networkBaseTokenPriceInUsdProxyAggregator", "type": "address" }, { "internalType": "contract IChainlinkAggregator", "name": "_marketReferenceCurrencyPriceInUsdProxyAggregator", "type": "address" }], "stateMutability": "nonpayable", "type": "constructor" }, { "inputs": [], "name": "ETH_CURRENCY_UNIT", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "MKRAddress", "outputs": [{ "internalType": "address", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "bytes32", "name": "_bytes32", "type": "bytes32" }], "name": "bytes32ToString", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "stateMutability": "pure", "type": "function" }, { "inputs": [{ "internalType": "contract ILendingPoolAddressesProvider", "name": "provider", "type": "address" }], "name": "getReservesData", "outputs": [{ "components": [{ "internalType": "address", "name": "underlyingAsset", "type": "address" }, { "internalType": "string", "name": "name", "type": "string" }, { "internalType": "string", "name": "symbol", "type": "string" }, { "internalType": "uint256", "name": "decimals", "type": "uint256" }, { "internalType": "uint256", "name": "baseLTVasCollateral", "type": "uint256" }, { "internalType": "uint256", "name": "reserveLiquidationThreshold", "type": "uint256" }, { "internalType": "uint256", "name": "reserveLiquidationBonus", "type": "uint256" }, { "internalType": "uint256", "name": "reserveFactor", "type": "uint256" }, { "internalType": "bool", "name": "usageAsCollateralEnabled", "type": "bool" }, { "internalType": "bool", "name": "borrowingEnabled", "type": "bool" }, { "internalType": "bool", "name": "stableBorrowRateEnabled", "type": "bool" }, { "internalType": "bool", "name": "isActive", "type": "bool" }, { "internalType": "bool", "name": "isFrozen", "type": "bool" }, { "internalType": "uint128", "name": "liquidityIndex", "type": "uint128" }, { "internalType": "uint128", "name": "variableBorrowIndex", "type": "uint128" }, { "internalType": "uint128", "name": "liquidityRate", "type": "uint128" }, { "internalType": "uint128", "name": "variableBorrowRate", "type": "uint128" }, { "internalType": "uint128", "name": "stableBorrowRate", "type": "uint128" }, { "internalType": "uint40", "name": "lastUpdateTimestamp", "type": "uint40" }, { "internalType": "address", "name": "aTokenAddress", "type": "address" }, { "internalType": "address", "name": "stableDebtTokenAddress", "type": "address" }, { "internalType": "address", "name": "variableDebtTokenAddress", "type": "address" }, { "internalType": "address", "name": "interestRateStrategyAddress", "type": "address" }, { "internalType": "uint256", "name": "availableLiquidity", "type": "uint256" }, { "internalType": "uint256", "name": "totalPrincipalStableDebt", "type": "uint256" }, { "internalType": "uint256", "name": "averageStableRate", "type": "uint256" }, { "internalType": "uint256", "name": "stableDebtLastUpdateTimestamp", "type": "uint256" }, { "internalType": "uint256", "name": "totalScaledVariableDebt", "type": "uint256" }, { "internalType": "uint256", "name": "priceInMarketReferenceCurrency", "type": "uint256" }, { "internalType": "uint256", "name": "variableRateSlope1", "type": "uint256" }, { "internalType": "uint256", "name": "variableRateSlope2", "type": "uint256" }, { "internalType": "uint256", "name": "stableRateSlope1", "type": "uint256" }, { "internalType": "uint256", "name": "stableRateSlope2", "type": "uint256" }, { "internalType": "bool", "name": "isPaused", "type": "bool" }, { "internalType": "uint128", "name": "accruedToTreasury", "type": "uint128" }, { "internalType": "uint128", "name": "unbacked", "type": "uint128" }, { "internalType": "uint128", "name": "isolationModeTotalDebt", "type": "uint128" }, { "internalType": "uint256", "name": "debtCeiling", "type": "uint256" }, { "internalType": "uint256", "name": "debtCeilingDecimals", "type": "uint256" }, { "internalType": "uint8", "name": "eModeCategoryId", "type": "uint8" }, { "internalType": "uint256", "name": "borrowCap", "type": "uint256" }, { "internalType": "uint256", "name": "supplyCap", "type": "uint256" }, { "internalType": "uint16", "name": "eModeLtv", "type": "uint16" }, { "internalType": "uint16", "name": "eModeLiquidationThreshold", "type": "uint16" }, { "internalType": "uint16", "name": "eModeLiquidationBonus", "type": "uint16" }, { "internalType": "address", "name": "eModePriceSource", "type": "address" }, { "internalType": "string", "name": "eModeLabel", "type": "string" }, { "internalType": "bool", "name": "borrowableInIsolation", "type": "bool" }], "internalType": "struct IUiPoolDataProviderV3.AggregatedReserveData[]", "name": "", "type": "tuple[]" }, { "components": [{ "internalType": "uint256", "name": "marketReferenceCurrencyUnit", "type": "uint256" }, { "internalType": "int256", "name": "marketReferenceCurrencyPriceInUsd", "type": "int256" }, { "internalType": "int256", "name": "networkBaseTokenPriceInUsd", "type": "int256" }, { "internalType": "uint8", "name": "networkBaseTokenPriceDecimals", "type": "uint8" }], "internalType": "struct IUiPoolDataProviderV3.BaseCurrencyInfo", "name": "", "type": "tuple" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "contract ILendingPoolAddressesProvider", "name": "provider", "type": "address" }], "name": "getReservesList", "outputs": [{ "internalType": "address[]", "name": "", "type": "address[]" }], "stateMutability": "view", "type": "function" }, { "inputs": [{ "internalType": "contract ILendingPoolAddressesProvider", "name": "provider", "type": "address" }, { "internalType": "address", "name": "user", "type": "address" }], "name": "getUserReservesData", "outputs": [{ "components": [{ "internalType": "address", "name": "underlyingAsset", "type": "address" }, { "internalType": "uint256", "name": "scaledATokenBalance", "type": "uint256" }, { "internalType": "bool", "name": "usageAsCollateralEnabledOnUser", "type": "bool" }, { "internalType": "uint256", "name": "stableBorrowRate", "type": "uint256" }, { "internalType": "uint256", "name": "scaledVariableDebt", "type": "uint256" }, { "internalType": "uint256", "name": "principalStableDebt", "type": "uint256" }, { "internalType": "uint256", "name": "stableBorrowLastUpdateTimestamp", "type": "uint256" }], "internalType": "struct IUiPoolDataProviderV3.UserReserveData[]", "name": "", "type": "tuple[]" }, { "internalType": "uint8", "name": "", "type": "uint8" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "marketReferenceCurrencyPriceInUsdProxyAggregator", "outputs": [{ "internalType": "contract IChainlinkAggregator", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }, { "inputs": [], "name": "networkBaseTokenPriceInUsdProxyAggregator", "outputs": [{ "internalType": "contract IChainlinkAggregator", "name": "", "type": "address" }], "stateMutability": "view", "type": "function" }], '0x7BaBAC953cc866A50a1Fc9fA57ba77223B33a156');
-      const depositedAssetContract = await this.UiPoolDataProviderV2V3.methods.getUserReservesData('0x5743f572A55CbB84c035903D0e888583CdD508c3', localStorage.getItem('walletAddress')).call();
-      depositedAssetContract[0].forEach(async (res: any) => {
-        const tokenContracts = new this.web3.eth.Contract(this.tokenContractsABI, res.underlyingAsset);
-        const balanceAsset = tokenContracts.methods.balanceOf(this.accounts[0]).call();
-        balanceAsset.then((res: any) => {
-          this.balanceAsset = (Number(res) / 1000000000000000000).toFixed(2);
-        })
-        debugger
-        if (res.scaledATokenBalance != 0) {
-          const decimals = await tokenContracts.methods.decimals().call();
-          const name = await tokenContracts.methods.name().call();
-          const totalSupply = await tokenContracts.methods.totalSupply().call();
-          const balance = (Number(res.scaledATokenBalance) / Math.pow(10, Number(decimals))).toFixed(2);
-          this.depositedAsset.push({
-            address: res.underlyingAsset,
-            decimals: decimals,
-            name: name,
-            totalSupply: totalSupply,
-            balance: balance
-          })
-        }
-      })
+      if (this.borrowContractData[0] == undefined && this.SupplyContractData[0] == undefined) {
+        this.getUserReservesData();
+      }
     }
   }
 
@@ -340,7 +349,7 @@ export class DashboardComponent {
           Swal.fire({
             title: "Transaction Successfull",
             icon: "success",
-          }).then((result:any) => {
+          }).then((result: any) => {
             if (result.isConfirmed) {
               this.SupplyContractData = [];
               this.borrowContractData = [];
@@ -436,7 +445,7 @@ export class DashboardComponent {
           Swal.fire({
             title: "Transaction Successful",
             icon: "success",
-          }).then((result:any) => {
+          }).then((result: any) => {
             if (result.isConfirmed) {
               this.SupplyContractData = [];
               this.borrowContractData = [];
@@ -526,7 +535,7 @@ export class DashboardComponent {
           Swal.fire({
             title: "Transaction Successful",
             icon: "success",
-          }).then((result:any) => {
+          }).then((result: any) => {
             if (result.isConfirmed) {
               this.SupplyContractData = [];
               this.borrowContractData = [];
@@ -619,7 +628,7 @@ export class DashboardComponent {
           Swal.fire({
             title: "Transaction Successfull",
             icon: "success",
-          }).then((result:any) => {
+          }).then((result: any) => {
             if (result.isConfirmed) {
               this.SupplyContractData = [];
               this.borrowContractData = [];

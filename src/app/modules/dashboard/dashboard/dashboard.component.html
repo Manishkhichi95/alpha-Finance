@@ -3,7 +3,7 @@
 </div>
 <section *ngIf="connected" class="dash_sect">
 
-  
+
 
 
   <div id="myModal" class="modal">
@@ -22,10 +22,6 @@
       </form>
     </div>
   </div>
-
-
-
-
   <div class="container">
     <div class="card_connect_list">
       <div class="card_bx table-sect">
@@ -44,7 +40,7 @@
                   <th></th>
                 </tr>
               </thead>
-              <tbody *ngIf="networkName=='Mumbai Testnet'">
+              <tbody *ngIf="networkName=='Mumbai Testnet' && depositedAsset.length>0">
                 <tr *ngFor="let items of depositedAsset,let i = index">
                   <td>
                     <div class="user_avtar">
@@ -65,27 +61,35 @@
                       <h3>
                         {{items.depositAPY}}%</h3>
                     </div>
-
                   </td>
                   <td>
-
                   </td>
                   <td>
                     <div class="dt_table">
                       <div class="btn_grp">
                         <button class="btn" style="width: 63.3px;"
-                        *ngIf="selectedWithdrawReserve==items.address && showSpinner">
-                        <mat-spinner style="margin:0 auto; height:20px;width:20px;"></mat-spinner>
-                      </button>
-                      <button class="btn" (click)="openDialog(items.address,'Withdraw')"
-                        *ngIf="selectedWithdrawReserve!=items.address">
-                        Withdraw</button>
+                          *ngIf="selectedWithdrawReserve==items.address && showSpinner">
+                          <mat-spinner style="margin:0 auto; height:20px;width:20px;"></mat-spinner>
+                        </button>
+                        <button class="btn" (click)="openDialog(items.address,'Withdraw')"
+                          *ngIf="selectedWithdrawReserve!=items.address">
+                          Withdraw</button>
                       </div>
                     </div>
-
                   </td>
                 </tr>
-                <tr *ngIf="networkName!='Mumbai Testnet'">
+              </tbody>
+              <tbody *ngIf="networkName=='Mumbai Testnet' && depositedAsset.length==0">
+                <tr>
+                  <td colspan="4">
+                    <div class="data_notfound">
+                      <p>No items found</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="networkName!='Mumbai Testnet'">
+                <tr>
                   <td colspan="4">
                     <div class="data_notfound">
                       <p>No items found</p>
@@ -112,7 +116,7 @@
                   <th></th>
                 </tr>
               </thead>
-              <tbody *ngIf="networkName=='Mumbai Testnet'">
+              <tbody *ngIf="networkName=='Mumbai Testnet' && borrowedAsset.length>0">
                 <tr *ngFor="let items of borrowedAsset,let i = index">
                   <td>
                     <div class="user_avtar">
@@ -140,18 +144,28 @@
                     <div class="dt_table">
                       <div class="btn_grp">
                         <button class="btn" style="width: 63.3px;"
-                        *ngIf="selectedRepayReserve==items.address && showSpinner">
-                        <mat-spinner style="margin:0 auto; height:20px;width:20px;"></mat-spinner>
-                      </button>
-                      <button class="btn" (click)="openDialog(items.address,'Repay')"
-                        *ngIf="selectedRepayReserve!=items.address">
-                        Repay</button>
+                          *ngIf="selectedRepayReserve==items.address && showSpinner">
+                          <mat-spinner style="margin:0 auto; height:20px;width:20px;"></mat-spinner>
+                        </button>
+                        <button class="btn" (click)="openDialog(items.address,'Repay')"
+                          *ngIf="selectedRepayReserve!=items.address">
+                          Repay</button>
                       </div>
                     </div>
-
                   </td>
                 </tr>
-                <tr *ngIf="networkName!='Mumbai Testnet'">
+              </tbody>
+              <tbody *ngIf="networkName=='Mumbai Testnet'&& borrowedAsset.length==0">
+                <tr>
+                  <td colspan="4">
+                    <div class="data_notfound">
+                      <p>No items found</p>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+              <tbody *ngIf="networkName!='Mumbai Testnet'">
+                <tr>
                   <td colspan="4">
                     <div class="data_notfound">
                       <p>No items found</p>
@@ -163,9 +177,7 @@
           </div>
         </div>
       </div>
-
     </div>
-
   </div>
   <section class="dash_connect_sect">
     <div class="container">
@@ -241,6 +253,12 @@
                       </td>
                     </tr>
                   </tbody>
+                  <tbody *ngIf="networkName=='Mumbai Testnet' && SupplyContractData.length==0">
+                    <tr>
+                      <mat-spinner  style="margin-left: 152%;
+                      width: 120px;color:warn;" ></mat-spinner>
+                    </tr>
+                  </tbody>
                   <tbody *ngIf="networkName!='Mumbai Testnet'">
                     <tr>
                       <td colspan="4">
@@ -314,16 +332,22 @@
                         <div class="dt_table">
                           <div class="btn_grp">
                             <button class="btn" style="width: 63.3px;"
-                            *ngIf="selectedBorrowReserve==items.address && showSpinner">
-                            <mat-spinner style="margin:0 auto; height:20px;width:20px;"></mat-spinner>
-                          </button>
-                          <button class="btn" (click)="openDialog(items.address,'Borrow')"
-                            *ngIf="selectedBorrowReserve!=items.address">
-                            Borrow</button>
+                              *ngIf="selectedBorrowReserve==items.address && showSpinner">
+                              <mat-spinner style="margin:0 auto; height:20px;width:20px;"></mat-spinner>
+                            </button>
+                            <button class="btn" (click)="openDialog(items.address,'Borrow')"
+                              *ngIf="selectedBorrowReserve!=items.address">
+                              Borrow</button>
                             <button class="btn" (click)="goToAsset(items,icons[i])">Details</button>
                           </div>
                         </div>
                       </td>
+                    </tr>
+                  </tbody>
+                  <tbody *ngIf="networkName=='Mumbai Testnet' && borrowContractData.length==0">
+                    <tr>
+                      <mat-spinner  style="margin-left: 152%;
+                      width: 120px;color:warn;" ></mat-spinner>
                     </tr>
                   </tbody>
                   <tbody *ngIf="networkName!='Mumbai Testnet'">
