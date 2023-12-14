@@ -49,7 +49,7 @@ export class DashboardComponent {
   constructor(private fb: FormBuilder, private web3Service: Web3Service, private http: HttpClient, private readContractsService: readContractsService, private router: Router) {
     setTimeout(() => {
       this.spinnerTimer = false;
-    }, 500);
+    }, 1000);
     this.Form = this.fb.group({
       amount: [null, Validators.required],
       withdrawTo: ['', Validators.required]
