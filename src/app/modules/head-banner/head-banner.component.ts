@@ -50,10 +50,10 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
       this.deposits = res;
       const deposits: any = localStorage.getItem('deposits')
       this.deposits == 0 ? this.deposits = JSON.parse(deposits) : '';
-      if (this.deposits.toString().length == 1 || this.deposits.toString().length == 2) {
+      if (this.deposits.toString().length == 1 || this.deposits.toString().length == 2 ||this.deposits.toString().length == 3) {
         this.finalDepo = this.deposits;
       }
-      if (this.deposits.toString().length == 3 || this.deposits.toString().length == 4 || this.deposits.toString().length == 5) {
+      if (this.deposits.toString().length == 4 || this.deposits.toString().length == 5) {
        console.log(this.deposits)
         this.finalDepo = (this.deposits / 1000) + 'k';
       }
@@ -68,10 +68,10 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
       this.borrows = res;
       const borrows: any = localStorage.getItem('borrows')
       this.borrows == 0 ? this.borrows = JSON.parse(borrows) : '';
-      if (this.borrows.toString().length == 1 || this.borrows.toString().length == 2) {
+      if (this.borrows.toString().length == 1 || this.borrows.toString().length == 2 || this.borrows.toString().length == 3) {
         this.finalBrow = this.borrows;
       }
-      if (this.borrows.toString().length == 3 || this.borrows.toString().length == 4 || this.borrows.toString().length == 5) {
+      if (this.borrows.toString().length == 4 || this.borrows.toString().length == 5) {
         this.finalBrow = (this.borrows / 1000) + 'k';
       }
       if (this.borrows.toString().length == 6 || this.borrows.toString().length == 7 || this.borrows.toString().length == 8) {
@@ -89,10 +89,10 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
       const fixedtotalAvailable =Math.floor(this.totalAvailable) ;
       console.log('fixedtotalAvailable',fixedtotalAvailable)
 
-      if (fixedtotalAvailable.toString().length == 1 || fixedtotalAvailable.toString().length == 2) {
+      if (fixedtotalAvailable.toString().length == 1 || fixedtotalAvailable.toString().length == 2 || fixedtotalAvailable.toString().length == 3) {
         this.finalttlAvlble = fixedtotalAvailable;
       }
-      if (fixedtotalAvailable.toString().length == 3 || fixedtotalAvailable.toString().length == 4 || fixedtotalAvailable.toString().length == 5) {
+      if (fixedtotalAvailable.toString().length == 4 || fixedtotalAvailable.toString().length == 5) {
         this.finalttlAvlble = (fixedtotalAvailable / 1000) + 'k';
       }
       if (fixedtotalAvailable.toString().length == 6 || fixedtotalAvailable.toString().length == 7 || fixedtotalAvailable.toString().length == 8) {

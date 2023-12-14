@@ -135,6 +135,7 @@ export class readContractsService {
           totalBorrows: ((Number(variableDebtTokenSupply) + Number(stableDebtTokenSupply)) * (Number(getAssetPrice) / 100000000) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2)
         };
       });
+      
       this.reserveData = await Promise.all(reserveDataPromises);
       console.log('Reserves Data :', this.reserveData)
       return this.reserveData;

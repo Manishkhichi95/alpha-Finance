@@ -40,7 +40,13 @@
                   <th></th>
                 </tr>
               </thead>
-              <tbody *ngIf="networkName=='Mumbai Testnet' && depositedAsset.length>0">
+              spinnerTimer
+              <tbody *ngIf="spinnerTimer">
+                <tr>
+                  <mat-spinner style="margin-left: 97%;width: 120px;color:warn;margin-bottom:10px;"></mat-spinner>
+                </tr>
+              </tbody>
+              <tbody *ngIf="!spinnerTimer && networkName=='Mumbai Testnet' && depositedAsset.length>0">
                 <tr *ngFor="let items of depositedAsset,let i = index">
                   <td>
                     <div class="user_avtar">
@@ -79,7 +85,7 @@
                   </td>
                 </tr>
               </tbody>
-              <tbody *ngIf="networkName=='Mumbai Testnet' && depositedAsset.length==0">
+              <tbody *ngIf="!spinnerTimer && networkName=='Mumbai Testnet' && depositedAsset.length==0">
                 <tr>
                   <td colspan="4">
                     <div class="data_notfound">
@@ -88,7 +94,7 @@
                   </td>
                 </tr>
               </tbody>
-              <tbody *ngIf="networkName!='Mumbai Testnet'">
+              <tbody *ngIf="!spinnerTimer &&  networkName!='Mumbai Testnet'">
                 <tr>
                   <td colspan="4">
                     <div class="data_notfound">
@@ -116,7 +122,12 @@
                   <th></th>
                 </tr>
               </thead>
-              <tbody *ngIf="networkName=='Mumbai Testnet' && borrowedAsset.length>0">
+              <tbody *ngIf="spinnerTimer">
+                <tr>
+                  <mat-spinner style="margin-left: 97%;width: 120px;color:warn;margin-bottom:10px;"></mat-spinner>
+                </tr>
+              </tbody>
+              <tbody *ngIf="!spinnerTimer && networkName=='Mumbai Testnet' && borrowedAsset.length>0">
                 <tr *ngFor="let items of borrowedAsset,let i = index">
                   <td>
                     <div class="user_avtar">
@@ -138,7 +149,6 @@
                     </div>
                   </td>
                   <td>
-
                   </td>
                   <td>
                     <div class="dt_table">
@@ -155,7 +165,7 @@
                   </td>
                 </tr>
               </tbody>
-              <tbody *ngIf="networkName=='Mumbai Testnet'&& borrowedAsset.length==0">
+              <tbody *ngIf="!spinnerTimer && networkName=='Mumbai Testnet'&& borrowedAsset.length==0">
                 <tr>
                   <td colspan="4">
                     <div class="data_notfound">
@@ -164,7 +174,7 @@
                   </td>
                 </tr>
               </tbody>
-              <tbody *ngIf="networkName!='Mumbai Testnet'">
+              <tbody *ngIf="!spinnerTimer && networkName!='Mumbai Testnet'">
                 <tr>
                   <td colspan="4">
                     <div class="data_notfound">
@@ -255,8 +265,8 @@
                   </tbody>
                   <tbody *ngIf="networkName=='Mumbai Testnet' && SupplyContractData.length==0">
                     <tr>
-                      <mat-spinner  style="margin-left: 152%;
-                      width: 120px;color:warn;" ></mat-spinner>
+                      <mat-spinner style="margin-left: 152%;
+                      width: 120px;color:warn;margin-bottom:10px;"></mat-spinner>
                     </tr>
                   </tbody>
                   <tbody *ngIf="networkName!='Mumbai Testnet'">
@@ -346,8 +356,8 @@
                   </tbody>
                   <tbody *ngIf="networkName=='Mumbai Testnet' && borrowContractData.length==0">
                     <tr>
-                      <mat-spinner  style="margin-left: 152%;
-                      width: 120px;color:warn;" ></mat-spinner>
+                      <mat-spinner style="margin-left: 152%;
+                      width: 120px;color:warn;margin-bottom:10px;"></mat-spinner>
                     </tr>
                   </tbody>
                   <tbody *ngIf="networkName!='Mumbai Testnet'">

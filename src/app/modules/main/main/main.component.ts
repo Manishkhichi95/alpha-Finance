@@ -39,6 +39,40 @@ export class MainComponent implements OnInit {
       this.networkName = 'Mumbai Testnet';
       this.readContractsService.getReserveData().then((data: any) => {
         data.forEach((item: any) => {
+          
+          console.log('asdf',item.totalSupply, item.totalBorrows)
+          const ttlSpply = Math.floor(item.totalSupply);
+          if (ttlSpply.toString().length == 1 || ttlSpply.toString().length == 2) {
+            item.totalSupply = ttlSpply;
+          }
+          if (ttlSpply.toString().length == 3 || ttlSpply.toString().length == 4 || ttlSpply.toString().length == 5) {
+            item.totalSupply = (ttlSpply / 1000).toFixed(2) + 'k';
+          }
+          if (ttlSpply.toString().length == 6 || ttlSpply.toString().length == 7 || ttlSpply.toString().length == 8) {
+            item.totalSupply = (ttlSpply / 1000000).toFixed(2) + 'M';
+          }
+          if (ttlSpply.toString().length > 9) {
+            item.totalSupply = (ttlSpply / 1000000000).toFixed(2) + 'B';
+          }
+
+
+
+          console.log('asdf',item.totalSupply, item.totalBorrows)
+          const ttlBrrw = Math.floor(item.totalBorrows);
+          if (ttlBrrw.toString().length == 1 || ttlBrrw.toString().length == 2 || ttlBrrw.toString().length == 3 ) {
+            item.totalBorrows = ttlBrrw;
+          }
+          if ( ttlBrrw.toString().length == 4 || ttlBrrw.toString().length == 5) {
+            item.totalBorrows = (ttlBrrw / 1000).toFixed(2) + 'k';
+          }
+          if (ttlBrrw.toString().length == 6 || ttlBrrw.toString().length == 7 || ttlBrrw.toString().length == 8) {
+            item.totalBorrows = (ttlBrrw / 1000000).toFixed(2) + 'M';
+          }
+          if (ttlBrrw.toString().length > 9) {
+            item.totalBorrows = (ttlBrrw / 1000000000).toFixed(2) + 'B';
+          }
+
+
           if (item.name == 'Alpha') {
             item.icon = "assets/alphalogo.png";
           }

@@ -45,7 +45,11 @@ export class DashboardComponent {
   totalAvailable: any = 0;
   borrows: any = 0;
   deposits: any = 0;
+  spinnerTimer: boolean = true;
   constructor(private fb: FormBuilder, private web3Service: Web3Service, private http: HttpClient, private readContractsService: readContractsService, private router: Router) {
+    setTimeout(() => {
+      this.spinnerTimer = false;
+    }, 2000);
     this.Form = this.fb.group({
       amount: [null, Validators.required],
       withdrawTo: ['', Validators.required]
@@ -79,6 +83,33 @@ export class DashboardComponent {
       this.RadiantLendingPoolV2Address = data.RadiantLendingPoolV2Address;
       (this.readContractsService.getReserveData().then(async (data: any) => {
         data.forEach((item: any) => {
+          const ttlSpply = Math.floor(item.balance);
+          if (ttlSpply.toString().length == 1 || ttlSpply.toString().length == 2) {
+            item.balance = ttlSpply;
+          }
+          if ( ttlSpply.toString().length == 4 || ttlSpply.toString().length == 5) {
+            item.balance = (ttlSpply / 1000).toFixed(2) + 'k';
+          }
+          if (ttlSpply.toString().length == 6 || ttlSpply.toString().length == 7 || ttlSpply.toString().length == 8) {
+            item.balance = (ttlSpply / 1000000).toFixed(2) + 'M';
+          }
+          if (ttlSpply.toString().length > 9) {
+            item.balance = (ttlSpply / 1000000000).toFixed(2) + 'B';
+          }
+          console.log('asdf',item.balance, item.totalBorrows)
+          const ttlBrrw = Math.floor(item.totalBorrows);
+          if (ttlBrrw.toString().length == 1 || ttlBrrw.toString().length == 2) {
+            item.totalBorrows = ttlBrrw;
+          }
+          if (ttlBrrw.toString().length == 3 || ttlBrrw.toString().length == 4 || ttlBrrw.toString().length == 5) {
+            item.totalBorrows = (ttlBrrw / 1000).toFixed(2) + 'k';
+          }
+          if (ttlBrrw.toString().length == 6 || ttlBrrw.toString().length == 7 || ttlBrrw.toString().length == 8) {
+            item.totalBorrows = (ttlBrrw / 1000000).toFixed(2) + 'M';
+          }
+          if (ttlBrrw.toString().length > 9) {
+            item.totalBorrows = (ttlBrrw / 1000000000).toFixed(2) + 'B';
+          }
           if (item.name == 'Alpha') {
             item.icon = "assets/alphalogo.png";
           }
@@ -126,6 +157,7 @@ export class DashboardComponent {
             const name = await tokenContracts.methods.name().call();
             const totalSupply = await tokenContracts.methods.totalSupply().call();
             const balance = (Number(res.scaledATokenBalance) / Math.pow(10, Number(decimals))).toFixed(2);
+            
             this.depositedAsset.push({
               address: res.underlyingAsset,
               decimals: decimals,
@@ -135,6 +167,19 @@ export class DashboardComponent {
             })
 
             this.depositedAsset.forEach((item: any) => {
+              const ttlSpply = Math.floor(item.balance);
+              if (ttlSpply.toString().length == 1 || ttlSpply.toString().length == 2) {
+                item.balance = ttlSpply;
+              }
+              if ( ttlSpply.toString().length == 4 || ttlSpply.toString().length == 5) {
+                item.balance = (ttlSpply / 1000).toFixed(2) + 'k';
+              }
+              if (ttlSpply.toString().length == 6 || ttlSpply.toString().length == 7 || ttlSpply.toString().length == 8) {
+                item.balance = (ttlSpply / 1000000).toFixed(2) + 'M';
+              }
+              if (ttlSpply.toString().length > 9) {
+                item.balance = (ttlSpply / 1000000000).toFixed(2) + 'B';
+              }
               if (item.name == 'Alpha') {
                 item.icon = "assets/alphalogo.png";
               }
