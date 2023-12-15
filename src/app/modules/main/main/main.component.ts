@@ -10,8 +10,8 @@ import { readContractsService } from 'src/app/services/readContracts.service';
 })
 export class MainComponent implements OnInit {
   walletAddress: any;
-  borrows: Number = 0;
-  deposits: Number = 0;
+  borrows: any = 0;
+  deposits: any = 0;
   ContractData: any = [];
   error: boolean = false;
   totalAvailable: any = 0;
@@ -39,38 +39,8 @@ export class MainComponent implements OnInit {
       this.networkName = 'Mumbai Testnet';
       this.readContractsService.getReserveData().then((data: any) => {
         data.forEach((item: any) => {
-          
-          console.log('asdf',item.totalSupply, item.totalBorrows)
-          const ttlSpply = Math.floor(item.totalSupply);
-          if (ttlSpply.toString().length == 1 || ttlSpply.toString().length == 2) {
-            item.totalSupply = ttlSpply;
-          }
-          if (ttlSpply.toString().length == 3 || ttlSpply.toString().length == 4 || ttlSpply.toString().length == 5) {
-            item.totalSupply = (ttlSpply / 1000).toFixed(2) + 'k';
-          }
-          if (ttlSpply.toString().length == 6 || ttlSpply.toString().length == 7 || ttlSpply.toString().length == 8) {
-            item.totalSupply = (ttlSpply / 1000000).toFixed(2) + 'M';
-          }
-          if (ttlSpply.toString().length > 9) {
-            item.totalSupply = (ttlSpply / 1000000000).toFixed(2) + 'B';
-          }
 
 
-
-          console.log('asdf',item.totalSupply, item.totalBorrows)
-          const ttlBrrw = Math.floor(item.totalBorrows);
-          if (ttlBrrw.toString().length == 1 || ttlBrrw.toString().length == 2 || ttlBrrw.toString().length == 3 ) {
-            item.totalBorrows = ttlBrrw;
-          }
-          if ( ttlBrrw.toString().length == 4 || ttlBrrw.toString().length == 5) {
-            item.totalBorrows = (ttlBrrw / 1000).toFixed(2) + 'k';
-          }
-          if (ttlBrrw.toString().length == 6 || ttlBrrw.toString().length == 7 || ttlBrrw.toString().length == 8) {
-            item.totalBorrows = (ttlBrrw / 1000000).toFixed(2) + 'M';
-          }
-          if (ttlBrrw.toString().length > 9) {
-            item.totalBorrows = (ttlBrrw / 1000000000).toFixed(2) + 'B';
-          }
 
 
           if (item.name == 'Alpha') {
@@ -106,6 +76,38 @@ export class MainComponent implements OnInit {
           localStorage.setItem('deposits', JSON.stringify(this.deposits));
           localStorage.setItem('totalAvailable', JSON.stringify(this.totalAvailable));
 
+          data.forEach((item: any) => {
+
+          console.log('asdf', item.totalSupply, item.totalBorrows)
+          const ttlSpply = Math.floor(item.totalSupply);
+          if (ttlSpply.toString().length == 1 || ttlSpply.toString().length == 2) {
+            item.totalSupply = ttlSpply;
+          }
+          if (ttlSpply.toString().length == 3 || ttlSpply.toString().length == 4 || ttlSpply.toString().length == 5 || ttlSpply.toString().length == 6) {
+            item.totalSupply = (ttlSpply / 1000).toFixed(2) + 'k';
+          }
+          if (ttlSpply.toString().length == 7 || ttlSpply.toString().length == 8) {
+            item.totalSupply = (ttlSpply / 1000000).toFixed(2) + 'M';
+          }
+          if (ttlSpply.toString().length > 9) {
+            item.totalSupply = (ttlSpply / 1000000000).toFixed(2) + 'B';
+          }
+          console.log('asdf', item.totalSupply, item.totalBorrows)
+          const ttlBrrw = Math.floor(item.totalBorrows);
+          if (ttlBrrw.toString().length == 1 || ttlBrrw.toString().length == 2 || ttlBrrw.toString().length == 3) {
+            item.totalBorrows = ttlBrrw;
+          }
+          if (ttlBrrw.toString().length == 4 || ttlBrrw.toString().length == 5 || ttlBrrw.toString().length == 6) {
+            item.totalBorrows = (ttlBrrw / 1000).toFixed(2) + 'k';
+          }
+          if (ttlBrrw.toString().length == 7 || ttlBrrw.toString().length == 8) {
+            item.totalBorrows = (ttlBrrw / 1000000).toFixed(2) + 'M';
+          }
+          if (ttlBrrw.toString().length > 9) {
+            item.totalBorrows = (ttlBrrw / 1000000000).toFixed(2) + 'B';
+          }
+        })
+
           this.readContractsService.borrows.next(this.borrows);
           this.readContractsService.deposits.next(this.deposits);
           this.readContractsService.totalAvailable.next(this.totalAvailable);
@@ -123,15 +125,20 @@ export class MainComponent implements OnInit {
           });
           this.ContractData = sortedContractData;
         }
-        if (CurrentchainId == 42161n) {
-          this.networkName = 'Arbitrum';
-          this.ContractData = [];
-        }
-        if (CurrentchainId == 137n) {
-          this.networkName = 'Polygon Mainnet';
-          this.ContractData = [];
-        }
+
       })
+    }
+    if (CurrentchainId == 42161n) {
+      this.networkName = 'Arbitrum';
+      this.ContractData = [];
+    }
+    if (CurrentchainId == 137n) {
+      this.networkName = 'Polygon Mainnet';
+      this.ContractData = [];
+    }
+       else if(CurrentchainId!=42161n && CurrentchainId != 137n && CurrentchainId !=80001n) {
+      this.networkName = 'Select Network';
+      this.ContractData = [];
     }
   }
 

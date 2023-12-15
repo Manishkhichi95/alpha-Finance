@@ -37,7 +37,7 @@ export class DashboardComponent {
   selectedBorrowReserve: string = '';
   selectedWithdrawReserve: string = '';
   CurrentchainId: any = localStorage.getItem('chainId');
-  networkName: string ='';
+  networkName: string = '';
   icons: string[] = ["assets/alphalogo.png", "assets/images/busd-c4257f9b.svg", "assets/images/ic3.png"]
   selectedRepayReserve: any;
   totalBorrowsArr: any = [];
@@ -75,6 +75,9 @@ export class DashboardComponent {
     if (CurrentchainId == 137n) {
       this.networkName = 'Polygon Mainnet';
     }
+    else if (CurrentchainId != 42161n && CurrentchainId != 137n && CurrentchainId != 80001n) {
+      this.networkName = 'Select Network';
+    }
     if (this.networkName == 'Mumbai Testnet') {
       this.accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
       const data: any = await this.http.get('assets/json/ABIs&Addresses.json').toPromise()
@@ -83,33 +86,6 @@ export class DashboardComponent {
       this.RadiantLendingPoolV2Address = data.RadiantLendingPoolV2Address;
       (this.readContractsService.getReserveData().then(async (data: any) => {
         data.forEach((item: any) => {
-          const ttlSpply = Math.floor(item.balance);
-          if (ttlSpply.toString().length == 1 || ttlSpply.toString().length == 2) {
-            item.balance = ttlSpply;
-          }
-          if ( ttlSpply.toString().length == 4 || ttlSpply.toString().length == 5) {
-            item.balance = (ttlSpply / 1000).toFixed(2) + 'k';
-          }
-          if (ttlSpply.toString().length == 6 || ttlSpply.toString().length == 7 || ttlSpply.toString().length == 8) {
-            item.balance = (ttlSpply / 1000000).toFixed(2) + 'M';
-          }
-          if (ttlSpply.toString().length > 9) {
-            item.balance = (ttlSpply / 1000000000).toFixed(2) + 'B';
-          }
-          console.log('asdf',item.balance, item.totalBorrows)
-          const ttlBrrw = Math.floor(item.totalBorrows);
-          if (ttlBrrw.toString().length == 1 || ttlBrrw.toString().length == 2) {
-            item.totalBorrows = ttlBrrw;
-          }
-          if (ttlBrrw.toString().length == 3 || ttlBrrw.toString().length == 4 || ttlBrrw.toString().length == 5) {
-            item.totalBorrows = (ttlBrrw / 1000).toFixed(2) + 'k';
-          }
-          if (ttlBrrw.toString().length == 6 || ttlBrrw.toString().length == 7 || ttlBrrw.toString().length == 8) {
-            item.totalBorrows = (ttlBrrw / 1000000).toFixed(2) + 'M';
-          }
-          if (ttlBrrw.toString().length > 9) {
-            item.totalBorrows = (ttlBrrw / 1000000000).toFixed(2) + 'B';
-          }
           if (item.name == 'Alpha') {
             item.icon = "assets/alphalogo.png";
           }
@@ -123,7 +99,7 @@ export class DashboardComponent {
             item.icon = "assets/images/eth-a91aa368.svg";
           }
         })
-      
+
         this.borrowContractData = data;
         this.SupplyContractData = data;
         this.SupplyContractData.forEach((item: any) => {
@@ -151,13 +127,13 @@ export class DashboardComponent {
             this.balanceAsset = (Number(res) / 1000000000000000000).toFixed(2);
           })
           if (res.scaledATokenBalance != 0) {
-            
-            console.log('dataaaaaaaaa',this.SupplyContractData)
+
+            console.log('dataaaaaaaaa', this.SupplyContractData)
             const decimals = await tokenContracts.methods.decimals().call();
             const name = await tokenContracts.methods.name().call();
             const totalSupply = await tokenContracts.methods.totalSupply().call();
             const balance = (Number(res.scaledATokenBalance) / Math.pow(10, Number(decimals))).toFixed(2);
-            
+
             this.depositedAsset.push({
               address: res.underlyingAsset,
               decimals: decimals,
@@ -171,10 +147,10 @@ export class DashboardComponent {
               if (ttlSpply.toString().length == 1 || ttlSpply.toString().length == 2) {
                 item.balance = ttlSpply;
               }
-              if ( ttlSpply.toString().length == 4 || ttlSpply.toString().length == 5) {
+              if (ttlSpply.toString().length == 4 || ttlSpply.toString().length == 5 || ttlSpply.toString().length == 6) {
                 item.balance = (ttlSpply / 1000).toFixed(2) + 'k';
               }
-              if (ttlSpply.toString().length == 6 || ttlSpply.toString().length == 7 || ttlSpply.toString().length == 8) {
+              if (ttlSpply.toString().length == 7 || ttlSpply.toString().length == 8) {
                 item.balance = (ttlSpply / 1000000).toFixed(2) + 'M';
               }
               if (ttlSpply.toString().length > 9) {
@@ -214,8 +190,8 @@ export class DashboardComponent {
             });
             this.depositedAsset = sortedDepositedAsset;
           }
-          else if(res.scaledATokenBalance == 0) {
-              return;
+          else if (res.scaledATokenBalance == 0) {
+            return;
           }
         }
         )
@@ -400,32 +376,29 @@ export class DashboardComponent {
               this.borrowContractData = [];
               this.depositedAsset = [];
               this.borrowedAsset = [];
+              this.totalDepositArr = []
+              this.totalBorrowsArr = []
+              this.deposits = 0;
+              this.borrows = 0;
               this.getUserReservesData();
-              this.readContractsService.getReserveData().then((data: any) => {
-                this.SupplyContractData = data;
-                const totalDepositArr: any = [];
-                const totalBorrowsArr: any = [];
-                let deposits: any = 0;
-                let borrows: any = 0;
-                let totalAvailable: any = 0;
+                this.totalAvailable = 0;
                 this.SupplyContractData.forEach((element: any) => {
-
-                  totalDepositArr.push(element.deposit);
-                  totalBorrowsArr.push(element.totalBorrows);
+                  this.totalDepositArr.push(element.deposit);
+                  this.totalBorrowsArr.push(element.totalBorrows);
                 });
-                const sumOfDeposits = totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-                deposits = sumOfDeposits;
-                const sumOfBorrows = totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-                borrows = sumOfBorrows;
-                totalAvailable = (Number(deposits) - Number(borrows)).toFixed(2);
-                localStorage.setItem('borrows', JSON.stringify(borrows));
-                localStorage.setItem('deposits', JSON.stringify(deposits));
-                localStorage.setItem('totalAvailable', JSON.stringify(totalAvailable));
+                const sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+                this.deposits = sumOfDeposits;
+                const sumOfBorrows = this.totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+                this.borrows = sumOfBorrows;
+                this.totalAvailable = (Number(this.deposits) - Number(this.borrows)).toFixed(2);
+                localStorage.setItem('borrows', JSON.stringify(this.borrows));
+                localStorage.setItem('deposits', JSON.stringify(this.deposits));
+                localStorage.setItem('totalAvailable', JSON.stringify(this.totalAvailable));
 
-                this.readContractsService.borrows.next(borrows);
-                this.readContractsService.deposits.next(deposits);
-                this.readContractsService.totalAvailable.next(totalAvailable);
-              })
+                this.readContractsService.borrows.next(this.borrows);
+                this.readContractsService.deposits.next(this.deposits);
+                this.readContractsService.totalAvailable.next(this.totalAvailable);
+
             }
           });
           console.log('Transaction succeeded!');
@@ -496,30 +469,28 @@ export class DashboardComponent {
               this.borrowContractData = [];
               this.depositedAsset = [];
               this.borrowedAsset = [];
+              this.totalDepositArr = []
+              this.totalBorrowsArr = []
+              this.deposits = 0;
+              this.borrows = 0;
               this.getUserReservesData();
-              this.readContractsService.getReserveData().then((data: any) => {
-                this.SupplyContractData = data;
-                const totalDepositArr: any = [];
-                const totalBorrowsArr: any = [];
-                let deposits: any = 0;
-                let borrows: any = 0;
-                let totalAvailable: any = 0;
+
+                this.totalAvailable = 0;
                 this.SupplyContractData.forEach((element: any) => {
-                  totalDepositArr.push(element.deposit);
-                  totalBorrowsArr.push(element.totalBorrows);
+                  this.totalDepositArr.push(element.deposit);
+                  this.totalBorrowsArr.push(element.totalBorrows);
                 });
-                const sumOfDeposits = totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-                deposits = sumOfDeposits;
-                const sumOfBorrows = totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-                borrows = sumOfBorrows;
-                totalAvailable = (Number(deposits) - Number(borrows)).toFixed(2);
-                localStorage.setItem('borrows', JSON.stringify(borrows));
-                localStorage.setItem('deposits', JSON.stringify(deposits));
-                localStorage.setItem('totalAvailable', JSON.stringify(totalAvailable));
-                this.readContractsService.borrows.next(borrows);
-                this.readContractsService.deposits.next(deposits);
-                this.readContractsService.totalAvailable.next(totalAvailable);
-              })
+                const sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+                this.deposits = sumOfDeposits;
+                const sumOfBorrows = this.totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+                this.borrows = sumOfBorrows;
+                this.totalAvailable = (Number(this.deposits) - Number(this.borrows)).toFixed(2);
+                localStorage.setItem('borrows', JSON.stringify(this.borrows));
+                localStorage.setItem('deposits', JSON.stringify(this.deposits));
+                localStorage.setItem('totalAvailable', JSON.stringify(this.totalAvailable));
+                this.readContractsService.borrows.next(this.borrows);
+                this.readContractsService.deposits.next(this.deposits);
+                this.readContractsService.totalAvailable.next(this.totalAvailable);
             }
           });
           console.log('Transaction succeeded!');
@@ -586,31 +557,28 @@ export class DashboardComponent {
               this.borrowContractData = [];
               this.depositedAsset = [];
               this.borrowedAsset = [];
+              this.totalDepositArr = []
+              this.totalBorrowsArr = []
+              this.deposits = 0;
+              this.borrows = 0;
               this.selectedRepayReserve = '';
               this.getUserReservesData();
-              this.readContractsService.getReserveData().then((data: any) => {
-                this.SupplyContractData = data;
-                const totalDepositArr: any = [];
-                const totalBorrowsArr: any = [];
-                let deposits: any = 0;
-                let borrows: any = 0;
-                let totalAvailable: any = 0;
+                this.totalAvailable = 0;
                 this.SupplyContractData.forEach((element: any) => {
-                  totalDepositArr.push(element.deposit);
-                  totalBorrowsArr.push(element.totalBorrows);
+                  this.totalDepositArr.push(element.deposit);
+                  this.totalBorrowsArr.push(element.totalBorrows);
                 });
-                const sumOfDeposits = totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-                deposits = sumOfDeposits;
-                const sumOfBorrows = totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-                borrows = sumOfBorrows;
-                totalAvailable = (Number(deposits) - Number(borrows)).toFixed(2);
-                localStorage.setItem('borrows', JSON.stringify(borrows));
-                localStorage.setItem('deposits', JSON.stringify(deposits));
-                localStorage.setItem('totalAvailable', JSON.stringify(totalAvailable));
-                this.readContractsService.borrows.next(borrows);
-                this.readContractsService.deposits.next(deposits);
-                this.readContractsService.totalAvailable.next(totalAvailable);
-              })
+                const sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+                this.deposits = sumOfDeposits;
+                const sumOfBorrows = this.totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+                this.borrows = sumOfBorrows;
+                this.totalAvailable = (Number(this.deposits) - Number(this.borrows)).toFixed(2);
+                localStorage.setItem('borrows', JSON.stringify(this.borrows));
+                localStorage.setItem('deposits', JSON.stringify(this.deposits));
+                localStorage.setItem('totalAvailable', JSON.stringify(this.totalAvailable));
+                this.readContractsService.borrows.next(this.borrows);
+                this.readContractsService.deposits.next(this.deposits);
+                this.readContractsService.totalAvailable.next(this.totalAvailable);
             }
           });
           console.log('Transaction succeeded!');
@@ -678,33 +646,31 @@ export class DashboardComponent {
               this.SupplyContractData = [];
               this.borrowContractData = [];
               this.depositedAsset = [];
+              this.totalDepositArr = []
+              this.totalBorrowsArr = []
+              this.deposits = 0;
+              this.borrows = 0;
               this.borrowedAsset = [];
               this.getUserReservesData();
-              this.readContractsService.getReserveData().then((data: any) => {
-                this.SupplyContractData = data;
-                const totalDepositArr: any = [];
-                const totalBorrowsArr: any = [];
-                let deposits: any = 0;
-                let borrows: any = 0;
-                let totalAvailable: any = 0;
+                this.totalAvailable = 0;
                 this.SupplyContractData.forEach((element: any) => {
 
-                  totalDepositArr.push(element.deposit);
-                  totalBorrowsArr.push(element.totalBorrows);
+                  this.totalDepositArr.push(element.deposit);
+                  this.totalBorrowsArr.push(element.totalBorrows);
                 });
-                const sumOfDeposits = totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-                deposits = sumOfDeposits;
-                const sumOfBorrows = totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-                borrows = sumOfBorrows;
-                totalAvailable = (Number(deposits) - Number(borrows)).toFixed(2);
-                localStorage.setItem('borrows', JSON.stringify(borrows));
-                localStorage.setItem('deposits', JSON.stringify(deposits));
-                localStorage.setItem('totalAvailable', JSON.stringify(totalAvailable));
+                const sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+                this.deposits = sumOfDeposits;
+                const sumOfBorrows = this.totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+                this.borrows = sumOfBorrows;
+                this.totalAvailable = (Number(this.deposits) - Number(this.borrows)).toFixed(2);
+                localStorage.setItem('borrows', JSON.stringify(this.borrows));
+                localStorage.setItem('deposits', JSON.stringify(this.deposits));
+                localStorage.setItem('totalAvailable', JSON.stringify(this.totalAvailable));
 
-                this.readContractsService.borrows.next(borrows);
-                this.readContractsService.deposits.next(deposits);
-                this.readContractsService.totalAvailable.next(totalAvailable);
-              })
+                this.readContractsService.borrows.next(this.borrows);
+                this.readContractsService.deposits.next(this.deposits);
+                this.readContractsService.totalAvailable.next(this.totalAvailable);
+              // })
             }
           });
           console.log('Transaction succeeded!');

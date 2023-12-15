@@ -39,6 +39,9 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
     if (CurrentchainId == 137n) {
       this.networkName = 'Polygon Mainnet';
     }
+       else if(CurrentchainId!=42161n && CurrentchainId != 137n && CurrentchainId !=80001n) {
+      this.networkName = 'Select Network';
+    }
   }
 
   ngOnInit(): void {
@@ -53,11 +56,11 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
       if (this.deposits.toString().length == 1 || this.deposits.toString().length == 2 ||this.deposits.toString().length == 3) {
         this.finalDepo = this.deposits;
       }
-      if (this.deposits.toString().length == 4 || this.deposits.toString().length == 5) {
+      if (this.deposits.toString().length == 4 || this.deposits.toString().length == 5 || this.deposits.toString().length == 6 ) {
        console.log(this.deposits)
         this.finalDepo = (this.deposits / 1000) + 'k';
       }
-      if (this.deposits.toString().length == 6 || this.deposits.toString().length == 7 || this.deposits.toString().length == 8) {
+      if ( this.deposits.toString().length == 7 || this.deposits.toString().length == 8) {
         this.finalDepo = (this.deposits / 1000000) + 'M';
       }
       if (this.deposits.toString().length > 9) {
@@ -71,10 +74,10 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
       if (this.borrows.toString().length == 1 || this.borrows.toString().length == 2 || this.borrows.toString().length == 3) {
         this.finalBrow = this.borrows;
       }
-      if (this.borrows.toString().length == 4 || this.borrows.toString().length == 5) {
+      if (this.borrows.toString().length == 4 || this.borrows.toString().length == 5 || this.borrows.toString().length == 6) {
         this.finalBrow = (this.borrows / 1000) + 'k';
       }
-      if (this.borrows.toString().length == 6 || this.borrows.toString().length == 7 || this.borrows.toString().length == 8) {
+      if (this.borrows.toString().length == 7 || this.borrows.toString().length == 8) {
         this.finalBrow = (this.borrows / 1000000) + 'M';
       }
       if (this.borrows.toString().length > 9) {
@@ -92,10 +95,10 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
       if (fixedtotalAvailable.toString().length == 1 || fixedtotalAvailable.toString().length == 2 || fixedtotalAvailable.toString().length == 3) {
         this.finalttlAvlble = fixedtotalAvailable;
       }
-      if (fixedtotalAvailable.toString().length == 4 || fixedtotalAvailable.toString().length == 5) {
+      if (fixedtotalAvailable.toString().length == 4 || fixedtotalAvailable.toString().length == 5 ||fixedtotalAvailable.toString().length == 6 ) {
         this.finalttlAvlble = (fixedtotalAvailable / 1000) + 'k';
       }
-      if (fixedtotalAvailable.toString().length == 6 || fixedtotalAvailable.toString().length == 7 || fixedtotalAvailable.toString().length == 8) {
+      if (fixedtotalAvailable.toString().length == 7 || fixedtotalAvailable.toString().length == 8) {
         this.finalttlAvlble = (fixedtotalAvailable / 1000000) + 'M';
       }
       if (fixedtotalAvailable.toString().length > 9) {
