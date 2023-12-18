@@ -39,10 +39,6 @@ export class MainComponent implements OnInit {
       this.networkName = 'Mumbai Testnet';
       this.readContractsService.getReserveData().then((data: any) => {
         data.forEach((item: any) => {
-
-
-
-
           if (item.name == 'Alpha') {
             item.icon = "assets/alphalogo.png";
           }
@@ -68,10 +64,10 @@ export class MainComponent implements OnInit {
             this.totalBorrowsArr.push(element.totalBorrows);
           });
           const sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-          this.deposits = sumOfDeposits;
+          this.deposits = sumOfDeposits.toFixed(0);
           const sumOfBorrows = this.totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-          this.borrows = sumOfBorrows;
-          this.totalAvailable = (Number(this.deposits) - Number(this.borrows)).toFixed(2);
+          this.borrows = sumOfBorrows.toFixed(0);
+          this.totalAvailable = (Number(this.deposits) - Number(this.borrows)).toFixed(0);
           localStorage.setItem('borrows', JSON.stringify(this.borrows));
           localStorage.setItem('deposits', JSON.stringify(this.deposits));
           localStorage.setItem('totalAvailable', JSON.stringify(this.totalAvailable));
@@ -83,10 +79,10 @@ export class MainComponent implements OnInit {
           if (ttlSpply.toString().length == 1 || ttlSpply.toString().length == 2) {
             item.totalSupply = ttlSpply;
           }
-          if (ttlSpply.toString().length == 3 || ttlSpply.toString().length == 4 || ttlSpply.toString().length == 5 || ttlSpply.toString().length == 6) {
+          if (ttlSpply.toString().length == 3 || ttlSpply.toString().length == 4 || ttlSpply.toString().length == 5 ) {
             item.totalSupply = (ttlSpply / 1000).toFixed(2) + 'k';
           }
-          if (ttlSpply.toString().length == 7 || ttlSpply.toString().length == 8) {
+          if (ttlSpply.toString().length == 6 ||ttlSpply.toString().length == 7 || ttlSpply.toString().length == 8) {
             item.totalSupply = (ttlSpply / 1000000).toFixed(2) + 'M';
           }
           if (ttlSpply.toString().length > 9) {

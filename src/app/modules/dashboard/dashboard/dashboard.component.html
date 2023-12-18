@@ -98,7 +98,8 @@
                 </tr>
               </tbody>
             </table>
-            <mat-spinner *ngIf="spinnerTimer" style="margin-left: 43%;width: 120px;color:warn;margin-bottom:5px;margin-top:5px;"></mat-spinner>
+            <mat-spinner *ngIf="spinnerTimer"
+              style="margin-left: 43%;width: 120px;color:warn;margin-bottom:5px;margin-top:5px;"></mat-spinner>
           </div>
         </div>
       </div>
@@ -174,7 +175,8 @@
                 </tr>
               </tbody>
             </table>
-            <mat-spinner *ngIf="spinnerTimer" style="margin-left: 43%;width: 120px;color:warn;margin-bottom:5px;margin-top:5px;"></mat-spinner>
+            <mat-spinner *ngIf="spinnerTimer"
+              style="margin-left: 43%;width: 120px;color:warn;margin-bottom:5px;margin-top:5px;"></mat-spinner>
           </div>
         </div>
       </div>
@@ -222,7 +224,7 @@
                       </td>
                       <td>
                         <div class="dt_table">
-                          <h3>
+                          <h3 *ngIf="items.details['usageAsCollateralEnabled']==true">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25"
                               fill="none">
                               <mask id="mask0_656_2622" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
@@ -264,9 +266,9 @@
                     </tr>
                   </tbody>
                 </table>
-                <mat-spinner  *ngIf="networkName=='Mumbai Testnet' && SupplyContractData.length==0" style="margin-left: 43%;
+                <mat-spinner *ngIf="networkName=='Mumbai Testnet' && SupplyContractData.length==0" style="margin-left: 43%;
                 width: 120px;color:warn;margin-bottom:5px;margin-top:5px;"></mat-spinner>
-                 <mat-spinner  *ngIf="networkName!='Mumbai Testnet' && spinnerTimer" style="margin-left: 43%;
+                <mat-spinner *ngIf="networkName!='Mumbai Testnet' && spinnerTimer" style="margin-left: 43%;
                  width: 120px;color:warn;margin-bottom:5px;margin-top:5px;"></mat-spinner>
               </div>
             </div>
@@ -311,7 +313,7 @@
                       </td>
                       <td>
                         <div class="dt_table">
-                          <h3>
+                          <h3 *ngIf="items.details['usageAsCollateralEnabled']==true">
                             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25"
                               fill="none">
                               <mask id="mask0_656_2622" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
@@ -355,7 +357,7 @@
                 </table>
                 <mat-spinner *ngIf="networkName=='Mumbai Testnet' && borrowContractData.length==0" style="margin-left: 43%;
                 width: 120px;color:warn;margin-bottom:5px;margin-top:5px;"></mat-spinner>
-                 <mat-spinner *ngIf="networkName!='Mumbai Testnet' && spinnerTimer" style="margin-left: 43%;
+                <mat-spinner *ngIf="networkName!='Mumbai Testnet' && spinnerTimer" style="margin-left: 43%;
                  width: 120px;color:warn;margin-bottom:5px;margin-top:5px;"></mat-spinner>
               </div>
             </div>

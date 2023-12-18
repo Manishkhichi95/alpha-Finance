@@ -7,17 +7,17 @@ import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@
   styleUrls: ['./head-banner.component.css']
 })
 export class HeadBannerComponent implements OnInit, AfterViewInit {
+  web3: any;
+  finalDepo: any;
+  finalBrow: any;
   borrows: any = 0;
-  networkName: any = localStorage.getItem('networkName');
   deposits: any = 0;
+  finalttlAvlble: any;
   totalAvailable: any = 0;
   connected: boolean = false;
   @Input() contractData: any = [];
   @Output() CurrentchainId = new EventEmitter<string>();
-  web3: any;
-  finalDepo: any;
-  finalBrow: any;
-  finalttlAvlble: any;
+  networkName: any = localStorage.getItem('networkName');
 
   constructor(private readContractsService: readContractsService, private web3Service: Web3Service) {
     this.web3Service.connected.subscribe((connected: boolean) => {
@@ -39,28 +39,25 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
     if (CurrentchainId == 137n) {
       this.networkName = 'Polygon Mainnet';
     }
-       else if(CurrentchainId!=42161n && CurrentchainId != 137n && CurrentchainId !=80001n) {
+    else if (CurrentchainId != 42161n && CurrentchainId != 137n && CurrentchainId != 80001n) {
       this.networkName = 'Select Network';
     }
   }
 
   ngOnInit(): void {
-    localStorage.getItem('borrows');
-    localStorage.getItem('deposits');
-    localStorage.getItem('totalAvailable');
     debugger
     this.readContractsService.deposits.subscribe((res: Number) => {
       this.deposits = res;
       const deposits: any = localStorage.getItem('deposits')
       this.deposits == 0 ? this.deposits = JSON.parse(deposits) : '';
-      if (this.deposits.toString().length == 1 || this.deposits.toString().length == 2 ||this.deposits.toString().length == 3) {
+      if (this.deposits.toString().length == 1 || this.deposits.toString().length == 2 || this.deposits.toString().length == 3) {
         this.finalDepo = this.deposits;
       }
-      if (this.deposits.toString().length == 4 || this.deposits.toString().length == 5 || this.deposits.toString().length == 6 ) {
-       console.log(this.deposits)
+      if (this.deposits.toString().length == 4 || this.deposits.toString().length == 5 || this.deposits.toString().length == 6) {
+        console.log(this.deposits)
         this.finalDepo = (this.deposits / 1000) + 'k';
       }
-      if ( this.deposits.toString().length == 7 || this.deposits.toString().length == 8) {
+      if (this.deposits.toString().length == 7 || this.deposits.toString().length == 8) {
         this.finalDepo = (this.deposits / 1000000) + 'M';
       }
       if (this.deposits.toString().length > 9) {
@@ -89,13 +86,13 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
       this.totalAvailable = res;
       const totalAvailable: any = localStorage.getItem('totalAvailable')
       this.totalAvailable == 0 ? this.totalAvailable = JSON.parse(totalAvailable) : '';
-      const fixedtotalAvailable =Math.floor(this.totalAvailable) ;
-      console.log('fixedtotalAvailable',fixedtotalAvailable)
+      const fixedtotalAvailable = Math.floor(this.totalAvailable);
+      console.log('fixedtotalAvailable', fixedtotalAvailable)
 
       if (fixedtotalAvailable.toString().length == 1 || fixedtotalAvailable.toString().length == 2 || fixedtotalAvailable.toString().length == 3) {
         this.finalttlAvlble = fixedtotalAvailable;
       }
-      if (fixedtotalAvailable.toString().length == 4 || fixedtotalAvailable.toString().length == 5 ||fixedtotalAvailable.toString().length == 6 ) {
+      if (fixedtotalAvailable.toString().length == 4 || fixedtotalAvailable.toString().length == 5 || fixedtotalAvailable.toString().length == 6) {
         this.finalttlAvlble = (fixedtotalAvailable / 1000) + 'k';
       }
       if (fixedtotalAvailable.toString().length == 7 || fixedtotalAvailable.toString().length == 8) {
@@ -105,6 +102,7 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
         this.finalttlAvlble = (fixedtotalAvailable / 1000000000) + 'B';
       }
     });
+    console.log('calculations', this.deposits, this.borrows, this.totalAvailable)
   }
 
   ngAfterViewInit(): void {
