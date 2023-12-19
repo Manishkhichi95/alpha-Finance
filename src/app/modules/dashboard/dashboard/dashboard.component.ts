@@ -54,7 +54,6 @@ export class DashboardComponent {
       amount: [null, Validators.required],
       withdrawTo: ['', Validators.required]
     });
-    debugger
     this.web3Service.connected.subscribe((connected: boolean) => {
       this.connected = connected;
     });
@@ -530,7 +529,6 @@ export class DashboardComponent {
 
     if (this.transactionType == 'Repay') {
       this.showSpinner = true;
-      debugger
       this.Addresscontract = new this.web3.eth.Contract(this.tokenContractsABI, this.selectedRepayReserve);
       const decimals = await this.Addresscontract.methods.decimals().call();
       const rateMode = 2;

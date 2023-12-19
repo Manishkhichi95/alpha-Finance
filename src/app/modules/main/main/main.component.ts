@@ -140,7 +140,6 @@ export class MainComponent implements OnInit {
   }
 
   ngOnInit() {
-    debugger
     this.web3Service.connected.subscribe((connected: boolean) => {
       this.connected = connected;
     })

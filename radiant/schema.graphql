@@ -1,0 +1,91 @@
+type AddressSet @entity(immutable: true) {
+  id: Bytes!
+  Contract_id: Bytes! # bytes32
+  newAddress: Bytes! # address
+  hasProxy: Boolean! # bool
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ConfigurationAdminUpdated @entity(immutable: true) {
+  id: Bytes!
+  newAddress: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type EmergencyAdminUpdated @entity(immutable: true) {
+  id: Bytes!
+  newAddress: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type LendingPoolCollateralManagerUpdated @entity(immutable: true) {
+  id: Bytes!
+  newAddress: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type LendingPoolConfiguratorUpdated @entity(immutable: true) {
+  id: Bytes!
+  newAddress: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type LendingPoolUpdated @entity(immutable: true) {
+  id: Bytes!
+  newAddress: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type LendingRateOracleUpdated @entity(immutable: true) {
+  id: Bytes!
+  newAddress: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type MarketIdSet @entity(immutable: true) {
+  id: Bytes!
+  newMarketId: String! # string
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type OwnershipTransferred @entity(immutable: true) {
+  id: Bytes!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type PriceOracleUpdated @entity(immutable: true) {
+  id: Bytes!
+  newAddress: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}
+
+type ProxyCreated @entity(immutable: true) {
+  id: Bytes!
+  Contract_id: Bytes! # bytes32
+  newAddress: Bytes! # address
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+}

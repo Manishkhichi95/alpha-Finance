@@ -18,7 +18,7 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
   @Input() contractData: any = [];
   @Output() CurrentchainId = new EventEmitter<string>();
   networkName: any = localStorage.getItem('networkName');
-
+  
   constructor(private readContractsService: readContractsService, private web3Service: Web3Service) {
     this.web3Service.connected.subscribe((connected: boolean) => {
       this.connected = connected;
@@ -50,7 +50,7 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
       this.deposits = res;
       const deposits: any = localStorage.getItem('deposits')
       this.deposits == 0 ? this.deposits = JSON.parse(deposits) : '';
-      const fxdDeposts:any = Number(this.deposits).toFixed(0);
+      const fxdDeposts: any = Number(this.deposits).toFixed(0);
       if (fxdDeposts.toString().length == 1 || fxdDeposts.toString().length == 2 || fxdDeposts.toString().length == 3) {
         this.finalDepo = fxdDeposts;
       }
@@ -69,7 +69,7 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
       this.borrows = res;
       const borrows: any = localStorage.getItem('borrows')
       this.borrows == 0 ? this.borrows = JSON.parse(borrows) : '';
-      const fxdBorrows:any = Number(this.borrows).toFixed(0);
+      const fxdBorrows: any = Number(this.borrows).toFixed(0);
       if (fxdBorrows.toString().length == 1 || fxdBorrows.toString().length == 2 || fxdBorrows.toString().length == 3) {
         this.finalBrow = fxdBorrows;
       }

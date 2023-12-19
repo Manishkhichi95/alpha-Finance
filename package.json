@@ -20,7 +20,7 @@
     "@angular/platform-browser": "^16.0.0",
     "@angular/platform-browser-dynamic": "^16.0.0",
     "@angular/router": "^16.0.0",
-    "@apollo/client": "^3.8.4",
+    "@apollo/client": "^3.8.8",
     "angular-highcharts": "^16.0.0",
     "apollo-angular": "^5.0.2",
     "chart.js": "^4.4.0",

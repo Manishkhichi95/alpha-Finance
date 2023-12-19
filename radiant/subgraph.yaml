@@ -1,0 +1,54 @@
+specVersion: 0.0.5
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: Contract
+    network: mumbai
+    source:
+      address: "0x5743f572A55CbB84c035903D0e888583CdD508c3"
+      abi: Contract
+      startBlock: 41537492
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - AddressSet
+        - ConfigurationAdminUpdated
+        - EmergencyAdminUpdated
+        - LendingPoolCollateralManagerUpdated
+        - LendingPoolConfiguratorUpdated
+        - LendingPoolUpdated
+        - LendingRateOracleUpdated
+        - MarketIdSet
+        - OwnershipTransferred
+        - PriceOracleUpdated
+        - ProxyCreated
+      abis:
+        - name: Contract
+          file: ./abis/Contract.json
+      eventHandlers:
+        - event: AddressSet(bytes32,indexed address,bool)
+          handler: handleAddressSet
+        - event: ConfigurationAdminUpdated(indexed address)
+          handler: handleConfigurationAdminUpdated
+        - event: EmergencyAdminUpdated(indexed address)
+          handler: handleEmergencyAdminUpdated
+        - event: LendingPoolCollateralManagerUpdated(indexed address)
+          handler: handleLendingPoolCollateralManagerUpdated
+        - event: LendingPoolConfiguratorUpdated(indexed address)
+          handler: handleLendingPoolConfiguratorUpdated
+        - event: LendingPoolUpdated(indexed address)
+          handler: handleLendingPoolUpdated
+        - event: LendingRateOracleUpdated(indexed address)
+          handler: handleLendingRateOracleUpdated
+        - event: MarketIdSet(string)
+          handler: handleMarketIdSet
+        - event: OwnershipTransferred(indexed address,indexed address)
+          handler: handleOwnershipTransferred
+        - event: PriceOracleUpdated(indexed address)
+          handler: handlePriceOracleUpdated
+        - event: ProxyCreated(bytes32,indexed address)
+          handler: handleProxyCreated
+      file: ./src/contract.ts

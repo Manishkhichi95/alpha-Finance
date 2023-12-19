@@ -162,7 +162,6 @@ export class AssetDetailComponent implements OnInit, AfterViewInit {
         this.reserveSize = '$' + (Number(aTokenSupply) / (Number(1 + '0'.repeat(Number(this.reserve.decimals)))) / 1000).toFixed(2) + 'k' :
         this.reserveSize = '$' + (Number(aTokenSupply) / (Number(1 + '0'.repeat(Number(this.reserve.decimals))))).toFixed(2);
     //utilizationRate
-    debugger
     console.log("reserveSize",reserveSize)
     if(reserveSize=="0"){
       this.utilizationRate = "0.00"
