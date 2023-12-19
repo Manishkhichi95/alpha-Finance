@@ -173,7 +173,6 @@ export class readContractsService {
     selectedAll.forEach((selected: any) => {
       const optionsContainer = selected.children[2];
       const optionsList: any = selected.querySelectorAll("div.wrapper-dropdown li");
-
       selected.addEventListener("click", () => {
         let arrow = selected.children[1];
 

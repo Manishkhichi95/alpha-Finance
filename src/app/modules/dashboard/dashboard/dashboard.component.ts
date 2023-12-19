@@ -62,6 +62,7 @@ export class DashboardComponent {
     this.web3 = this.web3Service.getWeb3();
     this.getUserReservesData();
   }
+
   async getUserReservesData() {
     this.web3 = this.web3Service.getWeb3();
     const CurrentchainId = await this.web3.eth.net.getId();

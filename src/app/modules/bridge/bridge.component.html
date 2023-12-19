@@ -14,7 +14,7 @@
                 <div class="user_avtar">
                   <div class="icon"><img src="assets/images/ic2.png" alt=""></div>
                   <div class="cont_bx">
-                    <h3>0</h3>
+                    <h3>{{balance}} MATIC</h3>
                   </div>
                 </div>
               </div>
@@ -33,21 +33,17 @@
               </div>
               <div class="amt_frm">
                 <div class="wrapper-dropdown" id="dropdown">
-                  <span class="selected-display" id="destination"><span><img src="#" alt=""><span>Ethereum
-                        Market</span></span></span>
+                  <span class="selected-display" id="destination"><span><img src="#"
+                        alt=""><span>{{networkName}}</span></span></span>
                   <svg class="arrow" id="drp-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     xmlns="http://www.w3.org/2000/svg" class="transition-all ml-auto rotate-180">
                     <path d="M7 14.5l5-5 5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
                       stroke-linejoin="round"></path>
                   </svg>
                   <ul class="dropdown">
+                    <li class="item" (click)="switchNetwork('Select Network')"><span><img src="#" alt=""></span>Select
+                      Network</li>
                     <li class="item" (click)="switchNetwork('Arbitrum')"><span><img src="#" alt=""></span>Arbitrum</li>
-                    <li class="item" (click)="switchNetwork('Mumbai Testnet')"><span><img src="#" alt=""></span>Mumbai
-                      Testnet
-                    </li>
-                    <li class="item" (click)="switchNetwork('Polygon Mainnet')"><span><img src="#" alt=""></span>Polygon
-                      Mainnet
-                    </li>
                   </ul>
                 </div>
               </div>
@@ -56,13 +52,16 @@
                 <div class="user_avtar">
                   <div class="icon"><img src="assets/images/ic2.png" alt=""></div>
                   <div class="cont_bx">
-                    <h3>0.0</h3>
+                    <h3>{{fees}}</h3>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <button class="btn" (click)="openDialog()">Bridge Alpha</button>
+          <button class="btn" *ngIf="!showSpinner" (click)="openDialog()">Bridge Alpha</button>
+          <button class="btn" *ngIf="showSpinner">
+            <mat-spinner style="margin:0 auto; height:20px;width:20px;"></mat-spinner>
+          </button>
         </div>
       </div>
     </div>
@@ -76,7 +75,10 @@
       <input type="text" formControlName="DstAddress">
       <p *ngIf="showError || isInvalid('DstAddress')" style="margin: 0 auto;">Please
         Enter the Destination Address</p>
-      <button class="submittBtn" (click)="sendFrom()">Submit</button>
+      <button class="submittBtn" *ngIf="!showSpinner" (click)="sendFrom()">Submit</button>
+      <button class="submittBtn" style="width:100px;" *ngIf="showSpinner">
+        <mat-spinner style="margin:0 auto; height:20px;width:20px;"></mat-spinner>
+      </button>
     </form>
   </div>
 </div>
