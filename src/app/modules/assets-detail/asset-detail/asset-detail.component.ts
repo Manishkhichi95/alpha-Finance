@@ -19,6 +19,7 @@ export class AssetDetailComponent implements OnInit, AfterViewInit {
   assetPrice: any;
   reserveSize: any;
   OraclePrice: any;
+  previousUrl: any;
   SelectedIcon: any;
   options: any = {
     chart: {
@@ -85,10 +86,10 @@ export class AssetDetailComponent implements OnInit, AfterViewInit {
   };
   Addresscontract: any;
   utilizationRate: any;
-  supplyVal: any = '0.00';
   ContractData: any = [];
   aaveOracleAddress: any;
   tokenContractsABI: any;
+  supplyVal: any = '0.00';
   availableLiquidity: any;
   showSelectedReserve: any;
   borrowValue: any = '0.00';
@@ -99,12 +100,11 @@ export class AssetDetailComponent implements OnInit, AfterViewInit {
   RadiantLendingPoolV2Address: any;
   RadiantLendingPoolV2Contract: any;
   icons: string[] = ['assets/images/ic1.png', 'assets/images/ic3.png', 'assets/images/ic2.png', 'assets/images/ic4.png', 'assets/images/ic5.png', 'assets/images/ic6.png', 'assets/images/ic7.png'];
-  previousUrl: any;
   constructor(private router: Router, private readContractsService: readContractsService, private Web3Service: Web3Service, private http: HttpClient, private location: Location) {
     this.web3 = this.Web3Service.getWeb3();
-    this.reserve = this.readContractsService.selectedReserve;
     this.showSelectedReserve = this.reserve.name;
     this.SelectedIcon = "../../../../" + this.reserve.icon;
+    this.reserve = this.readContractsService.selectedReserve;
     localStorage.setItem('showAssetDetails', JSON.stringify(this.showDetails));
   }
 

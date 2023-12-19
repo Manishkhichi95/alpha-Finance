@@ -9,9 +9,10 @@ import { readContractsService } from 'src/app/services/readContracts.service';
   styleUrls: ['./main.component.css']
 })
 export class MainComponent implements OnInit {
-  walletAddress: any;
+  web3: any;
   borrows: any = 0;
   deposits: any = 0;
+  walletAddress: any;
   ContractData: any = [];
   error: boolean = false;
   totalAvailable: any = 0;
@@ -22,8 +23,7 @@ export class MainComponent implements OnInit {
   title = 'alpha-finance-launch';
   CurrentchainId: any = localStorage.getItem('chainId');
   networkName: string | null = localStorage.getItem('networkName');
-  icons: string[] = ["assets/alphalogo.png", "assets/images/busd-c4257f9b.svg", "assets/images/ic3.png"]
-  web3: any;
+  icons: string[] = ["assets/alphalogo.png", "assets/images/busd-c4257f9b.svg", "assets/images/ic3.png"];
 
   constructor(private readContractsService: readContractsService, private web3Service: Web3Service, private router: Router) {
     this.walletAddress = localStorage.getItem('walletAddress');
@@ -32,6 +32,7 @@ export class MainComponent implements OnInit {
   }
 
   async checkNetworkId() {
+    this.networkName == null ? this.networkName = 'Select Network' : '';
     this.web3 = this.web3Service.getWeb3();
     const CurrentchainId = await this.web3.eth.net.getId();
     console.log(CurrentchainId)

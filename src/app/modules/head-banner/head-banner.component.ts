@@ -27,6 +27,7 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
   }
 
   async checkNetworkId() {
+    this.networkName == null ? this.networkName = 'Select Network' : '';
     this.web3 = this.web3Service.getWeb3();
     const CurrentchainId = await this.web3.eth.net.getId();
     console.log(CurrentchainId)
@@ -45,40 +46,41 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    debugger
     this.readContractsService.deposits.subscribe((res: Number) => {
       this.deposits = res;
       const deposits: any = localStorage.getItem('deposits')
       this.deposits == 0 ? this.deposits = JSON.parse(deposits) : '';
-      if (this.deposits.toString().length == 1 || this.deposits.toString().length == 2 || this.deposits.toString().length == 3) {
-        this.finalDepo = this.deposits;
+      const fxdDeposts:any = Number(this.deposits).toFixed(0);
+      if (fxdDeposts.toString().length == 1 || fxdDeposts.toString().length == 2 || fxdDeposts.toString().length == 3) {
+        this.finalDepo = fxdDeposts;
       }
-      if (this.deposits.toString().length == 4 || this.deposits.toString().length == 5 || this.deposits.toString().length == 6) {
-        console.log(this.deposits)
-        this.finalDepo = (this.deposits / 1000) + 'k';
+      if (fxdDeposts.toString().length == 4 || fxdDeposts.toString().length == 5 || fxdDeposts.toString().length == 6) {
+        console.log(fxdDeposts)
+        this.finalDepo = (fxdDeposts / 1000) + 'k';
       }
-      if (this.deposits.toString().length == 7 || this.deposits.toString().length == 8) {
-        this.finalDepo = (this.deposits / 1000000) + 'M';
+      if (fxdDeposts.toString().length == 7 || fxdDeposts.toString().length == 8) {
+        this.finalDepo = (fxdDeposts / 1000000) + 'M';
       }
-      if (this.deposits.toString().length > 9) {
-        this.finalDepo = (this.deposits / 1000000000) + 'B';
+      if (fxdDeposts.toString().length > 9) {
+        this.finalDepo = (fxdDeposts / 1000000000) + 'B';
       }
     });
     this.readContractsService.borrows.subscribe((res: Number) => {
       this.borrows = res;
       const borrows: any = localStorage.getItem('borrows')
       this.borrows == 0 ? this.borrows = JSON.parse(borrows) : '';
-      if (this.borrows.toString().length == 1 || this.borrows.toString().length == 2 || this.borrows.toString().length == 3) {
-        this.finalBrow = this.borrows;
+      const fxdBorrows:any = Number(this.borrows).toFixed(0);
+      if (fxdBorrows.toString().length == 1 || fxdBorrows.toString().length == 2 || fxdBorrows.toString().length == 3) {
+        this.finalBrow = fxdBorrows;
       }
-      if (this.borrows.toString().length == 4 || this.borrows.toString().length == 5 || this.borrows.toString().length == 6) {
-        this.finalBrow = (this.borrows / 1000) + 'k';
+      if (fxdBorrows.toString().length == 4 || fxdBorrows.toString().length == 5 || fxdBorrows.toString().length == 6) {
+        this.finalBrow = (fxdBorrows / 1000) + 'k';
       }
-      if (this.borrows.toString().length == 7 || this.borrows.toString().length == 8) {
-        this.finalBrow = (this.borrows / 1000000) + 'M';
+      if (fxdBorrows.toString().length == 7 || fxdBorrows.toString().length == 8) {
+        this.finalBrow = (fxdBorrows / 1000000) + 'M';
       }
-      if (this.borrows.toString().length > 9) {
-        this.finalBrow = (this.borrows / 1000000000) + 'B';
+      if (fxdBorrows.toString().length > 9) {
+        this.finalBrow = (fxdBorrows / 1000000000) + 'B';
       }
     });
 

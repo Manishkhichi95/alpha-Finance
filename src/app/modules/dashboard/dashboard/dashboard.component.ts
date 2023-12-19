@@ -17,13 +17,20 @@ export class DashboardComponent {
   reserve: any;
   address: any;
   accounts: any;
+  borrows: any = 0;
+  deposits: any = 0;
   balanceAsset: any;
   selectedReserve: any;
   transactionType: any;
   Addresscontract: any;
   tokenContractsABI: any;
+  totalAvailable: any = 0;
   borrowedAsset: any = [];
   depositedAsset: any = [];
+  networkName: string = '';
+  selectedRepayReserve: any;
+  totalBorrowsArr: any = [];
+  totalDepositArr: any = [];
   showError: boolean = false;
   connected: boolean = false;
   UiPoolDataProviderV2V3: any;
@@ -31,21 +38,14 @@ export class DashboardComponent {
   borrowContractData: any = [];
   showDetails: boolean = false;
   showSpinner: boolean = false;
+  spinnerTimer: boolean = true;
   RadiantLendingPoolV2ABI: any;
   RadiantLendingPoolV2Address: any;
   selectedSupplyReserve: string = '';
   selectedBorrowReserve: string = '';
   selectedWithdrawReserve: string = '';
   CurrentchainId: any = localStorage.getItem('chainId');
-  networkName: string = '';
-  icons: string[] = ["assets/alphalogo.png", "assets/images/busd-c4257f9b.svg", "assets/images/ic3.png"]
-  selectedRepayReserve: any;
-  totalBorrowsArr: any = [];
-  totalDepositArr: any = [];
-  totalAvailable: any = 0;
-  borrows: any = 0;
-  deposits: any = 0;
-  spinnerTimer: boolean = true;
+  icons: string[] = ["assets/alphalogo.png", "assets/images/busd-c4257f9b.svg", "assets/images/ic3.png"];
   constructor(private fb: FormBuilder, private web3Service: Web3Service, private http: HttpClient, private readContractsService: readContractsService, private router: Router) {
     setTimeout(() => {
       this.spinnerTimer = false;
@@ -65,6 +65,7 @@ export class DashboardComponent {
 
   async getUserReservesData() {
     this.web3 = this.web3Service.getWeb3();
+    this.networkName == null ? this.networkName = 'Select Network' : '';
     const CurrentchainId = await this.web3.eth.net.getId();
     console.log(CurrentchainId)
     if (CurrentchainId == 80001n) {

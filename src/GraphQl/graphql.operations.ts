@@ -11,6 +11,5 @@ const GET_POSTS = gql`query {
     totalLiquidity,
     liquidityRate
       }
-}
-    `
+}`
 export { GET_POSTS };

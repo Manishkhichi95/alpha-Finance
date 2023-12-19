@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { readContractsService } from './services/readContracts.service';
-import { Web3Service } from './services/WEb3Service.service';
 import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Web3Service } from './services/WEb3Service.service';
+import { readContractsService } from './services/readContracts.service';
 
 @Component({
   selector: 'app-root',
