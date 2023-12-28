@@ -23,7 +23,7 @@
       <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a class="nav-link" routerLinkActive="active" routerLink="/market" >Market</a>
+            <a class="nav-link" routerLinkActive="active" routerLink="/market">Market</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" routerLinkActive="active" routerLink="/dashboard-wallet-connected">Dashboard</a>
@@ -56,13 +56,57 @@
             </ul>
           </li>
         </ul>
-        <div class="btn_grp">          
-           <button *ngIf="connected" class="btn btn_cpy"><span><img src="assets/images/ic.png" alt=""></span><span
-              [TruncateText]="walletAddress" [startLength]="4" [endLength]="4"></span></button>
+        <div class="btn_grp">
+          <button *ngIf="connected" class="btn btn_cpy" (click)="openDialog()"><span><img src="assets/images/ic.png"
+                alt=""></span><span [TruncateText]="walletAddress" [startLength]="4" [endLength]="4"></span></button>
           <button class="btn" *ngIf="!connected" (click)="connectWallet()">Connect Wallet</button>
-        </div> 
-       </div> 
-   </div> 
+        </div>
+      </div>
+    </div>
   </nav>
 </header>
+<div id="disConnect" class="modal" style="margin-top: 70px;width:200px;left:76.8%;position:fixed;">
+  <div class="modal-content" style="padding:5px;">
+    <div class="flex">
+      <p>Account</p>
+
+      <div class="flex" style="width:23%;">
+        <svg *ngIf="!copied" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"
+          (click)="copyToClipBoard()">
+          <circle cx="10" cy="10" r="9.5" fill="#F8FAFC" stroke="#EAEFF5"></circle>
+          <path
+            d="M6.94118 14C6.68235 14 6.46071 13.9217 6.27624 13.7652C6.09208 13.6084 6 13.42 6 13.2V7.6H6.94118V13.2H12.1176V14H6.94118ZM8.82353 11.8C8.56471 11.8 8.34322 11.7217 8.15906 11.5652C7.97459 11.4084 7.88235 11.22 7.88235 11V6.8C7.88235 6.58 7.97459 6.3916 8.15906 6.2348C8.34322 6.07827 8.56471 6 8.82353 6H13.0588C13.3176 6 13.5393 6.07827 13.7238 6.2348C13.9079 6.3916 14 6.58 14 6.8V11C14 11.22 13.9079 11.4084 13.7238 11.5652C13.5393 11.7217 13.3176 11.8 13.0588 11.8H8.82353ZM8.82353 11H13.0588V6.8H8.82353V11Z"
+            fill="#475569"></path>
+        </svg>
+
+        <svg *ngIf="copied" _ngcontent-ng-c136187336="" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+          viewBox="0 0 30 30" fill="none">
+          <mask _ngcontent-ng-c136187336="" id="mask0_656_2622" maskUnits="userSpaceOnUse" x="0" y="0" width="25"
+            height="25" style="mask-type: alpha;">
+            <rect _ngcontent-ng-c136187336="" x="0.5" y="0.5" width="24" height="24" fill="#D9D9D9"></rect>
+          </mask>
+          <g _ngcontent-ng-c136187336="" mask="url(#mask0_656_2622)">
+            <path _ngcontent-ng-c136187336=""
+              d="M10.0504 18.1534L4.71582 12.8188L5.78505 11.7496L10.0504 16.015L19.2158 6.84961L20.285 7.91881L10.0504 18.1534Z"
+              fill="#07E702"></path>
+          </g>
+        </svg>
+        
+        <a href="https://mumbai.polygonscan.com/address/{{walletAddress}}"
+        target="_blank">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="10" cy="10" r="9.5" fill="#F8FAFC" stroke="#EAEFF5"></circle>
+          <path
+            d="M10.8889 6V6.88889H12.4844L8.11556 11.2578L8.74222 11.8844L13.1111 7.51556V9.11111H14V6M13.1111 13.1111H6.88889V6.88889H10V6H6.88889C6.65314 6 6.42705 6.09365 6.26035 6.26035C6.09365 6.42705 6 6.65314 6 6.88889V13.1111C6 13.3469 6.09365 13.573 6.26035 13.7397C6.42705 13.9063 6.65314 14 6.88889 14H13.1111C13.3469 14 13.573 13.9063 13.7397 13.7397C13.9063 13.573 14 13.3469 14 13.1111V10H13.1111V13.1111Z"
+            fill="#475569"></path>
+        </svg>
+      </a>
+      </div>
+    </div>
+    <b style="font-size: small;"><span [TruncateText]="walletAddress" [startLength]="4" [endLength]="4"></span></b>
+    <div class="btn_grp">
+      <button class="dscntBtn" (click)="disconnectWallet()"><b>Disconnect</b></button>
+    </div>
+  </div>
+</div>
 <router-outlet></router-outlet>

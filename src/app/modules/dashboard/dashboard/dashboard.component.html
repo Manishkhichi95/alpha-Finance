@@ -2,10 +2,6 @@
   <app-head-banner (CurrentchainId)="setCurrentchainId($event)"></app-head-banner>
 </div>
 <section *ngIf="connected" class="dash_sect">
-
-
-
-
   <div id="myModal" class="modal">
     <div class="modal-content">
       <span class="close" (click)="closeDialog()">&times;</span>
@@ -53,7 +49,7 @@
                   <td>
                     <div class="dt_table">
                       <h3>{{items.balance}}</h3>
-                      <p>{{items.balance}}</p>
+                      <!-- <p>{{items.balance}}</p> -->
                     </div>
                   </td>
                   <td>
@@ -186,7 +182,7 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-6 col-md-12 col-sm-12">
-          <div class="table-sect">
+          <div class="table-sect" style="margin-bottom:20px;">
             <div class="table_body">
               <div class="head_bx">
                 <h3>Assets to supply</h3>
@@ -196,7 +192,7 @@
                   <thead>
                     <tr>
                       <th>Assets</th>
-                      <th>Current Balance</th>
+                      <th>Balance</th>
                       <th>APY</th>
                       <th>Can be collateral</th>
                       <th></th>
@@ -238,12 +234,15 @@
                               </g>
                             </svg>
                           </h3>
+                          <h3 *ngIf="items.details['usageAsCollateralEnabled']!=true">
+                            <i class="fa fa-close" style="font-size:23px;color:red"></i>
+                          </h3>
                         </div>
                       </td>
                       <td>
                         <div class="dt_table">
                           <div class="btn_grp">
-                            <button class="btn" style="width: 63.3px;"
+                            <button class="btn" style="width: 62.3px;"
                               *ngIf="selectedSupplyReserve==items.address && showSpinner">
                               <mat-spinner style="margin:0 auto; height:20px;width:20px;"></mat-spinner>
                             </button>
@@ -275,7 +274,7 @@
           </div>
         </div>
         <div class="col-lg-6 col-md-12 col-sm-12">
-          <div class="table-sect">
+          <div class="table-sect" style="margin-bottom:20px;">
             <div class="table_body">
               <div class="head_bx">
                 <h3>Assets to borrow</h3>
@@ -327,6 +326,9 @@
                               </g>
                             </svg>
                           </h3>
+                          <h3 *ngIf="items.details['usageAsCollateralEnabled']!=true">
+                            <i class="fa fa-close" style="font-size:23px;color:red"></i>
+                          </h3>
                         </div>
                       </td>
                       <td>
@@ -367,7 +369,6 @@
     </div>
   </section>
 </section>
-
 <div *ngIf="!connected">
   <section class="head_banner">
     <div class="container">

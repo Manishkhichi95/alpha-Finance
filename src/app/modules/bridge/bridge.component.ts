@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Web3Service } from 'src/app/services/WEb3Service.service';
 import { readContractsService } from 'src/app/services/readContracts.service';
+import { connect } from 'rxjs';
 @Component({
   selector: 'app-bridge',
   templateUrl: './bridge.component.html',
@@ -20,6 +21,7 @@ export class BridgeComponent {
   fees: any = '0.0';
   CurrentchainId: any;
   transactionType: any;
+  connected: boolean = false;
   localContractInstance: any;
   showError: boolean = false;
   showSpinner: boolean = false;
@@ -32,6 +34,9 @@ export class BridgeComponent {
   }
 
   ngOnInit() {
+    this.getWeb3.connected.subscribe((connect: boolean) => {
+      this.connected = connect;
+    })
     this.Form = this.fb.group({
       DstAddress: ['', Validators.required]
     })
@@ -47,8 +52,13 @@ export class BridgeComponent {
   }
 
   async getBalance() {
-    const balance = await this.web3.eth.getBalance(this.walletAddress);
-    this.balance = (Number(balance) / Math.pow(10, 18)).toFixed(2);
+    if (this.connected) {
+      const balance = await this.web3.eth.getBalance(this.walletAddress);
+      this.balance = (Number(balance) / Math.pow(10, 18)).toFixed(2);
+    }
+    else if (!this.connected) {
+      this.balance = "0.00";
+    }
   }
 
   isInvalid(controlName: string): any {
@@ -96,8 +106,8 @@ export class BridgeComponent {
   async switchNetwork(network: string) {
     network == 'Arbitrum' ? this.chainId = this.CHAIN_ID["arbitrum-goerli"] : network == 'Polygon Mainnet' ? this.chainId = '0x89' : network == 'Mumbai Testnet' ? this.chainId = '0x13881' : network == 'Select Network' ? this.chainId = '' : '';
     this.networkName = network;
-    if (this.chainId != '') {
-      const fees = await this.localContractInstance.methods.estimateSendFee(this.chainId, "0xf01ACd54082dD7A0180a0bF74e38179b7012DF7c", "1", false, [])
+    if (this.chainId != '' && this.connected) {
+      const fees = await this.localContractInstance.methods.estimateSendFee(this.chainId, this.walletAddress, "1", false, [])
         .call();
       this.fees = fees[0];
     }
@@ -112,7 +122,6 @@ export class BridgeComponent {
       return
     }
     this.showSpinner = true;
-    console.log(this.fees[0])
     try {
       let sendFrom = await this.localContractInstance.methods.sendFrom(
         this.walletAddress,

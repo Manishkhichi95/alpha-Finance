@@ -23,6 +23,7 @@ export class Web3Service {
   getConnection(connected: boolean) {
     this.connected.next(connected);
   }
+  
   getWeb3() {
     return this.web3;
   }

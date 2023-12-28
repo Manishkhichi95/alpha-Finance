@@ -102,9 +102,9 @@ export class AssetDetailComponent implements OnInit, AfterViewInit {
   icons: string[] = ['assets/images/ic1.png', 'assets/images/ic3.png', 'assets/images/ic2.png', 'assets/images/ic4.png', 'assets/images/ic5.png', 'assets/images/ic6.png', 'assets/images/ic7.png'];
   constructor(private router: Router, private readContractsService: readContractsService, private Web3Service: Web3Service, private http: HttpClient, private location: Location) {
     this.web3 = this.Web3Service.getWeb3();
-    this.showSelectedReserve = this.reserve.name;
-    this.SelectedIcon = "../../../../" + this.reserve.icon;
     this.reserve = this.readContractsService.selectedReserve;
+    this.SelectedIcon = "../../../../" + this.reserve.icon;
+    this.showSelectedReserve = this.reserve.name;
     localStorage.setItem('showAssetDetails', JSON.stringify(this.showDetails));
   }
 
