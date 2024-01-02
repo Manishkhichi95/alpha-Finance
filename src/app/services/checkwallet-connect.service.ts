@@ -25,14 +25,14 @@ export class CheckwalletConnectService {
         console.log("accounts[0]",accounts[0])
         if (accounts.length === 0 || !this.walletAddress) {
           this.disconnectWallet();
-        } else if (accounts[0]) {
-          this.selectedAddress = accounts[0];
-          this.web3Service.walletAddress.next(this.selectedAddress);
+        } else if (accounts[0].toLowerCase() !== this.walletAddress.toLowerCase()) {
+          this.disconnectWallet();
+        } else {
+          this.selectedAddress = accounts[0].toLowerCase();
           this.updateWalletDetails();
+          this.web3Service.walletAddress.next(this.selectedAddress);
           this.connected = true;
           this.web3Service.connected.next(this.connected);
-        } else {
-          this.disconnectWallet();
         }
       });
 
