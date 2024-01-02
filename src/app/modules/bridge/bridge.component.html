@@ -1,3 +1,4 @@
+<app-navbar></app-navbar>
 <section class="bridg_sect">
   <div class="container">
     <div class="row">
@@ -14,7 +15,8 @@
                 <div class="user_avtar">
                   <div class="icon"><img src="assets/images/ic2.png" alt=""></div>
                   <div class="cont_bx">
-                    <h3>{{balance}} MATIC</h3>
+                    <h3 *ngIf="connected">{{balance}} MATIC</h3>
+                    <h3 *ngIf="!connected">0.00 MATIC</h3>
                   </div>
                 </div>
               </div>
@@ -52,13 +54,14 @@
                 <div class="user_avtar">
                   <div class="icon"><img src="assets/images/ic2.png" alt=""></div>
                   <div class="cont_bx">
-                    <h3>{{fees}}</h3>
+                    <h3 *ngIf="connected">{{fees}}</h3>
+                    <h3 *ngIf="!connected">0.00</h3>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <button class="btn" *ngIf="!connected">Connect Wallet</button>
+          <button class="btn" *ngIf="!connected" (click)="connectWallet()">Connect Wallet</button>
           <button class="btn" *ngIf="!showSpinner && connected" (click)="openDialog()">Bridge Alpha</button>
           <button class="btn" *ngIf="showSpinner">
             <mat-spinner style="margin:0 auto; height:20px;width:20px;"></mat-spinner>

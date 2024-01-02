@@ -1,98 +1,146 @@
 import { Injectable } from '@angular/core';
-
-declare let window: any;
-
-interface WalletDetails {
-  balance: any;
-  connected: boolean;
-  walletAddress: any;
-  selectedAddress: any;
-}
-
+import { Clipboard } from '@angular/cdk/clipboard';
+import { Web3Service } from './WEb3Service.service';
+import { readContractsService } from './readContracts.service';
 @Injectable({
   providedIn: 'root'
 })
 export class CheckwalletConnectService {
-  walletDetails: WalletDetails = {
-    balance: null,
-    connected: false,
-    walletAddress: null,
-    selectedAddress: null
-  };
-
-  constructor() {
-    this.walletDetails.walletAddress = localStorage.getItem('walletAddress');
+  balance: number = 0;
+  connected: boolean = false;
+  walletAddress: any;
+  selectedAddress: string | undefined;
+  copied: boolean = false;
+  constructor(private clipboard: Clipboard,
+    private web3Service: Web3Service,private readContractsService : readContractsService
+  ) {
+    this.walletAddress = localStorage.getItem('walletAddress');
+    this.setupMetamaskListeners(); 
   }
 
-   async updateWalletDetails(){
-    try {
-      this.walletDetails.balance = await window.ethereum.request({
-        method: 'eth_getBalance',
-        params: [this.walletDetails.selectedAddress, 'latest']
+
+  setupMetamaskListeners() {
+    if (window.ethereum) {
+      window.ethereum.on('accountsChanged', (accounts: string[]) => {
+        console.log("accounts[0]",accounts[0])
+        if (accounts.length === 0 || !this.walletAddress) {
+          this.disconnectWallet();
+        } else if (accounts[0]) {
+          this.selectedAddress = accounts[0];
+          this.web3Service.walletAddress.next(this.selectedAddress);
+          this.updateWalletDetails();
+          this.connected = true;
+          this.web3Service.connected.next(this.connected);
+        } else {
+          this.disconnectWallet();
+        }
       });
-      this.checkConnectionStatus();
+
+      window.ethereum.on('disconnect', (error: { code: number; message: string }) => {
+        if (error.code === 4001) {
+          this.disconnectWallet();
+        }
+      });
+    }
+  }
+
+  async checkConnectionStatus() {
+    debugger
+    if (!window.ethereum) {
+      this.disconnectWallet();
+      return;
+    }
+
+    if (!this.walletAddress) {
+      this.disconnectWallet();
+      return;
+    }
+
+    try {
+      const accounts: string[] = await window.ethereum.request({ method: 'eth_accounts' });
+      const connectedAddress = accounts.length > 0 ? accounts[0].toLowerCase() : undefined;
+      if (connectedAddress === this.walletAddress.toLowerCase()) {
+        this.selectedAddress = connectedAddress;
+        this.updateWalletDetails();
+        this.web3Service.walletAddress.next(this.selectedAddress)
+        this.connected = true;
+        this.web3Service.connected.next(this.connected);
+      } else {
+        this.disconnectWallet();
+      }
+    } catch (error) {
+      this.disconnectWallet();
+      console.error('Error checking connection status:', error);
+    }
+  }
+
+  async connectWallet() {
+    try {
+      const accounts: string[] = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      if (accounts && accounts.length > 0) {
+        this.connected = true;
+        this.walletAddress = accounts[0];
+        console.log('connectWallet',this.walletAddress)
+        this.selectedAddress = accounts[0];
+        this.readContractsService.getReserveData();
+        this.web3Service.connected.next(this.connected);
+        localStorage.setItem('walletAddress', this.walletAddress);
+        this.web3Service.walletAddress.next(this.walletAddress);
+        console.log('Connected to MetaMask. Selected address:', this.walletAddress);
+        this.updateWalletDetails();
+      } else {
+        this.handleConnectionError('No accounts found.');
+      }
+    } catch (error) {
+      this.handleConnectionError('An error occurred while connecting to MetaMask.');
+      console.error('Error connecting to MetaMask:', error);
+    }
+  }
+
+  async updateWalletDetails() {
+    try {
+      const balance = await window.ethereum.request({
+        method: 'eth_getBalance',
+        params: [this.walletAddress!, 'latest']
+      });
+      this.balance = Number(balance);
     } catch (error) {
       console.error('Error updating wallet details:', error);
     }
   }
 
-   handleAccountChange(accounts: string[]) {
-    const connectedAddress = accounts.length > 0 ? accounts[0] : undefined;
-    if (connectedAddress && connectedAddress.toLowerCase() === this.walletDetails.walletAddress) {
-      this.walletDetails.selectedAddress = connectedAddress;
-      this.updateWalletDetails();
-      this.walletDetails.connected = true;
-      return this.walletDetails;
+  disconnectWallet() {
+    this.connected = false;
+    this.web3Service.connected.next(this.connected);
+    this.walletAddress = null;
+    this.selectedAddress = undefined;
+    localStorage.removeItem('walletAddress');
+    this.balance = 0;
+    const element: any = document.getElementById("disConnect");
+    element.style.display = "none";
+  }
+
+  handleConnectionError(errorMessage: string) {
+    this.connected = false;
+    this.web3Service.connected.next(this.connected);
+    alert(errorMessage);
+    console.error(errorMessage);
+  }
+
+  openDialog() {
+    const element: any = document.getElementById("disConnect");
+    if (element.style.display === "none" || element.style.display === undefined) {
+      element.style.display = "block";
     } else {
-      this.walletDetails.connected = false;
-      this.walletDetails.selectedAddress = undefined;
+      element.style.display = "none";
     }
-    
-    localStorage.setItem('connected', this.walletDetails.connected.toString());
-    return this.walletDetails;
   }
 
-   CheckaccountsChanged(){
-    window.ethereum.on('accountsChanged', async () => {
-      const changedAccounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-      localStorage.setItem('walletAddress', changedAccounts[0]);
-
-      if (!window.ethereum) {
-        this.walletDetails.connected = false;
-        localStorage.removeItem('walletAddress');
-        this.walletDetails.selectedAddress = undefined;
-        return;
-      }
-
-      this.handleAccountChange(changedAccounts);
-    });
-
-    console.log('onInit', this.walletDetails.connected);
-  }
-
-   checkConnectionStatus() {
-    if (!window.ethereum) {
-      localStorage.removeItem('walletAddress');
-      this.walletDetails.selectedAddress = undefined;
-      return;
-    }
-
-    const walletAddress = this.walletDetails.walletAddress?.toLowerCase();
-    if (!walletAddress) {
-      this.walletDetails.connected = false;
-      localStorage.setItem('connected', this.walletDetails.connected.toString());
-      this.walletDetails.selectedAddress = undefined;
-      return;
-    }
-
-    window.ethereum.request({ method: 'eth_accounts' })
-      .then((accounts: string[]) => {
-        this.handleAccountChange(accounts);
-      })
-      .catch(() => {  
-        this.walletDetails.connected = false;
-        localStorage.setItem('connected', this.walletDetails.connected.toString());
-        this.walletDetails.selectedAddress = undefined;
-      });
+  copyToClipBoard() {
+    this.clipboard.copy(this.walletAddress);
+    this.copied = true;
+    setTimeout(() => {
+      this.copied = false;
+    }, 700);
   }
 }

@@ -18,17 +18,13 @@ export class MainComponent implements OnInit {
   totalAvailable: any = 0;
   connected: boolean = false;
   showDetails: boolean = false;
-  totalDepositArr: number[] = [];
-  totalBorrowsArr: number[] = [];
   title = 'alpha-finance-launch';
   CurrentchainId: any = localStorage.getItem('chainId');
   networkName: string | null = localStorage.getItem('networkName');
   icons: string[] = ["assets/alphalogo.png", "assets/images/busd-c4257f9b.svg", "assets/images/ic3.png"];
 
   constructor(private readContractsService: readContractsService, private web3Service: Web3Service, private router: Router) {
-    this.walletAddress = localStorage.getItem('walletAddress');
     localStorage.setItem('showAssetDetails', JSON.stringify(this.showDetails));
-    this.checkNetworkId();
   }
 
   async checkNetworkId() {
@@ -59,58 +55,9 @@ export class MainComponent implements OnInit {
           this.ContractData = data,
             this.readContractsService.data.next(this.ContractData)
           if (this.ContractData.length > 0) {
-            this.totalDepositArr = [];
-            this.totalBorrowsArr = [];
             this.ContractData.forEach((element: any) => {
-
-              this.totalDepositArr.push(element.deposit);
               console.log('element', element)
-              this.totalBorrowsArr.push(element.totalBorrows);
             });
-            const sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-            this.deposits = sumOfDeposits.toFixed(0);
-            const sumOfBorrows = this.totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-            this.borrows = sumOfBorrows.toFixed(0);
-            this.totalAvailable = (Number(this.deposits) - Number(this.borrows)).toFixed(0);
-            localStorage.setItem('borrows', JSON.stringify(this.borrows));
-            localStorage.setItem('deposits', JSON.stringify(this.deposits));
-            localStorage.setItem('totalAvailable', JSON.stringify(this.totalAvailable));
-
-            data.forEach((item: any) => {
-
-              console.log('asdf', item.totalSupply, item.totalBorrows)
-              const ttlSpply = Math.floor(item.totalSupply);
-              if (ttlSpply.toString().length == 1 || ttlSpply.toString().length == 2) {
-                item.totalSupply = ttlSpply;
-              }
-              if (ttlSpply.toString().length == 3 || ttlSpply.toString().length == 4 || ttlSpply.toString().length == 5) {
-                item.totalSupply = (ttlSpply / 1000).toFixed(2) + 'k';
-              }
-              if (ttlSpply.toString().length == 6 || ttlSpply.toString().length == 7 || ttlSpply.toString().length == 8) {
-                item.totalSupply = (ttlSpply / 1000000).toFixed(2) + 'M';
-              }
-              if (ttlSpply.toString().length > 9) {
-                item.totalSupply = (ttlSpply / 1000000000).toFixed(2) + 'B';
-              }
-              console.log('asdf', item.totalSupply, item.totalBorrows)
-              const ttlBrrw = Math.floor(item.totalBorrows);
-              if (ttlBrrw.toString().length == 1 || ttlBrrw.toString().length == 2 || ttlBrrw.toString().length == 3) {
-                item.totalBorrows = ttlBrrw;
-              }
-              if (ttlBrrw.toString().length == 4 || ttlBrrw.toString().length == 5 || ttlBrrw.toString().length == 6) {
-                item.totalBorrows = (ttlBrrw / 1000).toFixed(2) + 'k';
-              }
-              if (ttlBrrw.toString().length == 7 || ttlBrrw.toString().length == 8) {
-                item.totalBorrows = (ttlBrrw / 1000000).toFixed(2) + 'M';
-              }
-              if (ttlBrrw.toString().length > 9) {
-                item.totalBorrows = (ttlBrrw / 1000000000).toFixed(2) + 'B';
-              }
-            })
-
-            this.readContractsService.borrows.next(this.borrows);
-            this.readContractsService.deposits.next(this.deposits);
-            this.readContractsService.totalAvailable.next(this.totalAvailable);
             const sortedContractData = this.ContractData.sort((a: any, b: any) => {
               const nameA = a.name.toUpperCase();
               const nameB = b.name.toUpperCase();
@@ -146,9 +93,18 @@ export class MainComponent implements OnInit {
   }
   
   ngOnInit() {
+    this.web3Service.walletAddress.subscribe((res: any) => {
+      if (res == '') {
+        this.walletAddress = localStorage.getItem('walletAddress');
+      }
+      else if (res != '') {
+        this.walletAddress = res
+      }
+    });
     this.web3Service.connected.subscribe((connected: boolean) => {
       this.connected = connected;
     })
+    this.checkNetworkId();
   }
 
   setCurrentchainId(chainId: string) {
@@ -162,22 +118,6 @@ export class MainComponent implements OnInit {
           this.ContractData = data;
           if (this.connected) {
             if (this.ContractData.length > 0) {
-              this.totalDepositArr = [];
-              this.totalBorrowsArr = [];
-              this.ContractData.forEach((element: any) => {
-                console.log('element', element)
-                this.totalDepositArr.push(element.deposit);
-                this.totalBorrowsArr.push(element.totalBorrows);
-              });
-
-              const sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-              this.deposits = sumOfDeposits;
-              const sumOfBorrows = this.totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-              this.borrows = sumOfBorrows;
-              this.totalAvailable = (Number(this.deposits) - Number(this.borrows));
-              this.readContractsService.deposits.next(this.deposits);
-              this.readContractsService.borrows.next(this.borrows);
-              this.readContractsService.totalAvailable.next(this.totalAvailable);
               const sortedContractData = this.ContractData.sort((a: any, b: any) => {
                 const nameA = a.name.toUpperCase();
                 const nameB = b.name.toUpperCase();

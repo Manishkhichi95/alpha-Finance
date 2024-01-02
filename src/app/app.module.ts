@@ -9,7 +9,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 @NgModule({
     declarations: [
-        AppComponent,
+        AppComponent
     ],
     providers: [AuthGuard],
     bootstrap: [AppComponent],
