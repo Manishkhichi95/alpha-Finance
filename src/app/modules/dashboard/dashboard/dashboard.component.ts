@@ -230,16 +230,7 @@ export class DashboardComponent implements OnInit {
                   const tokenContracts = new this.web3.eth.Contract(this.tokenContractsABI, item.address);
                   const decimals = await tokenContracts.methods.decimals().call();
                   console.log("balance", balance, data.name, item.name, decimals)
-                  if(item.name=='Alpha'){
-                  item.totalBorrows = (Number(balance) /1000000000000000000).toFixed(6);
-                  }
-                  if(item.name=='USDT'){
-                    item.totalBorrows = (Number(balance) /1000000).toFixed(6);
-                    }
-                    if(item.name=='WETH'){
-                      item.totalBorrows = (Number(balance) /1000000000000000000).toFixed(6);
-                      }
-                  // item.totalBorrows = Number(balance) /(Math.pow(1, Number(decimals)));
+                  item.totalBorrows = (Number(balance) /(Math.pow(10, Number(decimals)))).toFixed(4);
                   item.variableBorrowAPY = data.variableBorrowAPY;
                 }
               })
@@ -247,6 +238,21 @@ export class DashboardComponent implements OnInit {
             )
           }
         })
+
+
+        const sortedBorrowedAsset = this.borrowedAsset.sort((a: any, b: any) => {
+          const nameA = a.name.toUpperCase();
+          const nameB = b.name.toUpperCase();
+
+          if (nameA < nameB) {
+            return -1;
+          }
+          if (nameA > nameB) {
+            return 1;
+          }
+          return 0;
+        });
+        this.borrowedAsset = sortedBorrowedAsset;
         console.log('this.SupplyContractData', this.SupplyContractData)
         const sortedContractData = this.SupplyContractData.sort((a: any, b: any) => {
           const nameA = a.name.toUpperCase();
