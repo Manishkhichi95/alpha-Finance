@@ -216,7 +216,7 @@ export class DashboardComponent implements OnInit {
                 item.icon = "assets/images/busd-c4257f9b.svg";
               }  
                if (item.name == 'WETH') {
-                item.icon = "assets/images/busd-c4257f9b.svg";
+                item.icon = "assets/images/eth-a91aa368.svg";
               }
               if (item.name == 'USDT') {
                 item.icon = "assets/images/ic3.png";
@@ -231,13 +231,13 @@ export class DashboardComponent implements OnInit {
                   const decimals = await tokenContracts.methods.decimals().call();
                   console.log("balance", balance, data.name, item.name, decimals)
                   if(item.name=='Alpha'){
-                  item.totalBorrows = (Number(balance) /1000000000000000000).toFixed(2);
+                  item.totalBorrows = (Number(balance) /1000000000000000000).toFixed(6);
                   }
                   if(item.name=='USDT'){
-                    item.totalBorrows = (Number(balance) /1000000).toFixed(2);
+                    item.totalBorrows = (Number(balance) /1000000).toFixed(6);
                     }
                     if(item.name=='WETH'){
-                      item.totalBorrows = (Number(balance) /1000000000000000000).toFixed(2);
+                      item.totalBorrows = (Number(balance) /1000000000000000000).toFixed(6);
                       }
                   // item.totalBorrows = Number(balance) /(Math.pow(1, Number(decimals)));
                   item.variableBorrowAPY = data.variableBorrowAPY;
