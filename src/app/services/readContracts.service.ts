@@ -1,6 +1,6 @@
 import Web3 from 'web3';
 import { BehaviorSubject } from 'rxjs';
-import { Injectable } from '@angular/core';
+import { Injectable, OnChanges, SimpleChanges } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Web3Service } from './WEb3Service.service';
 
@@ -14,7 +14,6 @@ declare global {
   providedIn: 'root',
 })
 export class readContractsService {
-  accounts: any;
   rTokenABI: any;
   depositAPY: any;
   depositAPR: any;
@@ -48,6 +47,7 @@ export class readContractsService {
   borrows = new BehaviorSubject<any>(0);
   deposits = new BehaviorSubject<any>(0);
   totalAvailable = new BehaviorSubject<any>(0);
+  accounts: any;
   constructor(private http: HttpClient, private Web3Service: Web3Service) {
     this.web3 = this.Web3Service.getWeb3();
     this.Web3Service.connected.subscribe((connected: boolean) => {
@@ -58,6 +58,15 @@ export class readContractsService {
   }
 
   async loadContractData() {
+    const walletAddress: any = localStorage.getItem('walletAddress');
+    this.Web3Service.walletAddress.subscribe(async (res: string) => {
+      if (res !== '') {
+        this.accounts = res;
+      }
+      else if (res == '' && walletAddress !== null) {
+        this.Web3Service.walletAddress.next(walletAddress);
+      }
+    })
     try {
       const data: any = await this.http.get('assets/json/ABIs&Addresses.json').toPromise();
       this.rTokenABI = data.rTokenABI;
@@ -72,12 +81,15 @@ export class readContractsService {
     }
   }
 
-  async getReserveData() {
+  // ngOnChanges(changes: SimpleChanges) {
+  //   if (changes['accounts']) {
+  //     this.getReserveData();
+  //   }
+  // }
 
+  async getReserveData() {
     try {
       const getReserveData = await this.getReserveDATA();
-      this.accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-
       const reserveDataPromises = getReserveData[0].map(async (element: any) => {
         const tokenContracts = this.getTokenContracts(element.underlyingAsset);
         const stableDebtTokenContract = new this.web3.eth.Contract(this.stableDebtTokenABI, element.stableDebtTokenAddress);
@@ -103,7 +115,7 @@ export class readContractsService {
           aTOkenContract.methods.totalSupply().call(),
           stableDebtTokenContract.methods.totalSupply().call(),
           variableDebtTokenContract.methods.totalSupply().call(),
-          tokenContracts.methods.balanceOf(this.accounts[0]).call(),
+          tokenContracts.methods.balanceOf(this.accounts).call(),
         ]);
         let decimalVal = 100000000;
         return {

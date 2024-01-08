@@ -1,7 +1,8 @@
 import { Router } from '@angular/router';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { Web3Service } from 'src/app/services/WEb3Service.service';
+import { readContractsService } from 'src/app/services/readContracts.service';
 import { CheckwalletConnectService } from 'src/app/services/checkwallet-connect.service';
 @Component({
   selector: 'app-navbar',
@@ -9,44 +10,26 @@ import { CheckwalletConnectService } from 'src/app/services/checkwallet-connect.
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
-  walletAddress: any;
   balance: number = 0;
-  copied: boolean = false;
-  market: boolean = false;
-  manage: boolean = false;
-  bridge: boolean = false;
-  dashboard: boolean = false;
   connected: boolean = false;
+  walletAddress: any;
   selectedAddress: string | undefined;
-  constructor(private clipboard: Clipboard, private router: Router,
-    private web3Service: Web3Service, private ConnectionCheck: CheckwalletConnectService,
-  ) {
-  }
+  copied: boolean = false;
 
-  @ViewChild('dashboard') dashboardLink: ElementRef | undefined;
+  constructor(private clipboard: Clipboard, private web3Service: Web3Service, private readContractsService: readContractsService,
+    private checkConnectStatus: CheckwalletConnectService, private route: Router
+  ) {
+    this.checkConnectStatus.checkConnectionStatus();
+  }
 
   ngOnInit() {
-    this.web3Service.walletAddress.subscribe((res: any) => {
-      if (res == '') {
-        this.walletAddress = localStorage.getItem('walletAddress');
-      }
-      else if (res != '') {
-        this.walletAddress = res;
-        console.log('this.walletAddress', this.walletAddress)
-      }
+    this.web3Service.walletAddress.subscribe((address: string) => {
+      this.walletAddress = address;
     });
-    this.web3Service.connected.subscribe((res: boolean) => {
+    this.web3Service.connected.subscribe((res: any) => {
       this.connected = res;
-    })
-    this.ConnectionCheck.checkConnectionStatus();
-  }
-
-  connectWallet() {
-    this.ConnectionCheck.connectWallet()
-  }
-
-  disconnectWallet() {
-    this.ConnectionCheck.disconnectWallet();
+    });
+    this.checkConnectStatus.checkConnectionStatus();
   }
 
   openDialog() {
@@ -58,6 +41,13 @@ export class NavbarComponent {
     }
   }
 
+  disconnectWallet() {
+    this.checkConnectStatus.disconnectWallet();
+  }
+
+  connectWallet() {
+    this.checkConnectStatus.connectWallet();
+  }
 
   copyToClipBoard() {
     this.clipboard.copy(this.walletAddress);
@@ -67,33 +57,20 @@ export class NavbarComponent {
     }, 700);
   }
 
-  goToDashboard() {
-    this.dashboard = true;
-    this.dashboardLink?.nativeElement.classList.add('active');
-    this.manage = false;
-    this.bridge = false;
-    this.market = false;
-    this.router.navigateByUrl('/dashboard-wallet-connected')
-
-  }
-  goToManage() {
-    this.manage = true;
-    this.dashboard = false;
-    this.bridge = false;
-    this.market = false;
-    this.router.navigateByUrl('/manage-wallet-connected')
-
-  }
-  goToBridge() {
-    this.bridge = true;
-    this.manage = false;
-    this.dashboard = false;
-    this.market = false;
-    this.router.navigateByUrl('/bridge')
-  }
-
-  goToMarket() {
-    this.market = true;
-    this.router.navigateByUrl('/market')
+  navigateTo(url: string) {
+    switch (url) {
+      case '/market':
+        this.route.navigateByUrl(url)
+        break;
+      case '/dashboard-wallet-connected':
+        this.route.navigateByUrl(url)
+        break;
+      case '/manage-wallet-connected':
+        this.route.navigateByUrl(url)
+        break;
+      case '/bridge':
+        this.route.navigateByUrl(url)
+        break;
+    }
   }
 }

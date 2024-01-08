@@ -5,11 +5,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { GraphQLModule } from 'src/GraphQl/graphql.module';
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 import { TruncateDirective } from '../directives/truncate.directive';
-import { NavbarComponent } from '../modules/navbar/navbar/navbar.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { HeadBannerComponent } from '../modules/head-banner/head-banner.component';
+import { NavbarComponent } from '../modules/navbar/navbar/navbar.component';
+
 @NgModule({
-  declarations: [TruncateDirective, HeadBannerComponent, NavbarComponent],
+  declarations: [TruncateDirective, HeadBannerComponent,NavbarComponent],
   imports: [
     FormsModule,
     CommonModule,
@@ -26,8 +27,8 @@ import { HeadBannerComponent } from '../modules/head-banner/head-banner.componen
     NavbarComponent,
     HttpClientModule,
     TruncateDirective,
-    ReactiveFormsModule,
     HeadBannerComponent,
+    ReactiveFormsModule,
     MatProgressSpinnerModule
   ]
 })

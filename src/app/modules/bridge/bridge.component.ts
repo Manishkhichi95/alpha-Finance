@@ -4,7 +4,6 @@ import { HttpClient } from '@angular/common/http';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Web3Service } from 'src/app/services/WEb3Service.service';
 import { readContractsService } from 'src/app/services/readContracts.service';
-import { CheckwalletConnectService } from 'src/app/services/checkwallet-connect.service';
 @Component({
   selector: 'app-bridge',
   templateUrl: './bridge.component.html',
@@ -19,6 +18,7 @@ export class BridgeComponent {
   alphaAdd: any;
   alphaOFTABI: any;
   fees: any = '0.0';
+  walletAddress: any;
   CurrentchainId: any;
   transactionType: any;
   connected: boolean = false;
@@ -26,30 +26,19 @@ export class BridgeComponent {
   showError: boolean = false;
   showSpinner: boolean = false;
   networkName: any = 'Select Network';
-  walletAddress: any;
   CHAIN_ID: any = require("../../../assets/json/chainIds.json");
 
-  constructor(private walletConnectService: CheckwalletConnectService, private getWeb3: Web3Service, private http: HttpClient, private readContractsService: readContractsService, private fb: FormBuilder) {
+  constructor(private getWeb3: Web3Service,
+    private readContractService: readContractsService, private http: HttpClient, private readContractsService: readContractsService, private fb: FormBuilder) {
     this.web3 = this.getWeb3.getWeb3();
   }
 
-  connectWallet() {
-    return this.walletConnectService.connectWallet();
-  }
-
-
   ngOnInit() {
-    this.getWeb3.walletAddress.subscribe((res: any) => {
-      if (res == '') {
-        this.walletAddress = localStorage.getItem('walletAddress');
-      }
-      else if (res != '') {
-        this.walletAddress = res
-        console.log('this.walletAddress', this.walletAddress)
-        this.getBalance();
-      }
+    this.getWeb3.walletAddress.subscribe(async (address: string) => {
+      this.walletAddress = address
+      const balance = await this.web3.eth.getBalance(this.walletAddress);
+      this.balance = (Number(balance) / Math.pow(10, 18)).toFixed(2);
     });
-  
     this.getWeb3.connected.subscribe((connect: boolean) => {
       this.connected = connect;
     })
@@ -64,12 +53,6 @@ export class BridgeComponent {
 
   ngAfterViewInit(): void {
     this.readContractsService.dropDown();
-  }
-
-  async getBalance() {
-    console.log("blance", this.walletAddress)
-    const balance = await this.web3.eth.getBalance(this.walletAddress);
-    this.balance = (Number(balance) / Math.pow(10, 18)).toFixed(2);
   }
 
   isInvalid(controlName: string): any {
@@ -117,14 +100,9 @@ export class BridgeComponent {
   async switchNetwork(network: string) {
     network == 'Arbitrum' ? this.chainId = this.CHAIN_ID["arbitrum-goerli"] : network == 'Polygon Mainnet' ? this.chainId = '0x89' : network == 'Mumbai Testnet' ? this.chainId = '0x13881' : network == 'Select Network' ? this.chainId = '' : '';
     this.networkName = network;
-    if (this.chainId != '') {
-      const fees = await this.localContractInstance.methods.estimateSendFee(this.chainId, this.walletAddress, "1", false, [])
-        .call();
-      this.fees = fees[0];
-    }
-    else {
-      this.fees = '0.0';
-    }
+    const fees = await this.localContractInstance.methods.estimateSendFee(this.chainId, this.walletAddress, "1", false, [])
+      .call();
+    this.fees = fees[0];
   }
 
   async sendFrom() {
