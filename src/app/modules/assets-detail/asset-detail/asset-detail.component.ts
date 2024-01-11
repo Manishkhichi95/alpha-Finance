@@ -121,7 +121,6 @@ export class AssetDetailComponent implements OnInit, AfterViewInit {
     this.reserve.balance = (Number(this.reserve.balance) / 1000000000000000000).toFixed(2);
     const balance = await this.web3.eth.getBalance(this.address);
     this.balance = (Number(balance) / Math.pow(10, 18)).toFixed(3);
-    console.log('blnce', this.balance)
     const data: any = await this.http.get('assets/json/ABIs&Addresses.json').toPromise();
     let aaveOracleABI = data.aaveOracleABI;
     let aTokenContractABI = data.aTokenContractABI;
@@ -162,10 +161,9 @@ export class AssetDetailComponent implements OnInit, AfterViewInit {
         this.reserveSize = '$' + (Number(aTokenSupply) / (Number(1 + '0'.repeat(Number(this.reserve.decimals)))) / 1000).toFixed(2) + 'k' :
         this.reserveSize = '$' + (Number(aTokenSupply) / (Number(1 + '0'.repeat(Number(this.reserve.decimals))))).toFixed(2);
     //utilizationRate
-    console.log("reserveSize",reserveSize)
-    if(reserveSize=="0"){
+    if (reserveSize == "0") {
       this.utilizationRate = "0.00"
-    }else{
+    } else {
       this.utilizationRate = ((((Number(availableLiquidity)) - (Number(reserveSize))) / (Number(reserveSize))) * 100).toFixed(2);
     }
 

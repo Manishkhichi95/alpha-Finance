@@ -27,13 +27,26 @@ export class MainComponent implements OnInit {
   icons: string[] = ["assets/alphalogo.png", "assets/images/busd-c4257f9b.svg", "assets/images/ic3.png"];
 
   constructor(private readContractsService: readContractsService, private checkConnectStatus: CheckwalletConnectService, private web3Service: Web3Service, private router: Router) {
-    
+
     this.walletAddress = localStorage.getItem('walletAddress');
     localStorage.setItem('showAssetDetails', JSON.stringify(this.showDetails));
     this.web3Service.connected.subscribe((res: any) => {
       this.connected = res;
     });
-    this.checkConnectStatus.checkConnectionStatus();
+    window.ethereum.on('accountsChanged', (accounts: string[]) => {
+      if (accounts.length === 0 || !this.walletAddress && !this.connected) {
+        // this.disconnectWallet();
+      } else 
+      if (accounts[0].toLowerCase() !== this.walletAddress.toLowerCase() && this.connected) {
+        // this.selectedAddress = accounts[0].toLowerCase();
+        // this.updateWalletDetails();
+        // this.web3Service.walletAddress.next(this.selectedAddress);
+        // localStorage.setItem('walletAddress', this.selectedAddress);
+        this.connected = true;
+        this.web3Service.connected.next(this.connected);
+      } else if (!this.connected) {
+        // this.disconnectWallet();
+      }})
     this.checkNetworkId();
   }
 
@@ -43,7 +56,6 @@ export class MainComponent implements OnInit {
     this.networkName == null ? this.networkName = 'Select Network' : '';
     this.web3 = this.web3Service.getWeb3();
     const CurrentchainId = await this.web3.eth.net.getId();
-    console.log('CurrentchainId', CurrentchainId)
     if (CurrentchainId == 80001n) {
       this.networkName = 'Mumbai Testnet';
       this.readContractsService.getReserveData().then((data: any) => {
@@ -69,7 +81,6 @@ export class MainComponent implements OnInit {
           this.ContractData.forEach((element: any) => {
 
             this.totalDepositArr.push(element.deposit);
-            console.log('element', element)
             this.totalBorrowsArr.push(element.totalBorrows);
           });
           const sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
@@ -82,7 +93,6 @@ export class MainComponent implements OnInit {
           localStorage.setItem('totalAvailable', JSON.stringify(this.totalAvailable));
 
           data.forEach((item: any) => {
-            console.log('asdf', item.totalSupply, item.totalBorrows)
             const ttlSpply = Math.floor(item.totalSupply);
             if (ttlSpply.toString().length == 1 || ttlSpply.toString().length == 2) {
               item.totalSupply = ttlSpply;
@@ -96,7 +106,6 @@ export class MainComponent implements OnInit {
             if (ttlSpply.toString().length > 9) {
               item.totalSupply = (ttlSpply / 1000000000).toFixed(2) + 'B';
             }
-            console.log('asdf', item.totalSupply, item.totalBorrows)
             const ttlBrrw = Math.floor(item.totalBorrows);
             if (ttlBrrw.toString().length == 1 || ttlBrrw.toString().length == 2 || ttlBrrw.toString().length == 3) {
               item.totalBorrows = ttlBrrw;
@@ -150,7 +159,7 @@ export class MainComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.web3Service.walletAddress.subscribe((address:string)=>{this.walletAddress = address});
+    this.web3Service.walletAddress.subscribe((address: string) => { this.walletAddress = address });
     this.web3Service.connected.subscribe((connected: boolean) => {
       this.connected = connected;
     })
@@ -170,7 +179,6 @@ export class MainComponent implements OnInit {
               this.totalDepositArr = [];
               this.totalBorrowsArr = [];
               this.ContractData.forEach((element: any) => {
-                console.log('element', element)
                 this.totalDepositArr.push(element.deposit);
                 this.totalBorrowsArr.push(element.totalBorrows);
               });

@@ -30,7 +30,6 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
     this.networkName == null ? this.networkName = 'Select Network' : '';
     this.web3 = this.web3Service.getWeb3();
     const CurrentchainId = await this.web3.eth.net.getId();
-    console.log(CurrentchainId)
     if (CurrentchainId == 80001n) {
       this.networkName = 'Mumbai Testnet';
     }
@@ -55,7 +54,6 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
         this.finalDepo = fxdDeposts;
       }
       if (fxdDeposts.toString().length == 4 || fxdDeposts.toString().length == 5 || fxdDeposts.toString().length == 6) {
-        console.log(fxdDeposts)
         this.finalDepo = (fxdDeposts / 1000) + 'k';
       }
       if (fxdDeposts.toString().length == 7 || fxdDeposts.toString().length == 8) {
@@ -89,7 +87,6 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
       const totalAvailable: any = localStorage.getItem('totalAvailable')
       this.totalAvailable == 0 ? this.totalAvailable = JSON.parse(totalAvailable) : '';
       const fixedtotalAvailable = Math.floor(this.totalAvailable);
-      console.log('fixedtotalAvailable', fixedtotalAvailable)
 
       if (fixedtotalAvailable.toString().length == 1 || fixedtotalAvailable.toString().length == 2 || fixedtotalAvailable.toString().length == 3) {
         this.finalttlAvlble = fixedtotalAvailable;
@@ -104,7 +101,6 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
         this.finalttlAvlble = (fixedtotalAvailable / 1000000000) + 'B';
       }
     });
-    console.log('calculations', this.deposits, this.borrows, this.totalAvailable)
   }
 
   ngAfterViewInit(): void {
@@ -115,7 +111,6 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
     const provider = window.ethereum;
     let chainId = '';
     network == 'Arbitrum' ? chainId = '0xa4b1' : network == 'Polygon Mainnet' ? chainId = '0x89' : network == 'Mumbai Testnet' ? chainId = '0x13881' : chainId = '';
-    console.log(chainId)
     if (!provider) {
       console.log("Metamask is not installed, please install!");
     } else {
@@ -131,7 +126,6 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
           });
           const latestchainId = await provider.request({ method: 'eth_chainId' });
           localStorage.setItem('chainId', latestchainId)
-          console.log(latestchainId)
           this.CurrentchainId.emit(latestchainId);
           console.log("You have succefully switched to ", network, "Test network");
           this.networkName = network;

@@ -44,7 +44,6 @@ export class ReserveInCBService {
       }
     );
     batchInitReserve.then((res:any)=>{
-      console.log('batchInitReserve',batchInitReserve)
     })
   }
 }

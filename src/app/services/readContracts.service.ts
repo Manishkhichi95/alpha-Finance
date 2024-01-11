@@ -1,6 +1,6 @@
 import Web3 from 'web3';
 import { BehaviorSubject } from 'rxjs';
-import { Injectable, OnChanges, SimpleChanges } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Web3Service } from './WEb3Service.service';
 
@@ -48,7 +48,8 @@ export class readContractsService {
   deposits = new BehaviorSubject<any>(0);
   totalAvailable = new BehaviorSubject<any>(0);
   accounts: any;
-  constructor(private http: HttpClient, private Web3Service: Web3Service) {
+  constructor(private http: HttpClient, private Web3Service: Web3Service,
+  ) {
     this.web3 = this.Web3Service.getWeb3();
     this.Web3Service.connected.subscribe((connected: boolean) => {
       this.connected = connected;
@@ -80,12 +81,6 @@ export class readContractsService {
       throw error;
     }
   }
-
-  // ngOnChanges(changes: SimpleChanges) {
-  //   if (changes['accounts']) {
-  //     this.getReserveData();
-  //   }
-  // }
 
   async getReserveData() {
     try {
