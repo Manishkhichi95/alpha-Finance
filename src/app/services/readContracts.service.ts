@@ -221,13 +221,13 @@ export class readContractsService {
 
     // open all the dropdowns
     function handleDropdown(dropdown: any, arrow: any, open: any) {
-      if (open) {
-        arrow.classList.add("rotated");
-        dropdown.classList.add("active");
-      } else {
-        arrow.classList.remove("rotated");
-        dropdown.classList.remove("active");
-      }
-    }
+  if (open) {
+    arrow.classList.remove("rotated");
+    dropdown.classList.add("active");
+  } else {
+    arrow.classList.add("rotated");
+    dropdown.classList.remove("active");
+  }
+}
   }
 }

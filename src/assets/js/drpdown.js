@@ -50,10 +50,10 @@ function closeAllDropdowns() {
 // open all the dropdowns
 function handleDropdown(dropdown, arrow, open) {
   if (open) {
-    arrow.classList.add("rotated");
+    arrow.classList.remove("rotated");
     dropdown.classList.add("active");
   } else {
-    arrow.classList.remove("rotated");
+    arrow.classList.add("rotated");
     dropdown.classList.remove("active");
   }
 }
