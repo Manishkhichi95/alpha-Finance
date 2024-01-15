@@ -56,7 +56,7 @@ export class DashboardComponent implements OnInit {
     private http: HttpClient, private readContractsService: readContractsService, private checkConnectStatus: CheckwalletConnectService, private router: Router) {
     setTimeout(() => {
       this.spinnerTimer = false;
-    }, 1060);
+    }, 1102);
     this.Form = this.fb.group({
       amount: [null, Validators.required],
       withdrawTo: ['', Validators.required]
@@ -87,53 +87,83 @@ export class DashboardComponent implements OnInit {
   }
 
   async getUserReservesData() {
-    this.resetData();
-    const CurrentchainId = await this.web3.eth.net.getId();
-    this.setNetworkName(CurrentchainId);
-    this.cdr.detectChanges();
-    if (this.networkName == 'Mumbai Testnet' && this.connected) {
-      const data = await this.readContractsService.getReserveData();
-      this.updateIcons(data);
-      this.borrowContractData = [...data];
-      this.SupplyContractData = [...data];
-      this.calculateMarksetSize();
-      const depositedAssetContract = await this.UiPoolDataProviderV2V3.methods.getUserReservesData('0x5743f572A55CbB84c035903D0e888583CdD508c3', this.accounts).call();
-      depositedAssetContract[0].forEach(async (res: any) => {
-        const tokenContracts = new this.web3.eth.Contract(this.tokenContractsABI, res.underlyingAsset);
-        const balanceAsset = await tokenContracts.methods.balanceOf(this.accounts).call();
-        this.balanceAsset = (Number(balanceAsset) / 1000000000000000000).toFixed(2);
-        if (res.scaledATokenBalance != 0) {
-          const decimals = await tokenContracts.methods.decimals().call();
-          const name = await tokenContracts.methods.name().call();
-          const totalSupply = await tokenContracts.methods.totalSupply().call();
-          const balance = (Number(res.scaledATokenBalance) / Math.pow(10, Number(decimals))).toFixed(2);
-          this.depositedAsset.push({
-            address: res.underlyingAsset,
-            decimals: decimals,
-            name: name,
-            totalSupply: totalSupply,
-            balance: balance
-          })
-          this.getDepositedAsset();
+    try {
+      this.resetData();
+
+      const CurrentchainId = await this.web3.eth.net.getId();
+      this.setNetworkName(CurrentchainId);
+      this.cdr.detectChanges();
+
+      if (this.networkName === 'Mumbai Testnet' && this.connected) {
+        const data = await this.readContractsService.getReserveData();
+        this.updateIcons(data);
+        this.borrowContractData = [...data];
+        this.SupplyContractData = [...data];
+        this.calculateMarksetSize();
+
+        const depositedAssetContract = await this.UiPoolDataProviderV2V3.methods
+          .getUserReservesData('0x5743f572A55CbB84c035903D0e888583CdD508c3', this.accounts)
+          .call();
+        this.cdr.detectChanges();
+        const promises = depositedAssetContract[0].map(async (res: any) => {
+          const tokenContracts = new this.web3.eth.Contract(this.tokenContractsABI, res.underlyingAsset);
+          const depositedAsset = [];
+          const borrowedAsset = [];
+
+          const [balanceAsset, decimals, name, totalSupply, scaledATokenBalance, scaledVariableDebt] = await Promise.all([
+            tokenContracts.methods.balanceOf(this.accounts).call(),
+            tokenContracts.methods.decimals().call(),
+            tokenContracts.methods.name().call(),
+            tokenContracts.methods.totalSupply().call(),
+            res.scaledATokenBalance,
+            res.scaledVariableDebt,
+          ]);
+
+          const balance = (Number(scaledATokenBalance) / Math.pow(10, Number(decimals))).toFixed(2);
+
+          const isDepositedAssetExists = this.depositedAsset.some((item: any) => item.address === res.underlyingAsset);
+          const isBorrowedAssetExists = this.borrowedAsset.some((item: any) => item.address === res.underlyingAsset);
+
+          if (Number(scaledATokenBalance) !== 0 && !isDepositedAssetExists) {
+            depositedAsset.push({
+              address: res.underlyingAsset,
+              decimals: decimals,
+              name: name,
+              totalSupply: totalSupply,
+              balance: balance,
+            });
+            this.cdr.detectChanges();
+          }
+
+          if (Number(scaledVariableDebt) !== 0 && !isBorrowedAssetExists) {
+            borrowedAsset.push({
+              address: res.underlyingAsset,
+              name: name,
+            });
+            this.cdr.detectChanges();
+          }
+
+          this.depositedAsset.push(...depositedAsset);
+          this.borrowedAsset.push(...borrowedAsset);
           this.cdr.detectChanges();
-        }
-        if (res.scaledVariableDebt != 0) {
-          const name = await tokenContracts.methods.name().call();
-          this.borrowedAsset.push({
-            address: res.underlyingAsset,
-            name: name
-          })
-          this.getBorrowedAsset();
-          this.cdr.detectChanges();
-        }
+        });
+
+        await Promise.all(promises);
+        this.cdr.detectChanges();
+        this.getDepositedAsset();
+        this.getBorrowedAsset();
         this.sortedData();
-      })
+        this.cdr.detectChanges();
+      }
+    } catch (error) {
+      // Handle errors appropriately
+      console.error('Error in getUserReservesData:', error);
+    } finally {
+      if (!this.connected) {
+        this.resetData();
+      }
       this.cdr.detectChanges();
     }
-    if (!this.connected) {
-      this.resetData();
-    }
-    this.cdr.detectChanges();
   }
 
   getBorrowedAsset() {
@@ -382,8 +412,6 @@ export class DashboardComponent implements OnInit {
     if (this.transactionType == 'Borrow') {
       this.borrowAsset();
     }
-    this.Form.reset();
-    this.showSpinner = false;
   }
 
   async supplyAsset() {
@@ -502,6 +530,7 @@ export class DashboardComponent implements OnInit {
     this.showSpinner = true;
     this.Addresscontract = new this.web3.eth.Contract(this.tokenContractsABI, this.selectedWithdrawReserve);
     const decimals = await this.Addresscontract.methods.decimals().call();
+    const a = this.Form.get('amount').value
     const amount = this.Form.get('amount').value * Math.pow(10, Number(decimals));
     let Pool_Proxy_Aave_Contract = await new this.web3.eth.Contract(this.RadiantLendingPoolV2ABI, this.RadiantLendingPoolV2Address);
     try {

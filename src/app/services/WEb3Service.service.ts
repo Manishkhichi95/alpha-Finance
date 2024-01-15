@@ -20,6 +20,7 @@ export class Web3Service {
       this.web3 = new Web3(window.ethereum);
     } else {
       this.walletAddress.next("");
+      localStorage.removeItem("wallletAddress");
       console.error('Web3 not found. Please install MetaMask or a compatible Ethereum wallet.');
     }
   }

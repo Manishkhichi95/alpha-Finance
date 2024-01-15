@@ -3,6 +3,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Web3Service } from './WEb3Service.service';
+import Swal from 'sweetalert2';
 
 declare global {
   interface Window {
@@ -64,8 +65,10 @@ export class readContractsService {
       if (res !== '') {
         this.accounts = res;
       }
-      else if (res == '' && walletAddress !== null) {
-        this.Web3Service.walletAddress.next(walletAddress);
+      else if (res == '' || res == undefined && walletAddress == null) {
+        const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+        this.accounts = accounts[0];
+        this.Web3Service.walletAddress.next(accounts[0]);
       }
     })
     try {
@@ -84,6 +87,7 @@ export class readContractsService {
 
   async getReserveData() {
     try {
+      debugger
       const getReserveData = await this.getReserveDATA();
       const reserveDataPromises = getReserveData[0].map(async (element: any) => {
         const tokenContracts = this.getTokenContracts(element.underlyingAsset);
@@ -132,18 +136,24 @@ export class readContractsService {
           totalBorrows: ((Number(variableDebtTokenSupply) + Number(stableDebtTokenSupply)) * (Number(getAssetPrice) / decimalVal) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2)
         };
       });
-
+      debugger
       this.reserveData = await Promise.all(reserveDataPromises);
       const reserveData = this.reserveData.filter((element: any) => element.name != "BUSD Token");
       console.log('Reserves Data :', reserveData)
+      if (!this.connected) {
+        // alert("Please Connect to the Wallet");
+      }
       return reserveData;
     }
     catch (error) {
       console.log(error);
-      if (!this.connected) {
-        alert("Please Connect to the Wallet");
-      }
       console.error('Error fetching reserveData:', error);
+      Swal.fire({
+        title: "Error fetching Reserves Data. Please try Reloading Again.",
+        icon: "warning"
+      }).then((result: any) => {
+        this.getReserveData();
+      })
       alert('Error fetching Reserves Data. Please try Reloading Again.')
       throw error;
     }
@@ -214,20 +224,19 @@ export class readContractsService {
       selectedAll.forEach((selected) => {
         const optionsContainer = selected.children[2];
         let arrow = selected.children[1];
-
         handleDropdown(selected, arrow, false);
       });
     }
 
     // open all the dropdowns
-    function handleDropdown(dropdown: any, arrow: any, open: any) {
-  if (open) {
-    arrow.classList.remove("rotated");
-    dropdown.classList.add("active");
-  } else {
-    arrow.classList.add("rotated");
-    dropdown.classList.remove("active");
-  }
-}
+    function handleDropdown(dropdown: any, arrow: Element, open: boolean) {
+      if (open) {
+        arrow.classList.remove("rotated");
+        dropdown.classList.add("active");
+      } else {
+        arrow.classList.add("rotated");
+        dropdown.classList.remove("active");
+      }
+    }
   }
 }

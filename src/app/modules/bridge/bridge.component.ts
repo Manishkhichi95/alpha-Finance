@@ -71,7 +71,6 @@ export class BridgeComponent {
       Swal.fire({
         title: "Please Fill the Required Fields",
         icon: "warning"
-      }).then((result: any) => {
       })
       return
     }
@@ -79,7 +78,6 @@ export class BridgeComponent {
       Swal.fire({
         title: "Please Select the Destination Network",
         icon: "warning"
-      }).then((result: any) => {
       })
       return
     }
@@ -87,7 +85,6 @@ export class BridgeComponent {
       Swal.fire({
         title: "Please Enter the Amount to Send",
         icon: "warning"
-      }).then((result: any) => {
       })
       return
     }

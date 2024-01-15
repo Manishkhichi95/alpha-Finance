@@ -18,33 +18,8 @@ export class CheckwalletConnectService {
     this.web3Service.walletAddress.subscribe((address: string) => { this.walletAddress = address });
   }
 
-  // checkConnectionStatus() {
-    // debugger
-    // if (window.ethereum) {
-      // window.ethereum.on('accountsChanged', (accounts: string[]) => {
-      //   if (accounts.length === 0 || !this.walletAddress && !this.connected) {
-      //     this.disconnectWallet();
-      //   } else 
-      //   if (accounts[0].toLowerCase() !== this.walletAddress.toLowerCase() && this.connected) {
-      //     this.selectedAddress = accounts[0].toLowerCase();
-      //     this.updateWalletDetails();
-      //     this.web3Service.walletAddress.next(this.selectedAddress);
-      //     localStorage.setItem('walletAddress', this.selectedAddress);
-      //     this.connected = true;
-      //     this.web3Service.connected.next(this.connected);
-      //   } else if (!this.connected) {
-      //     this.disconnectWallet();
-      //   }
-      // });
-      // window.ethereum.on('disconnect', (error: { code: number; message: string }) => {
-      //   if (error.code === 4001) {
-      //     this.disconnectWallet();
-      //   }
-      // });
-    // }
-  // }
-
   async connectWallet() {
+    debugger
     try {
       const accounts: string[] = await window.ethereum.request({ method: 'eth_requestAccounts' });
       if (accounts && accounts.length > 0) {

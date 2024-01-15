@@ -1,4 +1,5 @@
 import { Router } from '@angular/router';
+import { ChangeDetectorRef } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Web3Service } from 'src/app/services/WEb3Service.service';
 import { readContractsService } from 'src/app/services/readContracts.service';
@@ -26,29 +27,10 @@ export class MainComponent implements OnInit {
   networkName: string | null = localStorage.getItem('networkName');
   icons: string[] = ["assets/alphalogo.png", "assets/images/busd-c4257f9b.svg", "assets/images/ic3.png"];
 
-  constructor(private readContractsService: readContractsService, private checkConnectStatus: CheckwalletConnectService, private web3Service: Web3Service, private router: Router) {
-
-    this.walletAddress = localStorage.getItem('walletAddress');
-    localStorage.setItem('showAssetDetails', JSON.stringify(this.showDetails));
-    this.web3Service.connected.subscribe((res: any) => {
-      this.connected = res;
-    });
-    window.ethereum.on('accountsChanged', (accounts: string[]) => {
-      if (accounts.length === 0 || !this.walletAddress && !this.connected) {
-        // this.disconnectWallet();
-      } else 
-      if (accounts[0].toLowerCase() !== this.walletAddress.toLowerCase() && this.connected) {
-        // this.selectedAddress = accounts[0].toLowerCase();
-        // this.updateWalletDetails();
-        // this.web3Service.walletAddress.next(this.selectedAddress);
-        // localStorage.setItem('walletAddress', this.selectedAddress);
-        this.connected = true;
-        this.web3Service.connected.next(this.connected);
-      } else if (!this.connected) {
-        // this.disconnectWallet();
-      }})
-    this.checkNetworkId();
-  }
+  constructor(
+    private cdr: ChangeDetectorRef,
+    private readContractsService: readContractsService,
+    private web3Service: Web3Service, private router: Router) { }
 
 
 
@@ -58,7 +40,9 @@ export class MainComponent implements OnInit {
     const CurrentchainId = await this.web3.eth.net.getId();
     if (CurrentchainId == 80001n) {
       this.networkName = 'Mumbai Testnet';
+      this.cdr.detectChanges();
       this.readContractsService.getReserveData().then((data: any) => {
+        console.log(data,"data","data")
         data.forEach((item: any) => {
           if (item.name == 'Alpha') {
             item.icon = "assets/alphalogo.png";
@@ -72,16 +56,18 @@ export class MainComponent implements OnInit {
           if (item.name == 'WETH') {
             item.icon = "assets/images/eth-a91aa368.svg";
           }
+          this.cdr.detectChanges();
         })
         this.ContractData = data,
           this.readContractsService.data.next(this.ContractData)
+        this.cdr.detectChanges();
         if (this.ContractData.length > 0) {
           this.totalDepositArr = [];
           this.totalBorrowsArr = [];
           this.ContractData.forEach((element: any) => {
-
             this.totalDepositArr.push(element.deposit);
             this.totalBorrowsArr.push(element.totalBorrows);
+            this.cdr.detectChanges();
           });
           const sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
           this.deposits = sumOfDeposits.toFixed(0);
@@ -91,7 +77,7 @@ export class MainComponent implements OnInit {
           localStorage.setItem('borrows', JSON.stringify(this.borrows));
           localStorage.setItem('deposits', JSON.stringify(this.deposits));
           localStorage.setItem('totalAvailable', JSON.stringify(this.totalAvailable));
-
+          this.cdr.detectChanges();
           data.forEach((item: any) => {
             const ttlSpply = Math.floor(item.totalSupply);
             if (ttlSpply.toString().length == 1 || ttlSpply.toString().length == 2) {
@@ -119,8 +105,8 @@ export class MainComponent implements OnInit {
             if (ttlBrrw.toString().length > 9) {
               item.totalBorrows = (ttlBrrw / 1000000000).toFixed(2) + 'B';
             }
+            this.cdr.detectChanges();
           })
-
           this.readContractsService.borrows.next(this.borrows);
           this.readContractsService.deposits.next(this.deposits);
           this.readContractsService.totalAvailable.next(this.totalAvailable);
@@ -137,9 +123,10 @@ export class MainComponent implements OnInit {
             return 0;
           });
           this.ContractData = sortedContractData;
+          this.cdr.detectChanges();
         }
-
       })
+      this.cdr.detectChanges();
     }
     else if (!this.connected) {
       this.ContractData = [];
@@ -159,10 +146,31 @@ export class MainComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.web3Service.walletAddress.subscribe((address: string) => { this.walletAddress = address });
+    debugger
+    this.walletAddress = localStorage.getItem('walletAddress');
+    localStorage.setItem('showAssetDetails', JSON.stringify(this.showDetails));
+    this.web3Service.connected.subscribe((res: any) => {
+      this.connected = res;
+      this.cdr.detectChanges();
+    });
+    window.ethereum.on('accountsChanged', (accounts: string[]) => {
+      if (accounts[0].toLowerCase() !== this.walletAddress.toLowerCase() && this.connected) {
+        this.connected = true;
+        this.web3Service.connected.next(this.connected);
+        this.cdr.detectChanges();
+      }
+    })
+    this.checkNetworkId();
+    this.cdr.detectChanges();
+    this.web3Service.walletAddress.subscribe((address: string) => {
+      this.walletAddress = address;
+      this.cdr.detectChanges();
+    });
     this.web3Service.connected.subscribe((connected: boolean) => {
       this.connected = connected;
+      this.cdr.detectChanges();
     })
+    this.cdr.detectChanges();
   }
 
   setCurrentchainId(chainId: string) {

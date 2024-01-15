@@ -36,20 +36,22 @@ export class NavbarComponent {
     this.web3Service.connected.subscribe((res: any) => {
       this.connected = res;
     });
-    window.ethereum.on('accountsChanged', (accounts: string[]) => {
-      if (accounts.length === 0 || !this.walletAddress && !this.connected) {
-        this.disconnectWallet();
-      } else
-        if (accounts[0].toLowerCase() !== this.walletAddress.toLowerCase() && this.connected) {
-          this.selectedAddress = accounts[0].toLowerCase();
-          this.web3Service.walletAddress.next(this.selectedAddress);
-          localStorage.setItem('walletAddress', this.selectedAddress);
-          this.connected = true;
-          this.web3Service.connected.next(this.connected);
-        } else if (!this.connected) {
+    if (window.ethereum) {
+      window.ethereum.on('accountsChanged', (accounts: string[]) => {
+        if (accounts.length === 0 || !this.walletAddress && !this.connected) {
           this.disconnectWallet();
-        }
-    })
+        } else
+          if (accounts[0].toLowerCase() !== this.walletAddress.toLowerCase() && this.connected) {
+            this.selectedAddress = accounts[0].toLowerCase();
+            this.web3Service.walletAddress.next(this.selectedAddress);
+            localStorage.setItem('walletAddress', this.selectedAddress);
+            this.connected = true;
+            this.web3Service.connected.next(this.connected);
+          } else if (!this.connected) {
+            this.disconnectWallet();
+          }
+      })
+    }
   }
 
   openDialog() {
@@ -62,11 +64,11 @@ export class NavbarComponent {
   }
 
   disconnectWallet() {
-    this.checkConnectStatus.disconnectWallet();
+    return this.checkConnectStatus.disconnectWallet();
   }
 
   connectWallet() {
-    this.checkConnectStatus.connectWallet();
+    return this.checkConnectStatus.connectWallet();
   }
 
   copyToClipBoard() {
