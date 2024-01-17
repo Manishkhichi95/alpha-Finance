@@ -3,7 +3,6 @@ import { ChangeDetectorRef } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { Web3Service } from 'src/app/services/WEb3Service.service';
 import { readContractsService } from 'src/app/services/readContracts.service';
-import { CheckwalletConnectService } from 'src/app/services/checkwallet-connect.service';
 
 @Component({
   selector: 'main-root',
@@ -32,17 +31,16 @@ export class MainComponent implements OnInit {
     private readContractsService: readContractsService,
     private web3Service: Web3Service, private router: Router) { }
 
-
-
   async checkNetworkId() {
     this.networkName == null ? this.networkName = 'Select Network' : '';
     this.web3 = this.web3Service.getWeb3();
     const CurrentchainId = await this.web3.eth.net.getId();
+    console.log("CurrentchainId", CurrentchainId)
     if (CurrentchainId == 80001n) {
       this.networkName = 'Mumbai Testnet';
       this.cdr.detectChanges();
       this.readContractsService.getReserveData().then((data: any) => {
-        console.log(data,"data","data")
+        console.log(data, "data", "data")
         data.forEach((item: any) => {
           if (item.name == 'Alpha') {
             item.icon = "assets/alphalogo.png";
@@ -79,14 +77,15 @@ export class MainComponent implements OnInit {
           localStorage.setItem('totalAvailable', JSON.stringify(this.totalAvailable));
           this.cdr.detectChanges();
           data.forEach((item: any) => {
+            debugger
             const ttlSpply = Math.floor(item.totalSupply);
-            if (ttlSpply.toString().length == 1 || ttlSpply.toString().length == 2) {
+            if (ttlSpply.toString().length == 1 || ttlSpply.toString().length == 2 || ttlSpply.toString().length == 3) {
               item.totalSupply = ttlSpply;
             }
-            if (ttlSpply.toString().length == 3 || ttlSpply.toString().length == 4 || ttlSpply.toString().length == 5) {
+            if (ttlSpply.toString().length == 4 || ttlSpply.toString().length == 5 || ttlSpply.toString().length == 6) {
               item.totalSupply = (ttlSpply / 1000).toFixed(2) + 'k';
             }
-            if (ttlSpply.toString().length == 6 || ttlSpply.toString().length == 7 || ttlSpply.toString().length == 8) {
+            if (ttlSpply.toString().length == 7 || ttlSpply.toString().length == 8) {
               item.totalSupply = (ttlSpply / 1000000).toFixed(2) + 'M';
             }
             if (ttlSpply.toString().length > 9) {
@@ -146,7 +145,7 @@ export class MainComponent implements OnInit {
   }
 
   ngOnInit() {
-    debugger
+
     this.walletAddress = localStorage.getItem('walletAddress');
     localStorage.setItem('showAssetDetails', JSON.stringify(this.showDetails));
     this.web3Service.connected.subscribe((res: any) => {
@@ -189,6 +188,18 @@ export class MainComponent implements OnInit {
               this.ContractData.forEach((element: any) => {
                 this.totalDepositArr.push(element.deposit);
                 this.totalBorrowsArr.push(element.totalBorrows);
+                if (element.name == 'Alpha') {
+                  element.icon = "assets/alphalogo.png";
+                }
+                if (element.name == 'BUSD Token') {
+                  element.icon = "assets/images/busd-c4257f9b.svg";
+                }
+                if (element.name == 'USDT') {
+                  element.icon = "assets/images/ic3.png";
+                }
+                if (element.name == 'WETH') {
+                  element.icon = "assets/images/eth-a91aa368.svg";
+                }
               });
 
               const sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
@@ -202,7 +213,6 @@ export class MainComponent implements OnInit {
               const sortedContractData = this.ContractData.sort((a: any, b: any) => {
                 const nameA = a.name.toUpperCase();
                 const nameB = b.name.toUpperCase();
-
                 if (nameA < nameB) {
                   return -1;
                 }
@@ -217,7 +227,7 @@ export class MainComponent implements OnInit {
           if (!this.connected) {
             this.ContractData = [];
           }
-        })) : this.ContractData = []
+        })) : this.ContractData = [];
   }
 
   goToAsset(selectedAsset: any, img: string) {

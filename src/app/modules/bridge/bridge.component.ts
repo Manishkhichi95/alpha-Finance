@@ -100,7 +100,7 @@ export class BridgeComponent {
   }
 
   async switchNetwork(network: string) {
-    network == 'Arbitrum' ? this.chainId = this.CHAIN_ID["arbitrum-goerli"] : network == 'Polygon Mainnet' ? this.chainId = '0x89' : network == 'Mumbai Testnet' ? this.chainId = '0x13881' : network == 'Select Network' ? this.chainId = '' : '';
+    network == 'Arbitrum' ? this.chainId = this.CHAIN_ID["goerli"] : network == 'Polygon Mainnet' ? this.chainId = '0x89' : network == 'Mumbai Testnet' ? this.chainId = '0x13881' : network == 'Select Network' ? this.chainId = '' : '';
     this.networkName = network;
     const fees = await this.localContractInstance.methods.estimateSendFee(this.chainId, this.walletAddress, "1", false, [])
       .call();
@@ -118,7 +118,7 @@ export class BridgeComponent {
         this.walletAddress,
         this.chainId,
         this.Form.get('DstAddress')?.value,
-        ((Number(this.amount)) * Math.pow(10, 14)),
+        ((Number(this.amount)) * Math.pow(10, 18)),
         this.walletAddress,
         "0x0000000000000000000000000000000000000000",
         []
@@ -129,7 +129,7 @@ export class BridgeComponent {
           this.walletAddress,
           this.chainId,
           this.Form.get('DstAddress')?.value,
-          ((Number(this.amount)) * Math.pow(10, 14)),
+          ((Number(this.amount)) * Math.pow(10, 18)),
           this.walletAddress,
           "0x0000000000000000000000000000000000000000",
           []

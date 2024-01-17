@@ -1,9 +1,9 @@
 import Web3 from 'web3';
+import Swal from 'sweetalert2';
 import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Web3Service } from './WEb3Service.service';
-import Swal from 'sweetalert2';
 
 declare global {
   interface Window {
@@ -15,6 +15,7 @@ declare global {
   providedIn: 'root',
 })
 export class readContractsService {
+  accounts: any;
   rTokenABI: any;
   depositAPY: any;
   depositAPR: any;
@@ -48,7 +49,6 @@ export class readContractsService {
   borrows = new BehaviorSubject<any>(0);
   deposits = new BehaviorSubject<any>(0);
   totalAvailable = new BehaviorSubject<any>(0);
-  accounts: any;
   constructor(private http: HttpClient, private Web3Service: Web3Service,
   ) {
     this.web3 = this.Web3Service.getWeb3();
@@ -87,7 +87,6 @@ export class readContractsService {
 
   async getReserveData() {
     try {
-      debugger
       const getReserveData = await this.getReserveDATA();
       const reserveDataPromises = getReserveData[0].map(async (element: any) => {
         const tokenContracts = this.getTokenContracts(element.underlyingAsset);
@@ -136,7 +135,7 @@ export class readContractsService {
           totalBorrows: ((Number(variableDebtTokenSupply) + Number(stableDebtTokenSupply)) * (Number(getAssetPrice) / decimalVal) / (Number(1 + '0'.repeat(Number(decimals))))).toFixed(2)
         };
       });
-      debugger
+
       this.reserveData = await Promise.all(reserveDataPromises);
       const reserveData = this.reserveData.filter((element: any) => element.name != "BUSD Token");
       console.log('Reserves Data :', reserveData)
@@ -152,7 +151,7 @@ export class readContractsService {
         title: "Error fetching Reserves Data. Please try Reloading Again.",
         icon: "warning"
       }).then((result: any) => {
-        this.getReserveData();
+        location.reload();
       })
       alert('Error fetching Reserves Data. Please try Reloading Again.')
       throw error;
@@ -188,7 +187,6 @@ export class readContractsService {
       const optionsList: any = selected.querySelectorAll("div.wrapper-dropdown li");
       selected.addEventListener("click", () => {
         let arrow = selected.children[1];
-
         if (selected.classList.contains("active")) {
           handleDropdown(selected, arrow, false);
         } else {
@@ -198,7 +196,6 @@ export class readContractsService {
             let anotherArrow = currentActive.children[1];
             handleDropdown(currentActive, anotherArrow, false);
           }
-
           handleDropdown(selected, arrow, true);
         }
       });

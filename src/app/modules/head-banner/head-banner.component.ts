@@ -18,7 +18,7 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
   @Input() contractData: any = [];
   @Output() CurrentchainId = new EventEmitter<string>();
   networkName: any = localStorage.getItem('networkName');
-  
+
   constructor(private readContractsService: readContractsService, private web3Service: Web3Service) {
     this.web3Service.connected.subscribe((connected: boolean) => {
       this.connected = connected;

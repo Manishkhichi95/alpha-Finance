@@ -2,7 +2,7 @@
 <div *ngIf="connected">
   <app-head-banner (CurrentchainId)="setCurrentchainId($event)"></app-head-banner>
 </div>
-<section *ngIf="connected" class="dash_sect" >
+<section *ngIf="connected" class="dash_sect">
   <div id="myModal" class="modal">
     <div class="modal-content">
       <span class="close" (click)="closeDialog()">&times;</span>
@@ -12,7 +12,7 @@
         <p *ngIf="isInvalid('amount') || showError" style="margin: 0 auto;">Please Enter the Amount to {{
           transactionType }}</p>
         <h2 *ngIf="transactionType==='Withdraw'">Withdraw To:</h2>
-        <input type="text" formControlName="withdrawTo" *ngIf="transactionType==='Withdraw'" >
+        <input type="text" formControlName="withdrawTo" *ngIf="transactionType==='Withdraw'">
         <p *ngIf="transactionType == 'Withdraw' && showError || isInvalid('withdrawTo')" style="margin: 0 auto;">Please
           Enter the Address to {{ transactionType }}</p>
         <button class="submittBtn" (click)="submitt()">Submit</button>
@@ -199,7 +199,7 @@
                       <th></th>
                     </tr>
                   </thead>
-                  <tbody *ngIf="!spinnerTimer && networkName=='Mumbai Testnet'">
+                  <tbody *ngIf="!spinnerTimer && networkName=='Mumbai Testnet' && SupplyContractData.length>0">
                     <tr *ngFor="let items of SupplyContractData, let i = index">
                       <td>
                         <div class="user_avtar">
@@ -266,10 +266,10 @@
                     </tr>
                   </tbody>
                 </table>
-                <mat-spinner *ngIf="networkName=='Mumbai Testnet' && SupplyContractData.length==0" style="margin-left: 43%;
+                <mat-spinner *ngIf="spinnerTimer" style="margin-left: 43%;
                 width: 120px;color:warn;margin-bottom:5px;margin-top:5px;"></mat-spinner>
-                <mat-spinner *ngIf="networkName!='Mumbai Testnet' && spinnerTimer" style="margin-left: 43%;
-                 width: 120px;color:warn;margin-bottom:5px;margin-top:5px;"></mat-spinner>
+                <!-- <mat-spinner *ngIf="networkName!='Mumbai Testnet' && spinnerTimer" style="margin-left: 43%;
+                 width: 120px;color:warn;margin-bottom:5px;margin-top:5px;"></mat-spinner> -->
               </div>
             </div>
           </div>
@@ -291,7 +291,7 @@
                       <th></th>
                     </tr>
                   </thead>
-                  <tbody *ngIf="!spinnerTimer && networkName=='Mumbai Testnet'">
+                  <tbody *ngIf="!spinnerTimer && networkName=='Mumbai Testnet' && borrowContractData.length>0">
                     <tr *ngFor="let items of borrowContractData, let i = index">
                       <td>
                         <div class="user_avtar">
@@ -358,10 +358,10 @@
                     </tr>
                   </tbody>
                 </table>
-                <mat-spinner *ngIf="networkName=='Mumbai Testnet' && borrowContractData.length==0" style="margin-left: 43%;
+                <mat-spinner *ngIf="spinnerTimer" style="margin-left: 43%;
                 width: 120px;color:warn;margin-bottom:5px;margin-top:5px;"></mat-spinner>
-                <mat-spinner *ngIf="networkName!='Mumbai Testnet' && spinnerTimer" style="margin-left: 43%;
-                 width: 120px;color:warn;margin-bottom:5px;margin-top:5px;"></mat-spinner>
+                <!-- <mat-spinner *ngIf="networkName!='Mumbai Testnet' && spinnerTimer" style="margin-left: 43%;
+                 width: 120px;color:warn;margin-bottom:5px;margin-top:5px;"></mat-spinner> -->
               </div>
             </div>
           </div>

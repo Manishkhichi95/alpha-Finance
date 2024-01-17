@@ -56,7 +56,7 @@ export class DashboardComponent implements OnInit {
     private http: HttpClient, private readContractsService: readContractsService, private checkConnectStatus: CheckwalletConnectService, private router: Router) {
     setTimeout(() => {
       this.spinnerTimer = false;
-    }, 1102);
+    }, 2500);
     this.Form = this.fb.group({
       amount: [null, Validators.required],
       withdrawTo: ['', Validators.required]
@@ -89,7 +89,6 @@ export class DashboardComponent implements OnInit {
   async getUserReservesData() {
     try {
       this.resetData();
-
       const CurrentchainId = await this.web3.eth.net.getId();
       this.setNetworkName(CurrentchainId);
       this.cdr.detectChanges();
@@ -120,7 +119,6 @@ export class DashboardComponent implements OnInit {
           ]);
 
           const balance = (Number(scaledATokenBalance) / Math.pow(10, Number(decimals))).toFixed(2);
-
           const isDepositedAssetExists = this.depositedAsset.some((item: any) => item.address === res.underlyingAsset);
           const isBorrowedAssetExists = this.borrowedAsset.some((item: any) => item.address === res.underlyingAsset);
 
@@ -142,21 +140,18 @@ export class DashboardComponent implements OnInit {
             });
             this.cdr.detectChanges();
           }
-
           this.depositedAsset.push(...depositedAsset);
           this.borrowedAsset.push(...borrowedAsset);
           this.cdr.detectChanges();
         });
 
         await Promise.all(promises);
-        this.cdr.detectChanges();
         this.getDepositedAsset();
         this.getBorrowedAsset();
         this.sortedData();
         this.cdr.detectChanges();
       }
     } catch (error) {
-      // Handle errors appropriately
       console.error('Error in getUserReservesData:', error);
     } finally {
       if (!this.connected) {
@@ -198,17 +193,21 @@ export class DashboardComponent implements OnInit {
   getDepositedAsset() {
     this.depositedAsset.forEach((item: any) => {
       const ttlSpply = Math.floor(item.balance);
-      if (ttlSpply.toString().length == 1 || ttlSpply.toString().length == 2) {
-        item.balance = ttlSpply;
+      if (Number.isNaN(ttlSpply)) {
       }
-      if (ttlSpply.toString().length == 4 || ttlSpply.toString().length == 5 || ttlSpply.toString().length == 6) {
-        item.balance = (ttlSpply / 1000).toFixed(2) + 'k';
-      }
-      if (ttlSpply.toString().length == 7 || ttlSpply.toString().length == 8) {
-        item.balance = (ttlSpply / 1000000).toFixed(2) + 'M';
-      }
-      if (ttlSpply.toString().length > 9) {
-        item.balance = (ttlSpply / 1000000000).toFixed(2) + 'B';
+      else {
+        if (ttlSpply.toString().length == 1 || ttlSpply.toString().length == 2 || ttlSpply.toString().length == 3) {
+          item.balance = ttlSpply;
+        }
+        if (ttlSpply.toString().length == 4 || ttlSpply.toString().length == 5 || ttlSpply.toString().length == 6) {
+          item.balance = (ttlSpply / 1000).toFixed(2) + 'k';
+        }
+        if (ttlSpply.toString().length == 7 || ttlSpply.toString().length == 8) {
+          item.balance = (ttlSpply / 1000000).toFixed(2) + 'M';
+        }
+        if (ttlSpply.toString().length > 9) {
+          item.balance = (ttlSpply / 1000000000).toFixed(2) + 'B';
+        }
       }
       if (item.name == 'Alpha') {
         item.icon = "assets/alphalogo.png";
@@ -250,6 +249,8 @@ export class DashboardComponent implements OnInit {
   }
 
   calculateMarksetSize() {
+    this.totalDepositArr = [];
+    this.totalBorrowsArr = [];
     this.SupplyContractData.forEach((item: any) => {
       this.totalDepositArr.push(item.deposit);
       this.totalBorrowsArr.push(item.totalBorrows);

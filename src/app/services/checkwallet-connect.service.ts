@@ -19,10 +19,9 @@ export class CheckwalletConnectService {
   }
 
   async connectWallet() {
-    debugger
     try {
       const accounts: string[] = await window.ethereum.request({ method: 'eth_requestAccounts' });
-      if (accounts && accounts.length > 0) {
+      if (accounts && accounts.length > 0 && window.ethereum) {
         this.connected = true;
         this.walletAddress = accounts[0];
         this.selectedAddress = accounts[0];
