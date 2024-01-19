@@ -54,16 +54,16 @@ export class CheckwalletConnectService {
   }
 
   disconnectWallet() {
-    this.connected = false;
-    this.walletAddress = '';
-    localStorage.removeItem("walletAddress");
+    this.web3Service.connected.next(false);
+    this.web3Service.walletAddress.next('');
+    localStorage.removeItem('walletAddress');
+    localStorage.setItem('connected', JSON.stringify(false));
     this.web3Service.connected.next(this.connected);
     this.web3Service.walletAddress.next(this.walletAddress);
-    localStorage.setItem('connected', JSON.stringify(this.connected));
-    const element: any = document.getElementById("disConnect");
-    element.style.display = "none";
+    const element: any = document.getElementById('disConnect');
+    element.style.display = 'none';
   }
-
+  
   handleConnectionError(errorMessage: string) {
     this.connected = false;
     this.web3Service.connected.next(this.connected);

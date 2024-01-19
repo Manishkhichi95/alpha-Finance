@@ -32,6 +32,7 @@ export class MainComponent implements OnInit {
     private web3Service: Web3Service, private router: Router) { }
 
   async checkNetworkId() {
+    debugger
     this.networkName == null ? this.networkName = 'Select Network' : '';
     this.web3 = this.web3Service.getWeb3();
     const CurrentchainId = await this.web3.eth.net.getId();
@@ -39,92 +40,72 @@ export class MainComponent implements OnInit {
     if (CurrentchainId == 80001n) {
       this.networkName = 'Mumbai Testnet';
       this.cdr.detectChanges();
-      this.readContractsService.getReserveData().then((data: any) => {
-        console.log(data, "data", "data")
-        data.forEach((item: any) => {
-          if (item.name == 'Alpha') {
-            item.icon = "assets/alphalogo.png";
-          }
-          if (item.name == 'BUSD Token') {
-            item.icon = "assets/images/busd-c4257f9b.svg";
-          }
-          if (item.name == 'USDT') {
-            item.icon = "assets/images/ic3.png";
-          }
-          if (item.name == 'WETH') {
-            item.icon = "assets/images/eth-a91aa368.svg";
-          }
-          this.cdr.detectChanges();
-        })
-        this.ContractData = data,
-          this.readContractsService.data.next(this.ContractData)
-        this.cdr.detectChanges();
-        if (this.ContractData.length > 0) {
-          this.totalDepositArr = [];
-          this.totalBorrowsArr = [];
-          this.ContractData.forEach((element: any) => {
-            this.totalDepositArr.push(element.deposit);
-            this.totalBorrowsArr.push(element.totalBorrows);
-            this.cdr.detectChanges();
-          });
-          const sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-          this.deposits = sumOfDeposits.toFixed(0);
-          const sumOfBorrows = this.totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
-          this.borrows = sumOfBorrows.toFixed(0);
-          this.totalAvailable = (Number(this.deposits) - Number(this.borrows)).toFixed(0);
-          localStorage.setItem('borrows', JSON.stringify(this.borrows));
-          localStorage.setItem('deposits', JSON.stringify(this.deposits));
-          localStorage.setItem('totalAvailable', JSON.stringify(this.totalAvailable));
-          this.cdr.detectChanges();
+      debugger
+      if (this.connected == true) {
+        this.readContractsService.getReserveData().then((data: any) => {
+          console.log(data, "data", "data")
           data.forEach((item: any) => {
-            debugger
-            const ttlSpply = Math.floor(item.totalSupply);
-            if (ttlSpply.toString().length == 1 || ttlSpply.toString().length == 2 || ttlSpply.toString().length == 3) {
-              item.totalSupply = ttlSpply;
+            if (item.name == 'Alpha') {
+              item.icon = "assets/alphalogo.png";
             }
-            if (ttlSpply.toString().length == 4 || ttlSpply.toString().length == 5 || ttlSpply.toString().length == 6) {
-              item.totalSupply = (ttlSpply / 1000).toFixed(2) + 'k';
+            if (item.name == 'BUSD Token') {
+              item.icon = "assets/images/busd-c4257f9b.svg";
             }
-            if (ttlSpply.toString().length == 7 || ttlSpply.toString().length == 8) {
-              item.totalSupply = (ttlSpply / 1000000).toFixed(2) + 'M';
+            if (item.name == 'USDT') {
+              item.icon = "assets/images/ic3.png";
             }
-            if (ttlSpply.toString().length > 9) {
-              item.totalSupply = (ttlSpply / 1000000000).toFixed(2) + 'B';
-            }
-            const ttlBrrw = Math.floor(item.totalBorrows);
-            if (ttlBrrw.toString().length == 1 || ttlBrrw.toString().length == 2 || ttlBrrw.toString().length == 3) {
-              item.totalBorrows = ttlBrrw;
-            }
-            if (ttlBrrw.toString().length == 4 || ttlBrrw.toString().length == 5 || ttlBrrw.toString().length == 6) {
-              item.totalBorrows = (ttlBrrw / 1000).toFixed(2) + 'k';
-            }
-            if (ttlBrrw.toString().length == 7 || ttlBrrw.toString().length == 8) {
-              item.totalBorrows = (ttlBrrw / 1000000).toFixed(2) + 'M';
-            }
-            if (ttlBrrw.toString().length > 9) {
-              item.totalBorrows = (ttlBrrw / 1000000000).toFixed(2) + 'B';
+            if (item.name == 'WETH') {
+              item.icon = "assets/images/eth-a91aa368.svg";
             }
             this.cdr.detectChanges();
           })
-          this.readContractsService.borrows.next(this.borrows);
-          this.readContractsService.deposits.next(this.deposits);
-          this.readContractsService.totalAvailable.next(this.totalAvailable);
-          const sortedContractData = this.ContractData.sort((a: any, b: any) => {
-            const nameA = a.name.toUpperCase();
-            const nameB = b.name.toUpperCase();
-
-            if (nameA < nameB) {
-              return -1;
-            }
-            if (nameA > nameB) {
-              return 1;
-            }
-            return 0;
-          });
-          this.ContractData = sortedContractData;
+          this.ContractData = data,
+            this.readContractsService.data.next(this.ContractData)
           this.cdr.detectChanges();
-        }
-      })
+          if (this.ContractData.length > 0) {
+            this.totalDepositArr = [];
+            this.totalBorrowsArr = [];
+            this.ContractData.forEach((element: any) => {
+              this.totalDepositArr.push(element.deposit);
+              this.totalBorrowsArr.push(element.totalBorrows);
+              this.cdr.detectChanges();
+            });
+            const sumOfDeposits = this.totalDepositArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+            this.deposits = sumOfDeposits.toFixed(0);
+            const sumOfBorrows = this.totalBorrowsArr.reduce((accumulator: any, currentValue: any) => Number(accumulator) + Number(currentValue));
+            this.borrows = sumOfBorrows.toFixed(0);
+            this.totalAvailable = (Number(this.deposits) - Number(this.borrows)).toFixed(0);
+            localStorage.setItem('borrows', JSON.stringify(this.borrows));
+            localStorage.setItem('deposits', JSON.stringify(this.deposits));
+            localStorage.setItem('totalAvailable', JSON.stringify(this.totalAvailable));
+            this.cdr.detectChanges();
+            data.forEach((item: any) => {
+              debugger
+              item.totalSupply = this.readContractsService.convertAmount(item.totalSupply);
+              item.totalBorrows = this.readContractsService.convertAmount(item.totalBorrows);
+              this.cdr.detectChanges();
+            })
+            this.readContractsService.borrows.next(this.borrows);
+            this.readContractsService.deposits.next(this.deposits);
+            this.readContractsService.totalAvailable.next(this.totalAvailable);
+            const sortedContractData = this.ContractData.sort((a: any, b: any) => {
+              const nameA = a.name.toUpperCase();
+              const nameB = b.name.toUpperCase();
+
+              if (nameA < nameB) {
+                return -1;
+              }
+              if (nameA > nameB) {
+                return 1;
+              }
+              return 0;
+            });
+            this.ContractData = sortedContractData;
+            this.cdr.detectChanges();
+          }
+        })
+        this.cdr.detectChanges();
+      }
       this.cdr.detectChanges();
     }
     else if (!this.connected) {
@@ -159,7 +140,6 @@ export class MainComponent implements OnInit {
         this.cdr.detectChanges();
       }
     })
-    this.checkNetworkId();
     this.cdr.detectChanges();
     this.web3Service.walletAddress.subscribe((address: string) => {
       this.walletAddress = address;
@@ -167,6 +147,7 @@ export class MainComponent implements OnInit {
     });
     this.web3Service.connected.subscribe((connected: boolean) => {
       this.connected = connected;
+      this.checkNetworkId();
       this.cdr.detectChanges();
     })
     this.cdr.detectChanges();

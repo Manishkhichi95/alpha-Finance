@@ -158,6 +158,27 @@ export class readContractsService {
     }
   }
 
+  convertAmount(amount: any) {
+    const value = Math.floor(amount);
+    if (Number.isNaN(value)) {
+    }
+    else {
+      if (value.toString().length == 1 || value.toString().length == 2 || value.toString().length == 3) {
+        amount = value;
+      }
+      if (value.toString().length == 4 || value.toString().length == 5 || value.toString().length == 6) {
+        amount = (value / 1000).toFixed(2) + 'k';
+      }
+      if (value.toString().length == 7 || value.toString().length == 8) {
+        amount = (value / 1000000).toFixed(2) + 'M';
+      }
+      if (value.toString().length > 9) {
+        amount = (value / 1000000000).toFixed(2) + 'B';
+      }
+    }
+    return amount;
+  }
+
   async getBaseCurrency() {
     const AaveOracleContract = new this.web3.eth.Contract(this.AaveOracleABI, '0x166267abCDa4A903A0d187D151Da73C14BDfF1a8');
     return AaveOracleContract.methods.BASE_CURRENCY_UNIT().call();

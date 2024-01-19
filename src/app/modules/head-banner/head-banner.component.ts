@@ -49,57 +49,20 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
       this.deposits = res;
       const deposits: any = localStorage.getItem('deposits')
       this.deposits == 0 ? this.deposits = JSON.parse(deposits) : '';
-      const fxdDeposts: any = Number(this.deposits).toFixed(0);
-      if (fxdDeposts.toString().length == 1 || fxdDeposts.toString().length == 2 || fxdDeposts.toString().length == 3) {
-        this.finalDepo = fxdDeposts;
-      }
-      if (fxdDeposts.toString().length == 4 || fxdDeposts.toString().length == 5 || fxdDeposts.toString().length == 6) {
-        this.finalDepo = (fxdDeposts / 1000) + 'k';
-      }
-      if (fxdDeposts.toString().length == 7 || fxdDeposts.toString().length == 8) {
-        this.finalDepo = (fxdDeposts / 1000000) + 'M';
-      }
-      if (fxdDeposts.toString().length > 9) {
-        this.finalDepo = (fxdDeposts / 1000000000) + 'B';
-      }
+      this.finalDepo = this.readContractsService.convertAmount(this.deposits);
     });
     this.readContractsService.borrows.subscribe((res: Number) => {
       this.borrows = res;
       const borrows: any = localStorage.getItem('borrows')
       this.borrows == 0 ? this.borrows = JSON.parse(borrows) : '';
-      const fxdBorrows: any = Number(this.borrows).toFixed(0);
-      if (fxdBorrows.toString().length == 1 || fxdBorrows.toString().length == 2 || fxdBorrows.toString().length == 3) {
-        this.finalBrow = fxdBorrows;
-      }
-      if (fxdBorrows.toString().length == 4 || fxdBorrows.toString().length == 5 || fxdBorrows.toString().length == 6) {
-        this.finalBrow = (fxdBorrows / 1000) + 'k';
-      }
-      if (fxdBorrows.toString().length == 7 || fxdBorrows.toString().length == 8) {
-        this.finalBrow = (fxdBorrows / 1000000) + 'M';
-      }
-      if (fxdBorrows.toString().length > 9) {
-        this.finalBrow = (fxdBorrows / 1000000000) + 'B';
-      }
+      this.finalBrow = this.readContractsService.convertAmount(this.borrows);
     });
 
     this.readContractsService.totalAvailable.subscribe((res: Number) => {
       this.totalAvailable = res;
       const totalAvailable: any = localStorage.getItem('totalAvailable')
       this.totalAvailable == 0 ? this.totalAvailable = JSON.parse(totalAvailable) : '';
-      const fixedtotalAvailable = Math.floor(this.totalAvailable);
-
-      if (fixedtotalAvailable.toString().length == 1 || fixedtotalAvailable.toString().length == 2 || fixedtotalAvailable.toString().length == 3) {
-        this.finalttlAvlble = fixedtotalAvailable;
-      }
-      if (fixedtotalAvailable.toString().length == 4 || fixedtotalAvailable.toString().length == 5 || fixedtotalAvailable.toString().length == 6) {
-        this.finalttlAvlble = (fixedtotalAvailable / 1000) + 'k';
-      }
-      if (fixedtotalAvailable.toString().length == 7 || fixedtotalAvailable.toString().length == 8) {
-        this.finalttlAvlble = (fixedtotalAvailable / 1000000) + 'M';
-      }
-      if (fixedtotalAvailable.toString().length > 9) {
-        this.finalttlAvlble = (fixedtotalAvailable / 1000000000) + 'B';
-      }
+      this.finalttlAvlble = this.readContractsService.convertAmount(this.totalAvailable);
     });
   }
 

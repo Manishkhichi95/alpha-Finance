@@ -106,6 +106,7 @@ export class ManageComponent implements OnInit {
     //   })
     // });
     // }
+    
     // this.web3.getTransactionCount(this.walletAddress, 'latest', (error: any, count: number) => {
     //   if (error) {
     //     console.error('Error fetching transaction count:', error);

@@ -64,11 +64,15 @@ export class NavbarComponent {
   }
 
   disconnectWallet() {
-    return this.checkConnectStatus.disconnectWallet();
+    this.web3Service.disconnectWallet();
+    const element: any = document.getElementById("disConnect");
+    element.style.display = "none";
   }
 
   connectWallet() {
-    return this.checkConnectStatus.connectWallet();
+    this.web3Service.connectWallet();
+    const element: any = document.getElementById("disConnect");
+    element.style.display = "none";
   }
 
   copyToClipBoard() {
