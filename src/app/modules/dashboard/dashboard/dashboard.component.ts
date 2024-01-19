@@ -66,6 +66,11 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    window.ethereum.on('networkChanged', (networkId: any) => {
+      console.log('networkChanged', networkId);
+      this.getUserReservesData();
+      this.cdr.detectChanges();
+    });
     this.loadContracts();
     this.web3Service.walletAddress.subscribe((address: string) => {
       this.accounts = address;

@@ -37,6 +37,7 @@ export class MainComponent implements OnInit {
     this.web3 = this.web3Service.getWeb3();
     const CurrentchainId = await this.web3.eth.net.getId();
     console.log("CurrentchainId", CurrentchainId)
+    this.cdr.detectChanges();
     if (CurrentchainId == 80001n) {
       this.networkName = 'Mumbai Testnet';
       this.cdr.detectChanges();
@@ -60,7 +61,7 @@ export class MainComponent implements OnInit {
             this.cdr.detectChanges();
           })
           this.ContractData = data,
-            this.readContractsService.data.next(this.ContractData)
+            this.readContractsService.data.next(this.ContractData);
           this.cdr.detectChanges();
           if (this.ContractData.length > 0) {
             this.totalDepositArr = [];
@@ -122,11 +123,17 @@ export class MainComponent implements OnInit {
     else if (CurrentchainId != 42161n && CurrentchainId != 137n && CurrentchainId != 80001n) {
       this.networkName = 'Select Network';
       this.ContractData = [];
+      localStorage.removeItem('networkName');
+      this.cdr.detectChanges();
     }
   }
 
   ngOnInit() {
-
+    window.ethereum.on('networkChanged', (networkId: any) => {
+      console.log('networkChanged', networkId);
+      this.checkNetworkId();
+      this.cdr.detectChanges();
+    });
     this.walletAddress = localStorage.getItem('walletAddress');
     localStorage.setItem('showAssetDetails', JSON.stringify(this.showDetails));
     this.web3Service.connected.subscribe((res: any) => {

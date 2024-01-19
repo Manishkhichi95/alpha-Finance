@@ -1,6 +1,6 @@
 import { Web3Service } from 'src/app/services/WEb3Service.service';
 import { readContractsService } from 'src/app/services/readContracts.service';
-import { AfterViewInit, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 @Component({
   selector: 'app-head-banner',
   templateUrl: './head-banner.component.html',
@@ -19,7 +19,9 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
   @Output() CurrentchainId = new EventEmitter<string>();
   networkName: any = localStorage.getItem('networkName');
 
-  constructor(private readContractsService: readContractsService, private web3Service: Web3Service) {
+  constructor(private readContractsService: readContractsService,
+    private cdr: ChangeDetectorRef,
+    private web3Service: Web3Service) {
     this.web3Service.connected.subscribe((connected: boolean) => {
       this.connected = connected;
     })
@@ -41,10 +43,17 @@ export class HeadBannerComponent implements OnInit, AfterViewInit {
     }
     else if (CurrentchainId != 42161n && CurrentchainId != 137n && CurrentchainId != 80001n) {
       this.networkName = 'Select Network';
+      localStorage.removeItem('networkName');
     }
+    this.cdr.detectChanges();
   }
 
   ngOnInit(): void {
+    window.ethereum.on('networkChanged', (networkId: any) => {
+      console.log('networkChanged', networkId);
+      this.checkNetworkId();
+      this.cdr.detectChanges();
+    });
     this.readContractsService.deposits.subscribe((res: Number) => {
       this.deposits = res;
       const deposits: any = localStorage.getItem('deposits')
