@@ -15,8 +15,8 @@
                 <div class="user_avtar">
                   <div class="icon"><img src="assets/images/ic2.png" alt=""></div>
                   <div class="cont_bx">
-                    <h3 *ngIf="connected">{{balance}} MATIC</h3>
-                    <h3 *ngIf="!connected">0.00 MATIC</h3>
+                    <h3 *ngIf="connected">{{balance}} {{symbol}}</h3>
+                    <h3 *ngIf="!connected">0.00 {{symbol}}</h3>
                   </div>
                 </div>
               </div>

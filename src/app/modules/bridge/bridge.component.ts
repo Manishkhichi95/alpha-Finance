@@ -31,14 +31,22 @@ export class BridgeComponent {
   UiPoolDataProviderV2V3: any;
   networkName: any = 'Select Network';
   CHAIN_ID: any = require("../../../assets/json/chainIds.json");
+  symbol: string = '';
 
   constructor(private getWeb3: Web3Service, private cdr: ChangeDetectorRef,
     private http: HttpClient, private readContractsService: readContractsService, private fb: FormBuilder) {
     this.web3 = this.getWeb3.getWeb3();
   }
 
+  getNetworkSymbol(chainId: bigint) {
+    chainId == 1n ? this.symbol = 'ETH Mainnet' : chainId == 5n ? this.symbol = 'GoerliETH' :
+      chainId == 80001n ? this.symbol = 'MATIC' : chainId == 42161n ? this.symbol = 'Arbitrum' :
+        chainId == 137n ? this.symbol = 'MATIC' : this.symbol = '';
+  }
+
   ngOnInit() {
     window.ethereum.on('networkChanged', async (networkId: any) => {
+      this.getNetworkSymbol(BigInt(networkId));
       this.getWeb3.walletAddress.subscribe(async (address: string) => {
         this.walletAddress = address
         const balance = await this.web3.eth.getBalance(this.walletAddress);
@@ -53,8 +61,10 @@ export class BridgeComponent {
       this.balance = (Number(balance) / Math.pow(10, 18)).toFixed(2);
       this.cdr.detectChanges();
     });
-    this.getWeb3.connected.subscribe((connect: boolean) => {
+    this.getWeb3.connected.subscribe(async (connect: boolean) => {
       this.connected = connect;
+      const currentChainId = await this.web3.eth.net.getId();
+      this.getNetworkSymbol(currentChainId);
     })
     this.Form = this.fb.group({
       DstAddress: ['', Validators.required]
