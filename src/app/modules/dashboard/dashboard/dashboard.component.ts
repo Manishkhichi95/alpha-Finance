@@ -362,7 +362,7 @@ export class DashboardComponent implements OnInit {
   }
 
   closeDialog() {
-    const element: any = document.getElementById("myModal")
+    const element: any = document.getElementById("myModal");
     element.style.display = "none";
     this.Form.reset();
     this.showError = false;
@@ -386,8 +386,6 @@ export class DashboardComponent implements OnInit {
     else {
       this.showError = false;
     }
-    const element: any = document.getElementById("myModal")
-    element.style.display = "none";
     if (this.transactionType == 'Supply') {
       this.supplyAsset();
     }
@@ -403,6 +401,8 @@ export class DashboardComponent implements OnInit {
     if (this.transactionType == 'Borrow') {
       this.borrowAsset();
     }
+    const element: any = document.getElementById("myModal");
+    element.style.display = "none";
   }
 
   async supplyAsset() {

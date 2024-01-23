@@ -21,17 +21,17 @@ export class BridgeComponent {
   fees: any = '0.0';
   balanceAsset: any;
   walletAddress: any;
+  symbol: string = '';
   CurrentchainId: any;
   transactionType: any;
   tokenContractsABI: any;
   connected: boolean = false;
   localContractInstance: any;
   showError: boolean = false;
-  showSpinner: boolean = false;
   UiPoolDataProviderV2V3: any;
+  showSpinner: boolean = false;
   networkName: any = 'Select Network';
   CHAIN_ID: any = require("../../../assets/json/chainIds.json");
-  symbol: string = '';
 
   constructor(private getWeb3: Web3Service, private cdr: ChangeDetectorRef,
     private http: HttpClient, private readContractsService: readContractsService, private fb: FormBuilder) {
@@ -48,7 +48,7 @@ export class BridgeComponent {
     window.ethereum.on('networkChanged', async (networkId: any) => {
       this.getNetworkSymbol(BigInt(networkId));
       this.getWeb3.walletAddress.subscribe(async (address: string) => {
-        this.walletAddress = address
+        this.walletAddress = address;
         const balance = await this.web3.eth.getBalance(this.walletAddress);
         this.balance = (Number(balance) / Math.pow(10, 18)).toFixed(2);
         this.cdr.detectChanges();
@@ -87,21 +87,21 @@ export class BridgeComponent {
   openDialog() {
     if (this.chainId == '' && this.amount == undefined) {
       Swal.fire({
-        title: "Please Fill the Required Fields",
+        title: "Please Fill the Required Fields.",
         icon: "warning"
       })
       return
     }
     else if (this.chainId == '') {
       Swal.fire({
-        title: "Please Select the Destination Network",
+        title: "Please Select the Destination Network.",
         icon: "warning"
       })
       return
     }
     else if (this.amount == undefined) {
       Swal.fire({
-        title: "Please Enter the Amount to Send",
+        title: "Please Enter the Amount to Send.",
         icon: "warning"
       })
       return
@@ -120,12 +120,18 @@ export class BridgeComponent {
   async switchNetwork(network: string) {
     network == 'Arbitrum' ? this.chainId = this.CHAIN_ID["goerli"] : network == 'Polygon Mainnet' ? this.chainId = '0x89' : network == 'Mumbai Testnet' ? this.chainId = '0x13881' : network == 'Select Network' ? this.chainId = '' : '';
     this.networkName = network;
-    const fees = await this.localContractInstance.methods.estimateSendFee(this.chainId, this.walletAddress, this.amount, false, [])
+    const address = this.walletAddress.slice(2);
+    const fees = await this.localContractInstance.methods.estimateSendFee(this.chainId, '0x000000000000000000000000' + address, this.amount, false, [])
       .call();
     this.fees = fees[0];
   }
 
   async sendFrom() {
+    const element: any = document.getElementById("myModal");
+    element.style.display = "none";
+    const address = '0x000000000000000000000000' + ((this.Form.get('DstAddress')?.value).slice(2));
+    const amount = ((Number(this.amount)) * Math.pow(10, 18));
+    const fees = Number(this.fees) / Math.pow(10, 18);
     if (this.Form.get('DstAddress')?.value == '') {
       this.showError = true;
       return
@@ -135,22 +141,22 @@ export class BridgeComponent {
       let sendFrom = await this.localContractInstance.methods.sendFrom(
         this.walletAddress,
         this.chainId,
-        this.Form.get('DstAddress')?.value,
-        ((Number(this.amount)) * Math.pow(10, 18)),
-        this.walletAddress,
-        "0x0000000000000000000000000000000000000000",
-        []
+        address,
+        amount,
+        [this.walletAddress,
+          '0x0000000000000000000000000000000000000000',
+          '0x00010000000000000000000000000000000000000000000000000000000000030d40']
       ).send({
         from: this.walletAddress,
         value: this.fees,
         data: this.localContractInstance.methods.sendFrom(
           this.walletAddress,
           this.chainId,
-          this.Form.get('DstAddress')?.value,
-          ((Number(this.amount)) * Math.pow(10, 18)),
-          this.walletAddress,
-          "0x0000000000000000000000000000000000000000",
-          []
+          address,
+          amount,
+          [this.walletAddress,
+            '0x0000000000000000000000000000000000000000',
+            '0x00010000000000000000000000000000000000000000000000000000000000030d40']
         ).encodeABI(),
         gas: 1000000
       })
