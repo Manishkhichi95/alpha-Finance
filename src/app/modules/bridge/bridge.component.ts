@@ -216,14 +216,15 @@ export class BridgeComponent {
   async getMaxAlpha() {
     const data: any = await this.http.get('assets/json/ABIs&Addresses.json').toPromise();
     this.tokenContractsABI = data.tokenContractsABI;
-    const depositedAssetContract = await this.UiPoolDataProviderV2V3.methods.getUserReservesData('0x5743f572A55CbB84c035903D0e888583CdD508c3', this.walletAddress).call();
+    const depositedAssetContract = await this.UiPoolDataProviderV2V3.methods.getUserReservesData(
+      '0x5743f572A55CbB84c035903D0e888583CdD508c3', this.walletAddress).call();
     depositedAssetContract[0].forEach(async (res: any) => {
       const tokenContracts = new this.web3.eth.Contract(this.tokenContractsABI, res.underlyingAsset);
       if (res.scaledATokenBalance != 0) {
         const name = await tokenContracts.methods.name().call();
         if (name == 'Alpha') {
           const balanceAsset = await tokenContracts.methods.balanceOf(this.walletAddress).call();
-          this.balanceAsset = (Number(balanceAsset) / 1000000000000000000).toFixed(2);
+          this.balanceAsset = (Number(balanceAsset) / Math.pow(10, 18)).toFixed(0);
           this.amount = this.balanceAsset;
         }
       }
